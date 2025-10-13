@@ -1,0 +1,8 @@
+{
+    "name": "marke/page",
+    "require": {
+        "phpoffice/phpspreadsheet": "^5.0",
+        "phpoffice/phpword": "^1.4",
+        "setasign/fpdi-tcpdf": "^2.3"
+    }
+}

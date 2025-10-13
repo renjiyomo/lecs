@@ -1,0 +1,70 @@
+:root {
+    --primary-color: #2563eb;
+    --background-light: #f4f4f5;
+    --background-dark: #1e293b;
+    --text-light: #1f2937;
+    --text-dark: #f1f5f9;
+    --card-dark: #334155;
+    --card-light: #ffffff;
+    --hover-light: #f3f4f6;
+    --hover-dark: #475569;
+    --border-light: #d1d5db;
+    --border-dark: #475569;
+}
+
+body {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #dfdede;
+      text-align: center;
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+        url("image/bg1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .hero {
+      margin-top: 50px; 
+      text-align: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 50px;
+      font-style:normal;
+      margin-top: 5px;
+      text-shadow: #000000 2px 4px 5px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #bebbbb;
+      font-style: italic;
+      text-shadow: #000000 1px 2px 5px;
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #4a90e2, #357ABD);
+      color: white;
+      padding: 12px 28px;
+      text-decoration:none;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: 0.3s;
+      display: inline-block;
+      margin-top: 20px;
+      box-shadow: #1e2a3d 0 2px 2px;
+    }
+
+    .login-btn:hover {
+    background: linear-gradient(135deg, #4a91e2c5, #3579bdbb);
+    color: white;
+    }

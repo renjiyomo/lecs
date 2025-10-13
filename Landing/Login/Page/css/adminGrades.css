@@ -1,0 +1,360 @@
+:root {
+    --primary-color: #2563eb;
+    --background-light: #f4f4f5;
+    --background-dark: #1e293b;
+    --text-light: #1f2937;
+    --text-dark: #f1f5f9;
+    --card-dark: #334155;
+    --card-light: #ffffff;
+    --hover-light: #f3f4f6;
+    --hover-dark: #475569;
+    --border-light: #d1d5db;
+    --border-dark: #475569;
+    --not-applicable-light: #e0d7f9; /* Light pastel purple */
+    --not-applicable-dark: #a996ca;  /* Darker purple for dark mode */
+    --not-applicable-border: #8b5cf6; /* Vibrant purple border */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 290px;
+    padding: 20px 40px;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Theme switching */
+body.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+    --border: var(--border-light);
+}
+
+body.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+    --border: var(--border-dark);
+}
+
+/* Heading */
+h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.top-bar label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+
+.top-bar select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--card-light);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+#schoolYear {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--card-light);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.light #schoolYear{
+    background-color: var(--card-light);
+    border-color: var(--border-light);
+}
+
+body.light #schoolYear:hover {
+    background-color: var(--hover-light);
+    border-color: var(--primary-color);
+}
+
+body.dark #schoolYear {
+    background-color: var(--card-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark #schoolYear:hover {
+    background-color: var(--hover-dark);
+    border-color: var(--primary-color);
+}
+
+#quarter {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--card-light);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.light #quarter{
+    background-color: var(--card-light);
+    border-color: var(--border-light);
+}
+
+body.light #quarter:hover {
+    background-color: var(--hover-light);
+    border-color: var(--primary-color);
+}
+
+body.dark #quarter {
+    background-color: var(--card-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark #quarter:hover {
+    background-color: var(--hover-dark);
+    border-color: var(--primary-color);
+}
+
+#section {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--card-light);
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.light #section{
+    background-color: var(--card-light);
+    border-color: var(--border-light);
+}
+
+body.light #section:hover {
+    background-color: var(--hover-light);
+    border-color: var(--primary-color);
+}
+
+body.dark #section {
+    background-color: var(--card-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark #section:hover {
+    background-color: var(--hover-dark);
+    border-color: var(--primary-color);
+}
+
+/* Table Container */
+.table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Header */
+thead {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+body.light thead {
+    background-color: #d1d5db;
+    color: var(--text-light);
+}
+body.dark thead {
+    background-color: #374151;
+    color: var(--text-dark);
+}
+
+/* Rows */
+td, th {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border);
+}
+body.light td {
+    background-color: #f9fafb;
+}
+body.dark td, body.dark th {
+    background-color: #334155;
+}
+
+
+/* Grade Boxes */
+.grade-box {
+    display: inline-block;
+    min-width: 34px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+/* Normal grades */
+body.light .grade-box {
+    background-color: #e5e7eb;
+    color: var(--text-light);
+    border: 1px solid #d1d5db;
+}
+body.dark .grade-box {
+    background-color: #374151;
+    color: var(--text-dark);
+    border: 1px solid #4b5563;
+}
+
+/* Empty grade slot */
+.grade-box.empty {
+    background-color: black;
+    border: 5px solid var(--border);
+    color: var(--text-color);
+}
+
+/* Not applicable subjects */
+body.light .grade-box.not-applicable {
+    background-color: var(--not-applicable-light);
+    color: var(--text-light);
+    border: 1px dashed var(--not-applicable-border);
+    opacity: 0.9; /* Increased opacity for visibility */
+}
+body.dark .grade-box.not-applicable {
+    background-color: var(--not-applicable-dark);
+    color: var(--text-dark);
+    border: 1px dashed var(--not-applicable-border);
+}
+
+/* Edit button */
+.edit-btn {
+    display: inline-block;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+
+.retained { color: #ef4444; font-weight: 600; }
+.incomplete { color: #f59e0b; font-weight: 600; } /* New style for Incomplete */
+.none     { color: #6b7280; font-weight: 600; font-style: italic; } /* New style for None */
+
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .top-bar button {
+            margin-left: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .top-bar button:hover {
+            background-color: #45a049;
+        }
+
+.generate-certi{
+    display: inline-block;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    border: none;
+
+}
+
+.given-date{
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--border-light);
+    border-radius: 3px;
+}
+
+
+body.dark .given-date{
+    background-color: var(--border-dark);
+    color: white;
+}
+
+body.dark .modal-content{
+    background-color: var(--background-dark);
+}

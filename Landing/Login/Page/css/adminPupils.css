@@ -1,0 +1,267 @@
+:root {
+    --primary-color: #2563eb;
+    --background-light: #f4f4f5;
+    --background-dark: #1e293b;
+    --sidebar-light: #ffffff;
+    --sidebar-dark: #0f172a;
+    --text-light: #1f2937;
+    --text-dark: #f1f5f9;
+    --accent: #e5e7eb;
+    --border-color: #d1d5db;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+body.dark {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+    margin-left: 290px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+}
+
+.header input[type="text"] {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    outline: none;
+    width: 250px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.header input[type="text"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters select, .filters input {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+body.dark .filters select, 
+body.dark .filters input,
+body.dark .header input[type="text"] {
+    background-color: #334155;
+    border-color: #475569;
+    color: var(--text-dark);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--sidebar-light);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+body.dark table {
+    background-color: var(--sidebar-dark);
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+body.dark th, body.dark td {
+    border-color: #334155;
+}
+
+th {
+    background-color: var(--accent);
+    font-weight: 600;
+    
+}
+
+body.dark th {
+    background-color: #334155;
+    border-bottom: 1px solid #202936;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.export-btn {
+    background-color: #d1d5db;
+}
+
+.add-btn {
+    background-color: #4ade80;
+    color: white;
+}
+
+.total-count {
+    text-align: right;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+
+.btn-action {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.25s ease-in-out;
+    border: 1px solid transparent;
+}
+
+/* View (Profile) button */
+.view-btn {
+    background-color: #4ade80; /* blue */
+    color: white;
+}
+.view-btn:hover {
+    background-color: #51d882;
+
+}
+
+/* Edit button */
+.edit-btn {
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+    color: white;
+}
+.edit-btn:hover {
+    background-color: #1d4ed8;
+    color: white;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+}
+
+/* Adapt for dark mode */
+body.dark .view-btn {
+    background-color: #4ade80; 
+
+}
+body.dark .view-btn:hover {
+    background-color: #51d882;
+
+}
+
+body.dark .edit-btn {
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+
+}
+body.dark .edit-btn:hover {
+    background-color: #1d4ed8;
+
+}
+
+.btn-action.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 6px;
+}
+.btn-action.delete-btn:hover {
+    background-color: #c82333;
+}
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+body.dark .modal-content{
+    color: #fff;
+    background-color: var(--background-dark);
+}
+
+        .modal-content button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .modal-content .btn-confirm {
+            background-color: #dc3545;
+            color: white;
+        }
+        .modal-content .btn-force {
+            background-color: #ff9800;
+            color: white;
+        }
+        .modal-content .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }

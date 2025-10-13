@@ -1,0 +1,286 @@
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.light {
+  background: #f4f4f9;
+  color: #111;
+}
+
+body.light .login-container {
+  background: #fff;
+}
+
+body.light .login-right {
+  background: #fafafa;
+  color: #111;
+}
+
+body.light .input-box input {
+  background: #eee;
+  color: #111;
+}
+
+body.light .forgot {
+  color: #1a73e8;
+}
+
+body.dark {
+  background: #1e293b;
+  color: #fff;
+}
+
+body.dark .login-container {
+  background: #334155;
+}
+
+body.dark .login-right {
+  background: #334155;
+  color: #fff;
+}
+
+body.dark .input-box input {
+  background: #1e293b;
+  color: #fff;
+}
+
+body.dark .forgot {
+  color: #f9ef58;
+}
+
+.login-container {
+  display: flex;
+  width: 1000px;
+  max-width: 90%;
+  height: 620px;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+.login-left {
+  flex: 1;
+  background: url('image/Flag.png') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-left {
+  width: 120px;
+  height: auto;
+  margin-left: 10px;
+}
+
+.title-text h1 {
+  font-size: 34px;
+  font-weight: bold;
+  color: #000;
+}
+
+.title-text p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
+
+.login-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.3s, color 0.3s;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.toggle-icon {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.toggle-icon:hover {
+  transform: scale(1.2);
+}
+
+.logo {
+  width: 100px;
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.subtext {
+  margin-bottom: 25px;
+  opacity: 0.8;
+}
+
+form {
+  width: 100%;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.label-row label {
+  font-size: 14px;
+}
+
+.help-icon {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.input-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.input-box span {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.remember input {
+  margin-right: 8px;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  background: #f9ef58;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #ffe600;
+}
+
+.forgot {
+  display: block;
+  margin-top: 40px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  color: #111;
+  padding: 25px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease-in-out;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark .modal-content {
+  background: #333;
+  color: #fff;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #666;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background: #888;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}

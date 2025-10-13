@@ -1,0 +1,241 @@
+:root {
+    --primary-color: #2563eb;
+    --background-light: #f4f4f5;
+    --background-dark: #1e293b;
+    --text-light: #1f2937;
+    --text-dark: #f1f5f9;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #334155;
+    --org-bg-light: #f9fafb;
+    --org-bg-dark: #2d3748;
+    --org-card-bg-light: #e5e7eb;
+    --org-card-bg-dark: #4a5568;
+    --org-title-light: #1a202c;
+    --org-title-dark: #e2e8f0;
+    --org-grade-title-light: #dc2626;
+    --org-grade-title-dark: #f87171;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+    margin-left: 290px;
+    min-height: 100vh;   
+    background-color: var(--background-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light .main-content {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+body.dark .main-content {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+h1 {
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.chart-container {
+    padding: 20px;
+    flex: 1;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+body.light .chart-container {
+    background-color: var(--card-bg-light);
+    color: var(--text-light);
+}
+
+body.dark .chart-container {
+    background-color: var(--card-bg-dark);
+    color: var(--text-dark);
+}
+
+.filter-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+select {
+    padding: 3px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+body.light select {
+    background-color: var(--card-bg-light);
+    color: var(--text-light);
+    border: 1px solid #ccc;
+}
+
+body.dark select {
+    background-color: var(--card-bg-dark);
+    color: var(--text-dark);
+    border: 1px solid #555;
+}
+
+.org-chart {
+    margin-top: 30px;
+}
+
+#orgChartContent {
+    display: none;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.org-chart-container {
+    padding: 20px;
+    border-radius: 10px;
+    color: var(--text-light);
+}
+
+body.dark .org-chart-container {
+    color: var(--text-dark);
+}
+
+.org-principals,
+.org-non-teaching {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.org-principal-cards,
+.org-non-teaching-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.org-grades {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.org-grade {
+    flex: 1;
+    text-align: center;
+}
+
+.org-grade-title {
+    background-color: var(--org-card-bg-dark);
+    color: #fff;
+    padding: 6px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+body.dark .org-grade-title {
+    background-color: var(--org-bg-dark);
+}
+
+.org-card {
+    width: 140px;
+    padding: 10px;
+    background-color: var(--org-card-bg-light);
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin: 0 auto 15px auto;
+    transition: background-color 0.3s;
+    border: 1px solid var(--org-card-bg-dark);
+}
+
+body.dark .org-card {
+    background-color: var(--org-card-bg-dark);
+    border: 1px solid var(--background-dark);
+}
+
+.org-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.org-name {
+    color: var(--text-light);
+    font-weight: bolder;
+    margin: 0;
+    font-size: 9px;
+    background-color: #a0aec0;
+    padding: 3px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+body.dark .org-name {
+    color: var(--text-dark);
+    background-color: var(--card-bg-dark);
+}
+
+.org-position,
+.org-section {
+    color: #718096;
+    font-size: 10px;
+    margin: 0;
+}
+
+body.dark .org-position,
+body.dark .org-section {
+    color: #a0aec0;
+}
+
+.org-no-teachers {
+    color: var(--text-light);
+}
+
+body.dark .org-no-teachers {
+    color: var(--text-dark);
+}
+
+.org-non-teaching-title {
+    margin-bottom: 20px;
+    color: var(--org-title-light);
+}
+
+body.dark .org-non-teaching-title {
+    color: var(--org-title-dark);
+}
+
+#orgChartContent img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+#orgChartContent h4 {
+    margin-bottom: 10px;
+}
+
+#orgChartContent p {
+    line-height: 1.2;
+}

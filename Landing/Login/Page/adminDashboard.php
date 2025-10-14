@@ -415,7 +415,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                     ticks: { precision: 0 }
                 }
             },
-            barPercentage: 0.9,
+            barPercentage: 1,
             categoryPercentage: 0.8
         }
     });

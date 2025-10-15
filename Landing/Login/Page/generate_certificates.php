@@ -32,6 +32,19 @@ $teacher_stmt->execute();
 $teacher_result = $teacher_stmt->get_result()->fetch_assoc();
 $teacher_full_name = strtoupper(htmlspecialchars($teacher_result['teacher_name'] ?? ''));
 
+// --- Principal name (latest based on start_date) ---
+$principal_stmt = $conn->prepare("
+    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name
+    FROM teachers t
+    JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
+    WHERE tp.position_id IN (13,14,15,16)
+    ORDER BY tp.start_date DESC
+    LIMIT 1
+");
+$principal_stmt->execute();
+$principal_result = $principal_stmt->get_result()->fetch_assoc();
+$principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
+
 // --- Pupils ---
 $sql = "SELECT p.pupil_id,p.first_name,p.last_name,p.middle_name,
                s.section_name,s.grade_level_id
@@ -177,6 +190,7 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
             $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
             $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
             $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
+            $templateProcessor->setValue("principal{$slot}", $principal_full_name);
         } else {
             // Fill unused slot with defaults
             $p = $pupils_in_file[0];
@@ -188,6 +202,7 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
             $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
             $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
             $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
+            $templateProcessor->setValue("principal{$slot}", $principal_full_name);
         }
     }
 

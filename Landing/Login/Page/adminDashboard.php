@@ -190,7 +190,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         }
     </style>
 </head>
-<body class="dark">
+<body class="light">
 
 <div class="container">
     <?php include 'sidebar.php'; ?>

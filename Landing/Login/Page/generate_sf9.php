@@ -42,6 +42,19 @@ function toRoman($number) {
     return $result;
 }
 
+// Function to convert position name to include Roman numerals
+function formatPosition($position_name) {
+    // Split the position name (e.g., "Principal II" -> ["Principal", "II"])
+    $parts = explode(' ', trim($position_name));
+    if (count($parts) > 1 && is_numeric($parts[1])) {
+        // Convert numeric part to Roman numeral
+        $parts[1] = toRoman(intval($parts[1]));
+        return strtoupper(implode(' ', $parts));
+    }
+    // If no numeric part or already in Roman numerals, return as is
+    return strtoupper($position_name);
+}
+
 // Get school year
 $sy_stmt = $conn->prepare("SELECT school_year FROM school_years WHERE sy_id = ?");
 $sy_stmt->bind_param("i", $sy_id);
@@ -56,11 +69,12 @@ $teacher_stmt->execute();
 $teacher_result = $teacher_stmt->get_result()->fetch_assoc();
 $teacher_full_name = strtoupper(htmlspecialchars($teacher_result['teacher_name'] ?? ''));
 
-// Get principal name (latest based on start_date)
+// Get principal name and position (latest based on start_date)
 $principal_stmt = $conn->prepare("
-    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name
+    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name, p.position_name AS principal_position
     FROM teachers t
     JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
+    JOIN positions p ON tp.position_id = p.position_id
     WHERE tp.position_id IN (13,14,15,16)
     ORDER BY tp.start_date DESC
     LIMIT 1
@@ -68,6 +82,7 @@ $principal_stmt = $conn->prepare("
 $principal_stmt->execute();
 $principal_result = $principal_stmt->get_result()->fetch_assoc();
 $principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
+$principal_position = formatPosition(htmlspecialchars($principal_result['principal_position'] ?? ''));
 
 // Get pupils
 $pupil_sql = "SELECT p.pupil_id, p.first_name, p.last_name, p.middle_name, p.age, p.sex,
@@ -252,11 +267,11 @@ foreach ($pupils as $pupil) {
         $general_avg['final'] = $avg;
         $num_fails = count(array_filter($final_grades, function($g) { return $g < 75; }));
         if ($num_fails >= 3) {
-            $general_avg['remarks'] = 'RETAINED';
+            $general_avg['remarks'] = 'Retained';
         } elseif ($num_fails >= 1) {
-            $general_avg['remarks'] = 'CONDITIONALLY PROMOTED';
+            $general_avg['remarks'] = 'Promoted';
         } else {
-            $general_avg['remarks'] = 'PROMOTED';
+            $general_avg['remarks'] = 'Promoted';
         }
     }
     
@@ -278,6 +293,7 @@ foreach ($pupils as $pupil) {
     $templateProcessor->setValue('lrn', htmlspecialchars($pupil['lrn']));
     $templateProcessor->setValue('teacher', $teacher_full_name);
     $templateProcessor->setValue('principal', $principal_full_name);
+    $templateProcessor->setValue('principal_position', $principal_position);
     $templateProcessor->setValue('grade_level2', toRoman($pupil['grade_level_id']));
     
     // Set grades with font size 11

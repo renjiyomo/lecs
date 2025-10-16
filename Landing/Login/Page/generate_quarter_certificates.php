@@ -3,8 +3,7 @@ require 'vendor/autoload.php';
 include 'lecs_db.php';
 session_start();
 
-use PhpOffice\PhpPresentation\IOFactory;
-use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
     header("Location: /lecs/Landing/Login/login.php");
@@ -16,12 +15,12 @@ $sy_id      = isset($_POST['sy_id']) ? intval($_POST['sy_id']) : 0;
 $quarter    = isset($_POST['quarter']) ? $_POST['quarter'] : '';
 $issue_date = isset($_POST['issue_date']) ? $_POST['issue_date'] : date('Y-m-d');
 
-if (!DateTime::createFromFormat('Y-m-d', $issue_date)) {
-    die("Invalid date format.");
-}
-
 if (!in_array($quarter, ['Q1', 'Q2', 'Q3', 'Q4'])) {
     die("Invalid quarter.");
+}
+
+if (!DateTime::createFromFormat('Y-m-d', $issue_date)) {
+    die("Invalid date format.");
 }
 
 // --- School year ---
@@ -30,6 +29,11 @@ $sy_stmt->bind_param("i", $sy_id);
 $sy_stmt->execute();
 $sy_result = $sy_stmt->get_result()->fetch_assoc();
 $school_year = $sy_result['school_year'] ?? 'Unknown';
+
+// --- Quarter display ---
+$quarter_num = substr($quarter, 1);
+$suffix = ($quarter_num == '1') ? 'st' : (($quarter_num == '2') ? 'nd' : (($quarter_num == '3') ? 'rd' : 'th'));
+$quarter_display = $quarter_num . $suffix;
 
 // --- Teacher name ---
 $teacher_stmt = $conn->prepare("SELECT CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) AS teacher_name FROM teachers WHERE teacher_id=?");
@@ -44,12 +48,9 @@ $principal_stmt = $conn->prepare("
     FROM teachers t
     JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
     WHERE tp.position_id IN (13,14,15,16)
-    AND tp.start_date <= ?
-    AND (tp.end_date >= ? OR tp.end_date IS NULL)
     ORDER BY tp.start_date DESC
     LIMIT 1
 ");
-$principal_stmt->bind_param("ss", $issue_date, $issue_date);
 $principal_stmt->execute();
 $principal_result = $principal_stmt->get_result()->fetch_assoc();
 $principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
@@ -68,7 +69,7 @@ $pupils = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $quarters_order = ["Q1"=>1,"Q2"=>2,"Q3"=>3,"Q4"=>4];
 $honors_pupils  = [];
 
-// --- Compute honors for the quarter ---
+// --- Compute honors for quarter ---
 foreach ($pupils as $p) {
     $pupil_id       = $p['pupil_id'];
     $grade_level_id = $p['grade_level_id'];
@@ -91,38 +92,44 @@ foreach ($pupils as $p) {
     $grades = $gstmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $grades_map=[];
-    foreach($grades as $g){ $grades_map[$g['subject_id']][$g['quarter']]=$g['grade']; }
+    foreach($grades as $g){ $grades_map[$g['subject_id']]=$g['grade']; }
 
     $pupil_grades=[]; $all_empty=true; $has_incomplete=false;
 
     foreach($pupil_subjects as $subject_id=>$sub){
         $start_num=$quarters_order[$sub['start_quarter']??'Q1']??1;
-        if($quarters_order[$quarter] < $start_num) continue;
+        if(($quarters_order[$quarter]??0) < $start_num) continue;
 
         if(isset($components[$subject_id])){
             $comp_finals=[];
+            $comp_count=count($components[$subject_id]);
+            $comp_present=0;
             $comp_incomplete=false;
             foreach($components[$subject_id] as $comp){
                 $comp_start_num=$quarters_order[$comp['start_quarter']??'Q1']??1;
-                if($quarters_order[$quarter] < $comp_start_num) continue;
-
-                $comp_quarters=$grades_map[$comp['subject_id']]??[];
-                if(isset($comp_quarters[$quarter])){
-                    $comp_finals[]=$comp_quarters[$quarter];
+                if(($quarters_order[$quarter]??0) < $comp_start_num){
+                    $comp_incomplete=true;
+                    break;
+                }
+                $comp_grade=$grades_map[$comp['subject_id']]??null;
+                if($comp_grade!==null){
+                    $comp_finals[]=$comp_grade;
+                    $comp_present++;
                     $all_empty=false;
                 } else {
                     $comp_incomplete=true;
+                    break;
                 }
             }
-            if(!$comp_incomplete && count($comp_finals)==count($components[$subject_id])){
-                $pupil_grades[]=array_sum($comp_finals)/count($comp_finals);
-            } else {
+            if($comp_incomplete || $comp_present < $comp_count){
                 $has_incomplete=true;
+            } elseif($comp_finals){
+                $pupil_grades[]=array_sum($comp_finals)/count($comp_finals);
             }
         } else {
-            $quarters=$grades_map[$subject_id]??[];
-            if(isset($quarters[$quarter])){
-                $pupil_grades[]=$quarters[$quarter];
+            $grade=$grades_map[$subject_id]??null;
+            if($grade!==null){
+                $pupil_grades[]=$grade;
                 $all_empty=false;
             } else {
                 $has_incomplete=true;
@@ -134,7 +141,7 @@ foreach ($pupils as $p) {
         $avg=array_sum($pupil_grades)/count($pupil_grades);
         if($avg>=90){
             $p['average']=number_format($avg,2);
-            $p['remark']=$avg>=98?"With Highest Honors":($avg>=95?"With High Honors":"With Honors");
+            $p['remark']=$avg>=98?"WITH HIGHEST HONORS":($avg>=95?"WITH HIGH HONORS":"WITH HONORS");
             $honors_pupils[]=$p;
         }
     }
@@ -145,74 +152,88 @@ if(!$honors_pupils){ die("No pupils with honors found for this quarter."); }
 usort($honors_pupils,function($a,$b){ return (float)$b['average']<=> (float)$a['average']; });
 
 $formatted_date = date('jS \d\a\y \o\f F Y',strtotime($issue_date));
-
-$quarter_number = (int)str_replace('Q', '', $quarter);
-$quarter_suffix = ($quarter_number == 1 ? 'st' : ($quarter_number == 2 ? 'nd' : ($quarter_number == 3 ? 'rd' : 'th')));
-$quarter_phrase = $quarter_number . $quarter_suffix;
+$total = count($honors_pupils);
+$files_needed = ($total <= 2) ? 1 : 2;
 
 // --- Prepare template ---
-$templateFile = __DIR__."/template/Certificate_of_Recognition_per_Quarter_template.pptx";
-
-// Function to replace placeholders
-function replaceInPresentation(PhpPresentation $presentation, array $replacements, $quarter_number, $quarter_suffix) {
-    foreach ($presentation->getAllSlides() as $slide) {
-        foreach ($slide->getShapeCollection() as $shape) {
-            if ($shape instanceof \PhpOffice\PhpPresentation\Shape\RichText) {
-                foreach ($shape->getParagraphs() as $paragraph) {
-                    foreach ($paragraph->getRichTextElements() as $element) {
-                        if ($element instanceof \PhpOffice\PhpPresentation\Shape\RichText\TextElement) {
-                            $text = $element->getText();
-
-                            // Special replacement for quarter
-                            $text = str_replace('${quarter}st', $quarter_number . $quarter_suffix, $text);
-
-                            // Normal replacements
-                            foreach ($replacements as $search => $replace) {
-                                $text = str_replace('${' . $search . '}', $replace, $text);
-                            }
-
-                            $element->setText($text);
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+$templateFile = __DIR__."/template/Certificate_of_Recognition_per_Quarter_template.docx";
 
 // --- Generate files ---
+$zip = new ZipArchive();
 $temp_files = [];
-foreach ($honors_pupils as $p) {
-    $presentation = IOFactory::load($templateFile);
+$certificates_per_file = ceil($total / $files_needed);
 
-    $mi = $p['middle_name'] ? strtoupper(substr($p['middle_name'], 0, 1)) . '.' : '';
-    $full_name = strtoupper(htmlspecialchars($p['first_name'] . ' ' . $mi . ' ' . $p['last_name']));
+for ($file_index = 0; $file_index < $files_needed; $file_index++) {
+    $start = $file_index * $certificates_per_file;
+    $end = min($start + $certificates_per_file, $total);
+    $pupils_in_file = array_slice($honors_pupils, $start, $end - $start);
 
-    $replacements = [
-        'name' => $full_name,
-        'remark' => htmlspecialchars($p['remark']),
-        'school_year' => htmlspecialchars($school_year),
-        'issue_date' => htmlspecialchars($formatted_date),
-        'grade_level' => htmlspecialchars($p['grade_level_id']),
-        'section' => htmlspecialchars($p['section_name']),
-        'teacher' => $teacher_full_name,
-        'principal' => $principal_full_name
-    ];
-
-    replaceInPresentation($presentation, $replacements, $quarter_number, $quarter_suffix);
-
-    $filename = "Certificate_{$quarter}_{$p['last_name']}.pptx";
-    $tempFile = sys_get_temp_dir() . "/cert_q_" . uniqid() . ".pptx";
-    $writer = IOFactory::createWriter($presentation, 'PowerPoint2007');
-    $writer->save($tempFile);
+    // Determine filename based on pupils' last names
+    $last_names = array_map(function($p) { return $p['last_name']; }, $pupils_in_file);
+    $filename = "Certificate_{$quarter}_" . implode("_", $last_names) . ".docx";
+    $tempFile = sys_get_temp_dir() . "/cert_q_" . uniqid() . ".docx";
+    copy($templateFile, $tempFile);
     $temp_files[] = [$tempFile, $filename];
+
+    // Process template
+    $templateProcessor = new TemplateProcessor($tempFile);
+
+    // Fill certificates in this file
+    for ($i = 0; $i < 2; $i++) {
+        $slot = $i + 1;
+        if (isset($pupils_in_file[$i])) {
+            $p = $pupils_in_file[$i];
+            $mi = $p['middle_name'] ? strtoupper(substr($p['middle_name'], 0, 1)) . ". " : "";
+            $full = htmlspecialchars($p['first_name'] . " " . $mi . $p['last_name']);
+
+            // --- Count words in first name only ---
+            $first_name_words = str_word_count($p['first_name']);
+            if ($first_name_words === 1) {
+                $fontSize = 28;
+            } elseif ($first_name_words === 2) {
+                $fontSize = 24;
+            } elseif ($first_name_words === 3) {
+                $fontSize = 22;
+            } else {
+                $fontSize = 26; // fallback default
+            }
+
+            // Wrap text with font size XML (keeping template font family)
+            $nameXml = '<w:r><w:rPr><w:sz w:val="' . ($fontSize * 2) . '"/></w:rPr><w:t>'
+                    . $full .
+                    '</w:t></w:r>';
+
+            $templateProcessor->setValue("name{$slot}", $nameXml, 1);
+
+            $templateProcessor->setValue("remark{$slot}", htmlspecialchars($p['remark']));
+            $templateProcessor->setValue("grade_level{$slot}", htmlspecialchars($p['grade_level_id']));
+            $templateProcessor->setValue("section{$slot}", htmlspecialchars($p['section_name']));
+            $templateProcessor->setValue("quarter{$slot}", $quarter_display);
+            $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
+            $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
+            $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
+            $templateProcessor->setValue("principal{$slot}", $principal_full_name);
+        } else {
+            // Fill unused slot with defaults
+            $p = $pupils_in_file[0];
+            $templateProcessor->setValue("name{$slot}", "First Name Middle Initial. Last Name");
+            $templateProcessor->setValue("remark{$slot}", "WITH HONORS");
+            $templateProcessor->setValue("grade_level{$slot}", htmlspecialchars($p['grade_level_id'] ?? 1));
+            $templateProcessor->setValue("section{$slot}", htmlspecialchars($p['section_name'] ?? 'Section'));
+            $templateProcessor->setValue("quarter{$slot}", $quarter_display);
+            $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
+            $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
+            $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
+            $templateProcessor->setValue("principal{$slot}", $principal_full_name);
+        }
+    }
+
+    $templateProcessor->saveAs($tempFile);
 }
 
-$total = count($honors_pupils);
-
 // --- Output files as ZIP if multiple files ---
-if ($total > 1) {
-    $zipFile = sys_get_temp_dir() . "/certificates_{$quarter}_" . date('Ymd') . ".zip";
+if ($files_needed > 1) {
+    $zipFile = sys_get_temp_dir() . "/certificates_q_{$quarter}_" . date('Ymd') . ".zip";
     $zip = new ZipArchive();
     if ($zip->open($zipFile, ZipArchive::CREATE) === true) {
         foreach ($temp_files as $file) {
@@ -221,7 +242,7 @@ if ($total > 1) {
         $zip->close();
 
         header("Content-Type: application/zip");
-        header("Content-Disposition: attachment; filename=\"Certificates_{$quarter}_SY{$sy_id}_" . date('Ymd') . ".zip\"");
+        header("Content-Disposition: attachment; filename=\"Certificates_SY{$sy_id}_{$quarter}_" . date('Ymd') . ".zip\"");
         readfile($zipFile);
 
         // Clean up
@@ -234,7 +255,7 @@ if ($total > 1) {
 } else {
     // Single file download
     $file = $temp_files[0];
-    header("Content-Type: application/vnd.openxmlformats-officedocument.presentationml.presentation");
+    header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     header("Content-Disposition: attachment; filename=\"{$file[1]}\"");
     readfile($file[0]);
     @unlink($file[0]);

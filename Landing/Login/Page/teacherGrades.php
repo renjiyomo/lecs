@@ -41,6 +41,11 @@ if (empty($school_years)) {
 // Set default quarter
 $current_quarter = $_GET['quarter'] ?? 'all'; // Default to 'all' for quarter
 
+// Quarter suffix for display
+$quarter_num = substr($current_quarter, 1);
+$suffix = ($quarter_num == '1') ? 'st' : (($quarter_num == '2') ? 'nd' : (($quarter_num == '3') ? 'rd' : 'th'));
+$quarter_display = $current_quarter !== 'all' ? $quarter_num . $suffix : '';
+
 // Fetch pupils of this teacher for the selected SY (only if a valid SY exists)
 $pupils = [];
 if (!empty($school_years) && $current_sy > 0) {
@@ -152,9 +157,25 @@ if (!empty($pupils)) {
                     <option value="Q3" <?= $current_quarter === 'Q3' ? "selected" : "" ?>>Q3</option>
                     <option value="Q4" <?= $current_quarter === 'Q4' ? "selected" : "" ?>>Q4</option>
                 </select>
-                <button onclick="openDateModal()">Generate Certificates of Recognition</button>
+
+                <div class="export-dropdown">
+                    <button type="button" class="export-btn" onclick="toggleOverallDropdown()">Certificates of Recognition ▼</button>
+                    <div id="overallOptions" class="dropdown-content">
+                        <a href="#" onclick="openOverallDateModal('docx')">as DOCX</a>
+                        <a href="#" onclick="openOverallDateModal('pdf')">as PDF</a>
+                    </div>
+                </div>
+
                 <?php if ($current_quarter !== 'all'): ?>
-                    <button onclick="openQuarterDateModal()">Generate Certificate for <?= str_replace('Q', '', $current_quarter) ?>st Quarter</button>
+                    <div class="export-dropdown">
+                        <button type="button" class="export-btn" onclick="toggleQuarterlyDropdown()">Certificate for <?= $quarter_display ?> Quarter ▼</button>
+                        <div id="quarterlyOptions" class="dropdown-content">
+                            <a href="#" onclick="openQuarterlyDateModal('docx')">as DOCX</a>
+                            <a href="#" onclick="openQuarterlyDateModal('pdf')">as PDF</a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <button type="button" class="export-btn" disabled>Select a Quarter</button>
                 <?php endif; ?>
             </div>
 
@@ -164,8 +185,9 @@ if (!empty($pupils)) {
                     <h2>Select Certificate Issuance Date</h2>
                     <form action="generate_certificates.php" method="post">
                         <input type="hidden" name="sy_id" value="<?= htmlspecialchars($current_sy) ?>">
+                        <input type="hidden" name="format" id="overall_format" value="docx">
                         <label for="issue_date">Issuance Date:</label>
-                        <input class="given-date" type="date" id="issue_date" name="issue_date" required>
+                        <input class="given-date" type="date" id="issue_date" name="issue_date" value="<?= date('Y-m-d') ?>" required>
                         <button class="generate-certi" type="submit">Generate</button>
                     </form>
                 </div>
@@ -178,8 +200,9 @@ if (!empty($pupils)) {
                     <form action="generate_quarter_certificates.php" method="post">
                         <input type="hidden" name="sy_id" value="<?= htmlspecialchars($current_sy) ?>">
                         <input type="hidden" name="quarter" value="<?= htmlspecialchars($current_quarter) ?>">
+                        <input type="hidden" name="format" id="quarter_format" value="docx">
                         <label for="issue_date_quarter">Issuance Date:</label>
-                        <input class="given-date" type="date" id="issue_date_quarter" name="issue_date" required>
+                        <input class="given-date" type="date" id="issue_date_quarter" name="issue_date" value="<?= date('Y-m-d') ?>" required>
                         <button class="generate-certi" type="submit">Generate</button>
                     </form>
                 </div>
@@ -424,16 +447,28 @@ if (!empty($pupils)) {
             window.location.href = "?sy_id=" + encodeURIComponent(sy_id) + "&quarter=" + encodeURIComponent(this.value);
         });
 
-        function openDateModal() {
+        function toggleOverallDropdown() {
+            document.getElementById("overallOptions").classList.toggle("show");
+        }
+
+        function toggleQuarterlyDropdown() {
+            document.getElementById("quarterlyOptions").classList.toggle("show");
+        }
+
+        function openOverallDateModal(format) {
+            document.getElementById('overall_format').value = format;
             document.getElementById('dateModal').style.display = 'block';
+            toggleOverallDropdown(); // Close dropdown after selection
+        }
+
+        function openQuarterlyDateModal(format) {
+            document.getElementById('quarter_format').value = format;
+            document.getElementById('quarterDateModal').style.display = 'block';
+            toggleQuarterlyDropdown(); // Close dropdown after selection
         }
 
         function closeDateModal() {
             document.getElementById('dateModal').style.display = 'none';
-        }
-
-        function openQuarterDateModal() {
-            document.getElementById('quarterDateModal').style.display = 'block';
         }
 
         function closeQuarterDateModal() {

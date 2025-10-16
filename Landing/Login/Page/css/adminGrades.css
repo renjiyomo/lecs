@@ -13,6 +13,7 @@
     --not-applicable-light: #e0d7f9; /* Light pastel purple */
     --not-applicable-dark: #a996ca;  /* Darker purple for dark mode */
     --not-applicable-border: #8b5cf6; /* Vibrant purple border */
+      --border-color: #d1d5db;
 }
 
 body {
@@ -315,16 +316,15 @@ body.dark .grade-box.not-applicable {
             color: #000;
         }
         .top-bar button {
-            margin-left: 10px;
             padding: 8px 16px;
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #4a90e2, #357ABD);
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         .top-bar button:hover {
-            background-color: #45a049;
+            background: linear-gradient(135deg, #4a91e2ba, #3579bdc5);
         }
 
 .generate-certi{
@@ -357,4 +357,47 @@ body.dark .given-date{
 
 body.dark .modal-content{
     background-color: var(--background-dark);
+}
+
+.export-dropdown {
+position: relative;
+display: inline-block;
+}
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 203px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+border: 1px solid var(--sidebar-dark);
+border-radius: 4px;
+margin-top: 2px;
+}
+.dropdown-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+.dropdown-content a:hover {
+background-color: #f1f1f1;
+border-radius: 4px;
+}
+body.dark .dropdown-content {
+background-color: var(--sidebar-dark);
+border: 1px solid var(--border-color);
+}
+body.dark .dropdown-content a {
+color: #fff;
+}
+body.dark .dropdown-content a:hover {
+background-color: var(--text-light);
+border-radius: 4px;
+}
+.show {
+display: block;
+}
+.export-btn {
+background-color: #d1d5db;
 }

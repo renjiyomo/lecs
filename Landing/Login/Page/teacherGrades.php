@@ -157,6 +157,7 @@ if (!empty($pupils)) {
                     <option value="Q3" <?= $current_quarter === 'Q3' ? "selected" : "" ?>>Q3</option>
                     <option value="Q4" <?= $current_quarter === 'Q4' ? "selected" : "" ?>>Q4</option>
                 </select>
+                <a href="generate_sf9.php?sy_id=<?= htmlspecialchars($current_sy) ?>" class="export-btn">Generate SF9</a>
 
                 <div class="export-dropdown">
                     <button type="button" class="export-btn" onclick="toggleOverallDropdown()">Certificates of Recognition ▼</button>

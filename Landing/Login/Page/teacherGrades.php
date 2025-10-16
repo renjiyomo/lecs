@@ -157,13 +157,13 @@ if (!empty($pupils)) {
                     <option value="Q3" <?= $current_quarter === 'Q3' ? "selected" : "" ?>>Q3</option>
                     <option value="Q4" <?= $current_quarter === 'Q4' ? "selected" : "" ?>>Q4</option>
                 </select>
-                <a href="generate_sf9.php?sy_id=<?= htmlspecialchars($current_sy) ?>" class="export-btn">Generate SF9</a>
+                <a class="sf9-btn" href="generate_sf9.php?sy_id=<?= htmlspecialchars($current_sy) ?>" class="export-btn">Generate SF9</a>
 
                 <div class="export-dropdown">
                     <button type="button" class="export-btn" onclick="toggleOverallDropdown()">Certificates of Recognition ▼</button>
                     <div id="overallOptions" class="dropdown-content">
-                        <a href="#" onclick="openOverallDateModal('docx')">as DOCX</a>
-                        <a href="#" onclick="openOverallDateModal('pdf')">as PDF</a>
+                        <a href="#" onclick="openOverallDateModal('docx')">Generate as DOCX</a>
+                        <a href="#" onclick="openOverallDateModal('pdf')">Generate as PDF</a>
                     </div>
                 </div>
 
@@ -171,12 +171,12 @@ if (!empty($pupils)) {
                     <div class="export-dropdown">
                         <button type="button" class="export-btn" onclick="toggleQuarterlyDropdown()">Certificate for <?= $quarter_display ?> Quarter ▼</button>
                         <div id="quarterlyOptions" class="dropdown-content">
-                            <a href="#" onclick="openQuarterlyDateModal('docx')">as DOCX</a>
-                            <a href="#" onclick="openQuarterlyDateModal('pdf')">as PDF</a>
+                            <a href="#" onclick="openQuarterlyDateModal('docx')">Generate as DOCX</a>
+                            <a href="#" onclick="openQuarterlyDateModal('pdf')">Generate as PDF</a>
                         </div>
                     </div>
                 <?php else: ?>
-                    <button type="button" class="export-btn" disabled>Select a Quarter</button>
+                    <button type="button" class="exports-btn" disabled>Select a Quarter</button>
                 <?php endif; ?>
             </div>
 

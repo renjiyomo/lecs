@@ -56,7 +56,7 @@ if (isset($_POST['action']) && isset($_POST['teacher_id'])) {
             LIMIT 1
         ");
         if ($check && $check->num_rows > 0) {
-            header("Location: adminTeachers.php?error=Teacher+cannot+be+deleted+because+they+are+assigned+to+a+section+or+pupil.+Consider+deactivating+instead.");
+            header("Location: adminTeachers.php?error=Teacher+cannot+be+removed+because+they+are+assigned+to+a+section+or+pupil.+Consider+deactivating+instead.");
             exit();
         } else {
             $stmt = $conn->prepare("DELETE FROM teacher_positions WHERE teacher_id = ?");
@@ -241,7 +241,7 @@ if (!empty($types)) {
                       </form>
                       <button type="button" class="btn delete-btn" 
                               onclick="openDeleteModal(<?php echo $row['teacher_id']; ?>, '<?php echo addslashes($full_name); ?>')">
-                          Delete
+                          Remove
                       </button>
                     </td>
                   </tr>
@@ -262,14 +262,14 @@ if (!empty($types)) {
 
   <div id="deleteModal" class="modal">
     <div class="modal-content">
-      <h3 id="modalTitle">Confirm Delete</h3>
-      <p id="modalText">Are you sure you want to delete this personnel?</p>
+      <h3 id="modalTitle">Confirm Removal</h3>
+      <p id="modalText">Are you sure you want to remove this personnel?</p>
       <form method="POST" id="deleteForm">
         <input type="hidden" name="teacher_id" id="deleteTeacherId">
         <input type="hidden" name="action" value="delete_confirmed">
         <div class="modal-buttons">
           <button type="button" class="btn-modal btn-cancel" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn-modal btn-delete">Delete</button>
+          <button type="submit" class="btn-modal btn-delete">Remove</button>
         </div>
       </form>
     </div>
@@ -281,8 +281,8 @@ if (!empty($types)) {
     }
     function openDeleteModal(id, name) {
       document.getElementById('deleteTeacherId').value = id;
-      document.getElementById('modalTitle').innerText = "Delete Personnel";
-      document.getElementById('modalText').innerText = "Are you sure you want to delete " + name + "?";
+      document.getElementById('modalTitle').innerText = "Remove Personnel";
+      document.getElementById('modalText').innerText = "Are you sure you want to remove " + name + "?";
       document.getElementById('deleteModal').style.display = 'flex';
     }
     function closeModal() {

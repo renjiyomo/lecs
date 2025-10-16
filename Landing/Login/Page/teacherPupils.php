@@ -180,7 +180,7 @@ $search = $_GET['search'] ?? '';
                                     <a href='pupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
                                     <a href='edit_pupil.php?id={$row['pupil_id']}' class='btn-action edit-btn'>Edit</a>
                                     <a href='delete_pupil.php?id={$row['pupil_id']}' class='btn-action delete-btn' 
-                                    onclick=\"return confirmDelete({$row['pupil_id']}, '{$escaped_fullname}')\">Delete</a>
+                                    onclick=\"return confirmDelete({$row['pupil_id']}, '{$escaped_fullname}')\">Unenroll</a>
                                 </td>
                             </tr>";
                     }

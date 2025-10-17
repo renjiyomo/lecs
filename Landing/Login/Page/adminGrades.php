@@ -19,6 +19,7 @@ function customRound($number) {
 
 $current_sy = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : null;
 $current_section = isset($_GET['section_id']) ? intval($_GET['section_id']) : null;
+$current_grade_level = isset($_GET['grade_level_id']) ? intval($_GET['grade_level_id']) : null;
 $current_quarter = $_GET['quarter'] ?? 'all';
 
 $sy_res = $conn->query("SELECT * FROM school_years ORDER BY start_date DESC");
@@ -41,6 +42,22 @@ if ($current_sy === null) {
     $stmt->close();
 }
 
+// Handle conflict between section and grade level
+if ($current_section) {
+    $stmt = $conn->prepare("SELECT grade_level_id FROM sections WHERE section_id = ?");
+    $stmt->bind_param("i", $current_section);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $section_grade = $result['grade_level_id'] ?? 0;
+    $stmt->close();
+
+    if ($current_grade_level && $current_grade_level != $section_grade) {
+        $current_section = null;
+    } else {
+        $current_grade_level = $section_grade;
+    }
+}
+
 $sql = "SELECT p.pupil_id, p.first_name, p.last_name, p.middle_name, p.sy_id, s.grade_level_id
         FROM pupils p
         JOIN sections s ON p.section_id = s.section_id
@@ -50,6 +67,11 @@ $types = "i";
 if ($current_section) {
     $sql .= " AND p.section_id = ?";
     $params[] = $current_section;
+    $types .= "i";
+}
+if ($current_grade_level && !$current_section) {
+    $sql .= " AND s.grade_level_id = ?";
+    $params[] = $current_grade_level;
     $types .= "i";
 }
 $stmt = $conn->prepare($sql);
@@ -268,29 +290,57 @@ usort($pupils, function($a, $b) {
         <form method="GET" class="top-bar">
             <label for="schoolYear">School Year:</label>
             <select id="schoolYear" name="sy_id" onchange="this.form.submit()">
-                <option value="">All Years</option>
                 <?php foreach ($school_years as $sy): ?>
                     <option value="<?= htmlspecialchars($sy['sy_id']) ?>" <?= $sy['sy_id'] == $current_sy ? "selected" : "" ?>>
                         <?= htmlspecialchars($sy['school_year']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
+            <label for="grade_level">Grade Level:</label>
+            <select id="grade_level" name="grade_level_id" onchange="this.form.submit()">
+                <option value="">All Grades</option>
+                <?php
+                $grade_query = "
+                    SELECT DISTINCT g.grade_level_id, g.level_name 
+                    FROM grade_levels g
+                    JOIN sections s ON g.grade_level_id = s.grade_level_id
+                    JOIN pupils p ON s.section_id = p.section_id
+                    WHERE p.sy_id = ?
+                    ORDER BY g.level_name
+                ";
+                $grade_stmt = $conn->prepare($grade_query);
+                $grade_stmt->bind_param("i", $current_sy);
+                $grade_stmt->execute();
+                $grade_res = $grade_stmt->get_result();
+                while ($grade = $grade_res->fetch_assoc()) {
+                    $selected = ($current_grade_level == $grade['grade_level_id']) ? "selected" : "";
+                    echo "<option value='{$grade['grade_level_id']}' $selected>Grade {$grade['level_name']}</option>";
+                }
+                ?>
+            </select>
             <label for="section">Class:</label>
             <select id="section" name="section_id" onchange="this.form.submit()">
                 <option value="">All Classes</option>
                 <?php
-                $query = "
+                $section_query = "
                     SELECT DISTINCT s.section_id, s.section_name, g.level_name 
                     FROM sections s
                     JOIN grade_levels g ON s.grade_level_id = g.grade_level_id
                     JOIN pupils p ON p.section_id = s.section_id
                     WHERE p.sy_id = ?
-                    ORDER BY g.level_name, s.section_name
                 ";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("i", $current_sy);
-                $stmt->execute();
-                $sec_res = $stmt->get_result();
+                $section_params = [$current_sy];
+                $section_types = "i";
+                if ($current_grade_level) {
+                    $section_query .= " AND g.grade_level_id = ?";
+                    $section_params[] = $current_grade_level;
+                    $section_types .= "i";
+                }
+                $section_query .= " ORDER BY g.level_name, s.section_name";
+                $section_stmt = $conn->prepare($section_query);
+                $section_stmt->bind_param($section_types, ...$section_params);
+                $section_stmt->execute();
+                $sec_res = $section_stmt->get_result();
                 while ($sec = $sec_res->fetch_assoc()) {
                     $selected = ($current_section == $sec['section_id']) ? "selected" : "";
                     echo "<option value='{$sec['section_id']}' $selected>Grade {$sec['level_name']} - {$sec['section_name']}</option>";

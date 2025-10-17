@@ -222,6 +222,7 @@ if (count($ids) > 0) {
                                 if (isset($components[$subject_id])) {
                                     // Composite subject (MAPEH)
                                     $comp_finals = [];
+                                    $all_comp_present = true;
                                     foreach ($components[$subject_id] as $comp) {
                                         $comp_id = $comp['subject_id'];
                                         $comp_quarters = $grades_map[$p['pupil_id']][$comp_id] ?? [];
@@ -230,9 +231,13 @@ if (count($ids) > 0) {
                                         $comp_required_quarters = array_slice(array_keys($quarters_order), $comp_start_num - 1);
 
                                         if ($current_quarter !== 'all') {
-                                            if (isset($comp_quarters[$current_quarter]) && $quarters_order[$current_quarter] >= $start_num) {
-                                                $comp_finals[] = customRound($comp_quarters[$current_quarter]); // Round component grade
-                                                $all_empty = false;
+                                            if ($quarters_order[$current_quarter] >= $comp_start_num) {
+                                                if (isset($comp_quarters[$current_quarter])) {
+                                                    $comp_finals[] = customRound($comp_quarters[$current_quarter]); // Round component grade
+                                                    $all_empty = false;
+                                                } else {
+                                                    $all_comp_present = false;
+                                                }
                                             }
                                         } else {
                                             $filtered = array_filter($comp_quarters, fn($g, $q) => in_array($q, $comp_required_quarters), ARRAY_FILTER_USE_BOTH);
@@ -246,24 +251,27 @@ if (count($ids) > 0) {
                                             }
                                         }
                                     }
-                                    if ($subject_grades_complete) {
-                                        if (count($comp_finals) == count($components[$subject_id])) {
-                                            $val = customRound(array_sum($comp_finals) / count($comp_finals)); // Round composite subject average
-                                            $required_subjects++;
-                                            $pupil_grades[] = $val;
-                                        } else {
-                                            $subject_grades_complete = false;
-                                            $has_incomplete = true;
-                                            $all_grades_complete = false;
-                                        }
+                                    if ($all_comp_present && $subject_grades_complete) {
+                                        $val = customRound(array_sum($comp_finals) / count($comp_finals)); // Round composite subject average
+                                        $required_subjects++;
+                                        $pupil_grades[] = $val;
+                                    } else {
+                                        $val = "";
+                                        $has_incomplete = true;
+                                        $all_grades_complete = false;
                                     }
                                 } else {
                                     // Normal subject
                                     $quarters = $grades_map[$p['pupil_id']][$subject_id] ?? [];
                                     if ($current_quarter !== 'all') {
-                                        if (isset($quarters[$current_quarter]) && $quarters_order[$current_quarter] >= $start_num) {
-                                            $val = customRound($quarters[$current_quarter]); // Round single quarter grade
-                                            $all_empty = false;
+                                        if ($quarters_order[$current_quarter] >= $start_num) {
+                                            if (isset($quarters[$current_quarter])) {
+                                                $val = customRound($quarters[$current_quarter]); // Round single quarter grade
+                                                $all_empty = false;
+                                            } else {
+                                                $has_incomplete = true;
+                                                $all_grades_complete = false;
+                                            }
                                         }
                                     } else {
                                         $filtered = array_filter($quarters, fn($g, $q) => in_array($q, $required_quarters), ARRAY_FILTER_USE_BOTH);
@@ -288,34 +296,103 @@ if (count($ids) > 0) {
                         <td>
                             <?php
                             $remark = "";
-                            if ($all_empty) {
-                                $remark = "<span class='none'>None</span>";
-                            } elseif ($has_incomplete && $current_quarter === 'all') {
-                                $remark = "<span class='incomplete'>Incomplete</span>";
-                            } else {
-                                $num_fails = 0;
-                                foreach ($pupil_grades as $grade) {
-                                    if ($grade < 75) $num_fails++;
-                                }
-                                if (count($pupil_grades) > 0 && $current_quarter === 'all' && $all_grades_complete && count($pupil_grades) == $required_subjects) {
-                                    $avg = customRound(array_sum($pupil_grades) / count($pupil_grades)); // Round general average
-                                    if ($num_fails >= 3) {
-                                        $remark = "<span class='retained'>RETAINED</span>";
-                                    } elseif ($num_fails >= 1) {
-                                        $remark = "<span class='conditionally-promoted'>CONDITIONALLY PROMOTED</span>";
-                                    } else {
-                                        if ($avg >= 98) {
-                                            $remark = "<span class='highest-honors'>PROMOTED WITH HIGHEST HONORS</span>";
-                                        } elseif ($avg >= 95) {
-                                            $remark = "<span class='high-honors'>PROMOTED WITH HIGH HONORS</span>";
-                                        } elseif ($avg >= 90) {
-                                            $remark = "<span class='honors'>PROMOTED WITH HONORS</span>";
+                            if ($current_quarter === 'all') {
+                                if ($all_empty) {
+                                    $remark = "<span class='none'>None</span>";
+                                } elseif ($has_incomplete) {
+                                    $remark = "<span class='incomplete'>Incomplete</span>";
+                                } else {
+                                    $num_fails = 0;
+                                    foreach ($pupil_grades as $grade) {
+                                        if ($grade < 75) $num_fails++;
+                                    }
+                                    if (count($pupil_grades) > 0 && $all_grades_complete && count($pupil_grades) == $required_subjects) {
+                                        $avg = customRound(array_sum($pupil_grades) / count($pupil_grades)); // Round general average
+                                        if ($num_fails >= 3) {
+                                            $remark = "<span class='retained'>RETAINED</span>";
+                                        } elseif ($num_fails >= 1) {
+                                            $remark = "<span class='conditionally-promoted'>CONDITIONALLY PROMOTED</span>";
                                         } else {
-                                            $remark = "<span class='promoted'>PROMOTED</span>";
+                                            if ($avg >= 98) {
+                                                $remark = "<span class='highest-honors'>PROMOTED WITH HIGHEST HONORS</span>";
+                                            } elseif ($avg >= 95) {
+                                                $remark = "<span class='high-honors'>PROMOTED WITH HIGH HONORS</span>";
+                                            } elseif ($avg >= 90) {
+                                                $remark = "<span class='honors'>PROMOTED WITH HONORS</span>";
+                                            } else {
+                                                $remark = "<span class='promoted'>PROMOTED</span>";
+                                            }
                                         }
                                     }
-                                } elseif ($current_quarter !== 'all') {
-                                    $remark = $num_fails > 0 ? "<span class='below'>Below 75</span>" : "<span class='passing'>Passing</span>";
+                                }
+                            } else {
+                                // Quarter-specific remark
+                                $pupil_grades = [];
+                                $has_incomplete = false;
+                                $required_subjects = 0;
+                                foreach ($display_subjects as $name => $sub) {
+                                    $isApplicable = isset($sub['grade_to_id'][$p['grade_level_id']]);
+                                    if ($isApplicable) {
+                                        $subject_id = $sub['grade_to_id'][$p['grade_level_id']];
+                                        $start_q = $sub['start_quarter'][$p['grade_level_id']] ?? 'Q1';
+                                        $start_num = $quarters_order[$start_q];
+                                        if ($quarters_order[$current_quarter] >= $start_num) {
+                                            $required_subjects++;
+                                            if (isset($components[$subject_id])) {
+                                                $comp_grades = [];
+                                                $all_comp_present = true;
+                                                foreach ($components[$subject_id] as $comp) {
+                                                    $comp_id = $comp['subject_id'];
+                                                    $comp_start_q = $comp['start_quarter'] ?? 'Q1';
+                                                    $comp_start_num = $quarters_order[$comp_start_q];
+                                                    if ($quarters_order[$current_quarter] >= $comp_start_num) {
+                                                        $grade = $grades_map[$p['pupil_id']][$comp_id][$current_quarter] ?? null;
+                                                        if ($grade !== null) {
+                                                            $comp_grades[] = customRound($grade);
+                                                        } else {
+                                                            $all_comp_present = false;
+                                                            $has_incomplete = true;
+                                                        }
+                                                    }
+                                                }
+                                                if ($all_comp_present && count($comp_grades) === count($components[$subject_id])) {
+                                                    $subject_grade = customRound(array_sum($comp_grades) / count($comp_grades));
+                                                    $pupil_grades[] = $subject_grade;
+                                                } else {
+                                                    $has_incomplete = true;
+                                                }
+                                            } else {
+                                                $grade = $grades_map[$p['pupil_id']][$subject_id][$current_quarter] ?? null;
+                                                if ($grade !== null) {
+                                                    $pupil_grades[] = customRound($grade);
+                                                } else {
+                                                    $has_incomplete = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if ($has_incomplete || $required_subjects === 0) {
+                                    $remark = "<span class='incomplete'>Incomplete</span>";
+                                } else {
+                                    $num_fails = 0;
+                                    foreach ($pupil_grades as $g) {
+                                        if ($g < 75) $num_fails++;
+                                    }
+                                    if ($num_fails > 0) {
+                                        $remark = "<span class='below'>Needs Improvement</span>";
+                                    } else {
+                                        $avg = array_sum($pupil_grades) / count($pupil_grades);
+                                        if ($avg >= 98) {
+                                            $remark = "<span class='highest-honors'>With Highest Honors</span>";
+                                        } elseif ($avg >= 95) {
+                                            $remark = "<span class='high-honors'>With High Honors</span>";
+                                        } elseif ($avg >= 90) {
+                                            $remark = "<span class='honors'>With Honors</span>";
+                                        } else {
+                                            $remark = "";
+                                        }
+                                    }
                                 }
                             }
                             echo $remark;

@@ -184,9 +184,33 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <script src="js/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
     <style>
         body.dark .female-text, body.dark .male-text {
             color: white;
+        }
+        .download-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            margin-top: 0;
+        }
+        .download-select {
+            padding: 3px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        body.light .download-select {
+            background-color: var(--card-bg-light);
+            color: var(--text-light);
+            border: 1px solid #ccc;
+        }
+        body.dark .download-select {
+            background-color: var(--card-bg-dark);
+            color: var(--text-dark);
+            border: 1px solid #555;
         }
     </style>
 </head>
@@ -217,6 +241,14 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         <div class="charts">
             <div class="chart-container enrolled-chart">
                 <h3>Enrolled Pupils Per Year</h3>
+                <div class="download-container">
+                    <select class="download-select">
+                        <option value="">Download...</option>
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
                 <canvas id="enrollmentChart"></canvas>
             </div>
             <div class="chart-container gender-chart">
@@ -228,6 +260,14 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="download-container">
+                    <select class="download-select">
+                        <option value="">Download...</option>
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
                 <h3>Sex Distribution</h3>
                 <div class="small-chart">
                     <canvas id="genderChart"></canvas>
@@ -236,7 +276,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                     <span class="female-text">Female: <?php echo $femaleCount; ?></span>
                     <span class="male-text">Male: <?php echo $maleCount; ?></span>
                 </div>
-                
             </div>
         </div>
 
@@ -250,6 +289,14 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="download-container">
+                    <select class="download-select">
+                        <option value="">Download...</option>
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
                 <h3>Transferred Pupils Per Year</h3>
                 <canvas id="transferChart"></canvas>
             </div>
@@ -261,6 +308,14 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <?php foreach ($allYears as $year): ?>
                             <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
                         <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="download-container">
+                    <select class="download-select">
+                        <option value="">Download...</option>
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPG</option>
+                        <option value="svg">SVG</option>
                     </select>
                 </div>
                 <h3>Dropout Rate Per Year</h3>
@@ -280,7 +335,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             datasets: [{
                 label: 'Enrolled Pupils',
                 data: <?php echo json_encode($studentsByYear); ?>,
-                backgroundColor: ['#03DAC5', '#BB86FC', '#10B981', '#F59E0B', '#8B5CF6'],
+                backgroundColor: ['#03DAC5', '#BB86FC'],
                 borderRadius: 0
             }]
         },
@@ -299,7 +354,12 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 }
             },
             barPercentage: 1.0,
-            categoryPercentage: 1.0
+            categoryPercentage: 1.0,
+            layout: {
+                padding: {
+                    right: 30
+                }
+            }
         }
     });
 
@@ -378,7 +438,12 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 }
             },
             barPercentage: 1.0,
-            categoryPercentage: 1.0
+            categoryPercentage: 1.0,
+            layout: {
+                padding: {
+                    right: 30
+                }
+            }
         }
     });
 
@@ -416,7 +481,12 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 }
             },
             barPercentage: 1,
-            categoryPercentage: 0.8
+            categoryPercentage: 0.8,
+            layout: {
+                padding: {
+                    right: 30
+                }
+            }
         }
     });
 
@@ -529,6 +599,43 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     });
 
     document.getElementById('genderYearFilter').dispatchEvent(new Event('change'));
+
+    // Download functionality
+    document.querySelectorAll('.download-select').forEach(select => {
+        select.addEventListener('change', () => {
+            const format = select.value;
+            if (!format) return;
+            const container = select.closest('.chart-container');
+            const containerClass = Array.from(container.classList).find(cls => cls.endsWith('-chart'));
+            const ext = format === 'jpeg' ? 'jpg' : format;
+            const options = {
+                filter: function(node) {
+                    if (node.classList) {
+                        return !node.classList.contains('filter-container') && !node.classList.contains('download-container');
+                    }
+                    return true;
+                }
+            };
+            let toFunc;
+            if (format === 'png') {
+                toFunc = domtoimage.toPng;
+            } else if (format === 'jpeg') {
+                toFunc = domtoimage.toJpeg;
+            } else if (format === 'svg') {
+                toFunc = domtoimage.toSvg;
+            }
+            toFunc(container, options).then(dataUrl => {
+                const a = document.createElement('a');
+                a.href = dataUrl;
+                a.download = `${containerClass}.${ext}`;
+                a.click();
+                select.value = '';
+            }).catch(err => {
+                console.error('Error generating image:', err);
+                select.value = '';
+            });
+        });
+    });
 </script>
 
 </body>

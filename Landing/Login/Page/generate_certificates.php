@@ -18,6 +18,13 @@ if (!DateTime::createFromFormat('Y-m-d', $issue_date)) {
     die("Invalid date format.");
 }
 
+// Custom rounding function: round only if decimal part is >= 0.5 (DepEd policy)
+function customRound($number) {
+    $floor = floor($number);
+    $decimal = $number - $floor;
+    return $decimal >= 0.5 ? ceil($number) : $floor;
+}
+
 // --- School year ---
 $sy_stmt = $conn->prepare("SELECT school_year FROM school_years WHERE sy_id=?");
 $sy_stmt->bind_param("i", $sy_id);
@@ -87,47 +94,73 @@ foreach ($pupils as $p) {
     $pupil_grades=[]; $all_empty=true; $has_incomplete=false;
 
     foreach($pupil_subjects as $subject_id=>$sub){
-        $start_num=$quarters_order[$sub['start_quarter']??'Q1']??1;
+        $start_q = $sub['start_quarter'] ?? 'Q1';
+        $start_num = $quarters_order[$start_q];
+        $expected_quarters = 4 - $start_num + 1;
+
         if(isset($components[$subject_id])){
-            $comp_finals=[];
+            $all_comp_present = true;
+            $comp_finals = [];
             foreach($components[$subject_id] as $comp){
-                $comp_quarters=$grades_map[$comp['subject_id']]??[];
-                $filtered=array_filter($comp_quarters,function($g,$q)use($quarters_order,$start_num){
-                    return ($quarters_order[$q]??0) >= $start_num;
-                },ARRAY_FILTER_USE_BOTH);
-                if($filtered){
-                    $comp_finals[]=array_sum($filtered)/count($filtered);
-                    if(count($filtered)<(4-$start_num+1)) $has_incomplete=true;
-                    $all_empty=false;
+                $comp_id = $comp['subject_id'];
+                $comp_start_q = $comp['start_quarter'] ?? 'Q1';
+                $comp_start_num = $quarters_order[$comp_start_q];
+                $comp_expected = 4 - $comp_start_num + 1;
+                $comp_quarters = $grades_map[$comp_id] ?? [];
+                $filtered = array_filter($comp_quarters, function($g, $q) use ($quarters_order, $comp_start_num) {
+                    return $quarters_order[$q] >= $comp_start_num;
+                }, ARRAY_FILTER_USE_BOTH);
+                if (count($filtered) == $comp_expected) {
+                    $comp_avg = array_sum($filtered) / $comp_expected;
+                    $comp_finals[] = customRound($comp_avg);
+                } else {
+                    $all_comp_present = false;
+                    $has_incomplete = true;
                 }
             }
-            if($comp_finals) $pupil_grades[]=array_sum($comp_finals)/count($comp_finals);
+            if ($all_comp_present && count($comp_finals) == count($components[$subject_id])) {
+                $composite_avg = array_sum($comp_finals) / count($comp_finals);
+                $rounded_composite = customRound($composite_avg);
+                $pupil_grades[] = $rounded_composite;
+                $all_empty = false;
+            }
         } else {
-            $quarters=$grades_map[$subject_id]??[];
-            $filtered=array_filter($quarters,function($g,$q)use($quarters_order,$start_num){
-                return ($quarters_order[$q]??0) >= $start_num;
-            },ARRAY_FILTER_USE_BOTH);
-            if($filtered){
-                $pupil_grades[]=array_sum($filtered)/count($filtered);
-                if(count($filtered)<(4-$start_num+1)) $has_incomplete=true;
-                $all_empty=false;
+            $quarters = $grades_map[$subject_id] ?? [];
+            $filtered = array_filter($quarters, function($g, $q) use ($quarters_order, $start_num) {
+                return $quarters_order[$q] >= $start_num;
+            }, ARRAY_FILTER_USE_BOTH);
+            if (count($filtered) == $expected_quarters) {
+                $subject_avg = array_sum($filtered) / $expected_quarters;
+                $rounded_subject = customRound($subject_avg);
+                $pupil_grades[] = $rounded_subject;
+                $all_empty = false;
+            } else {
+                $has_incomplete = true;
             }
         }
     }
 
     if(!$all_empty && !$has_incomplete && $pupil_grades){
-        $avg=array_sum($pupil_grades)/count($pupil_grades);
-        if($avg>=90){
-            $p['average']=number_format($avg,2);
-            $p['remark']=$avg>=98?"WITH HIGHEST HONORS":($avg>=95?"WITH HIGH HONORS":"WITH HONORS");
-            $honors_pupils[]=$p;
+        $avg = array_sum($pupil_grades) / count($pupil_grades);
+        $rounded_avg = customRound($avg);
+        if($rounded_avg >= 90){
+            $p['average'] = number_format($avg, 2);
+            $p['remark'] = $rounded_avg >= 98 ? "WITH HIGHEST HONORS" : ($rounded_avg >= 95 ? "WITH HIGH HONORS" : "WITH HONORS");
+            $p['avg'] = $avg;
+            $p['rounded_avg'] = $rounded_avg;
+            $honors_pupils[] = $p;
         }
     }
 }
 
 if(!$honors_pupils){ die("No pupils with honors found."); }
 
-usort($honors_pupils,function($a,$b){ return (float)$b['average']<=> (float)$a['average']; });
+usort($honors_pupils, function($a, $b) {
+    if ($a['rounded_avg'] == $b['rounded_avg']) {
+        return $b['avg'] <=> $a['avg'];
+    }
+    return $b['rounded_avg'] <=> $a['rounded_avg'];
+});
 
 $formatted_date = date('jS \d\a\y \o\f F Y',strtotime($issue_date));
 $total = count($honors_pupils);

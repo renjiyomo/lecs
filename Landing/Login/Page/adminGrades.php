@@ -116,6 +116,138 @@ if (count($ids) > 0) {
         $grades_map[$g['pupil_id']][$g['subject_id']][$g['quarter']] = $g['grade'];
     }
 }
+
+// Precompute averages and ranks
+$pupil_averages = [];
+$pupil_rounded_averages = [];
+$display_subjects = $subject_lookup[$current_sy] ?? [];
+ksort($display_subjects);
+foreach ($pupils as $p) {
+    $pupil_grades = [];
+    $all_empty = true;
+    $has_incomplete = false;
+    $required_subjects = 0;
+    foreach ($display_subjects as $name => $sub) {
+        $isApplicable = isset($sub['grade_to_id'][$p['grade_level_id']]) && isset($pupil_subjects[$p['pupil_id']][$sub['grade_to_id'][$p['grade_level_id']]]);
+        if ($isApplicable) {
+            $subject_id = $sub['grade_to_id'][$p['grade_level_id']];
+            $start_q = $sub['start_quarter'][$p['grade_level_id']] ?? "Q1";
+            $start_num = $quarters_order[$start_q];
+            $required_quarters = array_slice(array_keys($quarters_order), $start_num - 1);
+
+            if (isset($components[$subject_id])) {
+                $comp_finals = [];
+                $all_comp_present = true;
+                foreach ($components[$subject_id] as $comp) {
+                    $comp_id = $comp['subject_id'];
+                    $comp_quarters = $grades_map[$p['pupil_id']][$comp_id] ?? [];
+                    $comp_start_q = $comp['start_quarter'] ?? "Q1";
+                    $comp_start_num = $quarters_order[$comp_start_q];
+                    $comp_required_quarters = array_slice(array_keys($quarters_order), $comp_start_num - 1);
+
+                    if ($current_quarter !== 'all') {
+                        if ($quarters_order[$current_quarter] >= $comp_start_num) {
+                            $grade = $comp_quarters[$current_quarter] ?? null;
+                            if ($grade !== null) {
+                                $comp_finals[] = customRound($grade);
+                                $all_empty = false;
+                            } else {
+                                $all_comp_present = false;
+                            }
+                        }
+                    } else {
+                        $filtered = array_filter($comp_quarters, fn($g, $q) => in_array($q, $comp_required_quarters), ARRAY_FILTER_USE_BOTH);
+                        if (count($filtered) == count($comp_required_quarters)) {
+                            $comp_finals[] = customRound(array_sum($filtered) / count($filtered));
+                            $all_empty = false;
+                        } else {
+                            $all_comp_present = false;
+                            $has_incomplete = true;
+                        }
+                    }
+                }
+                if ($all_comp_present) {
+                    $val = customRound(array_sum($comp_finals) / count($comp_finals));
+                    $pupil_grades[] = $val;
+                    $required_subjects++;
+                } else {
+                    $has_incomplete = true;
+                }
+            } else {
+                $quarters = $grades_map[$p['pupil_id']][$subject_id] ?? [];
+                if ($current_quarter !== 'all') {
+                    if ($quarters_order[$current_quarter] >= $start_num) {
+                        $grade = $quarters[$current_quarter] ?? null;
+                        if ($grade !== null) {
+                            $val = customRound($grade);
+                            $pupil_grades[] = $val;
+                            $all_empty = false;
+                            $required_subjects++;
+                        } else {
+                            $has_incomplete = true;
+                        }
+                    }
+                } else {
+                    $filtered = array_filter($quarters, fn($g, $q) => in_array($q, $required_quarters), ARRAY_FILTER_USE_BOTH);
+                    if (count($filtered) == count($required_quarters)) {
+                        $val = customRound(array_sum($filtered) / count($filtered));
+                        $pupil_grades[] = $val;
+                        $all_empty = false;
+                        $required_subjects++;
+                    } else {
+                        $has_incomplete = true;
+                    }
+                }
+            }
+        }
+    }
+    if (!$has_incomplete && count($pupil_grades) > 0 && count($pupil_grades) == $required_subjects) {
+        $avg = array_sum($pupil_grades) / count($pupil_grades);
+        $pupil_averages[$p['pupil_id']] = $avg;
+        $pupil_rounded_averages[$p['pupil_id']] = customRound($avg);
+    } else {
+        $pupil_averages[$p['pupil_id']] = -1;
+        $pupil_rounded_averages[$p['pupil_id']] = -1;
+    }
+}
+
+// Assign ranks (only for complete grades)
+$complete_ids = array_keys(array_filter($pupil_averages, fn($avg) => $avg >= 0));
+usort($complete_ids, function($a_id, $b_id) use ($pupil_rounded_averages, $pupil_averages) {
+    $a_rounded = $pupil_rounded_averages[$a_id];
+    $b_rounded = $pupil_rounded_averages[$b_id];
+    $comp = $b_rounded <=> $a_rounded;
+    if ($comp !== 0) return $comp;
+    return $pupil_averages[$b_id] <=> $pupil_averages[$a_id];
+});
+
+$ranks = [];
+$rank = 1;
+$prev_rounded = null;
+foreach ($complete_ids as $id) {
+    $rounded = $pupil_rounded_averages[$id];
+    if ($prev_rounded !== null && $rounded < $prev_rounded) {
+        $rank++;
+    }
+    $ranks[$id] = $rank;
+    $prev_rounded = $rounded;
+}
+
+// Add avg, rounded_avg and rank to pupils and sort by rounded_avg desc, then avg desc
+foreach ($pupils as &$pupil) {
+    $pid = $pupil['pupil_id'];
+    $pupil['avg'] = $pupil_averages[$pid] ?? -1;
+    $pupil['rounded_avg'] = $pupil_rounded_averages[$pid] ?? -1;
+    $pupil['rank'] = $ranks[$pid] ?? '-';
+}
+usort($pupils, function($a, $b) {
+    if ($a['rounded_avg'] == -1 && $b['rounded_avg'] == -1) return 0;
+    if ($a['rounded_avg'] == -1) return 1;
+    if ($b['rounded_avg'] == -1) return -1;
+    $comp = $b['rounded_avg'] <=> $a['rounded_avg'];
+    if ($comp !== 0) return $comp;
+    return $b['avg'] <=> $a['avg'];
+});
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -179,12 +311,8 @@ if (count($ids) > 0) {
             <table>
                 <thead>
                 <tr>
+                    <th>Rank</th>
                     <th>NAME</th>
-                    <?php
-                    // Display subjects for the current school year
-                    $display_subjects = $subject_lookup[$current_sy] ?? [];
-                    ksort($display_subjects); // Sort subjects alphabetically
-                    ?>
                     <?php foreach ($display_subjects as $name => $sub): ?>
                         <?php
                         $words = explode(' ', $name);
@@ -207,6 +335,7 @@ if (count($ids) > 0) {
                     $all_grades_complete = true;
                     ?>
                     <tr>
+                        <td><?= $p['rank'] ?></td>
                         <td><?= htmlspecialchars($fullname) ?></td>
                         <?php foreach ($display_subjects as $name => $sub): ?>
                             <?php
@@ -228,7 +357,6 @@ if (count($ids) > 0) {
                                         $comp_quarters = $grades_map[$p['pupil_id']][$comp_id] ?? [];
                                         $comp_start_q = $comp['start_quarter'] ?? "Q1";
                                         $comp_start_num = $quarters_order[$comp_start_q];
-                                        $comp_required_quarters = array_slice(array_keys($quarters_order), $comp_start_num - 1);
 
                                         if ($current_quarter !== 'all') {
                                             if ($quarters_order[$current_quarter] >= $comp_start_num) {
@@ -240,28 +368,27 @@ if (count($ids) > 0) {
                                                 }
                                             }
                                         } else {
+                                            $comp_required_quarters = array_slice(array_keys($quarters_order), $comp_start_num - 1);
                                             $filtered = array_filter($comp_quarters, fn($g, $q) => in_array($q, $comp_required_quarters), ARRAY_FILTER_USE_BOTH);
                                             if (count($filtered) == count($comp_required_quarters)) {
                                                 $comp_finals[] = customRound(array_sum($filtered) / count($filtered)); // Round component average
                                                 $all_empty = false;
                                             } else {
+                                                $all_comp_present = false;
                                                 $subject_grades_complete = false;
                                                 $has_incomplete = true;
                                                 $all_grades_complete = false;
                                             }
                                         }
                                     }
-                                    if ($all_comp_present && $subject_grades_complete) {
+                                    if ($all_comp_present) {
                                         $val = customRound(array_sum($comp_finals) / count($comp_finals)); // Round composite subject average
-                                        $required_subjects++;
-                                        $pupil_grades[] = $val;
                                     } else {
                                         $val = "";
                                         $has_incomplete = true;
                                         $all_grades_complete = false;
                                     }
                                 } else {
-                                    // Normal subject
                                     $quarters = $grades_map[$p['pupil_id']][$subject_id] ?? [];
                                     if ($current_quarter !== 'all') {
                                         if ($quarters_order[$current_quarter] >= $start_num) {
@@ -307,17 +434,18 @@ if (count($ids) > 0) {
                                         if ($grade < 75) $num_fails++;
                                     }
                                     if (count($pupil_grades) > 0 && $all_grades_complete && count($pupil_grades) == $required_subjects) {
-                                        $avg = customRound(array_sum($pupil_grades) / count($pupil_grades)); // Round general average
+                                        $avg = array_sum($pupil_grades) / count($pupil_grades);
+                                        $rounded_avg = customRound($avg);
                                         if ($num_fails >= 3) {
                                             $remark = "<span class='retained'>RETAINED</span>";
                                         } elseif ($num_fails >= 1) {
                                             $remark = "<span class='conditionally-promoted'>CONDITIONALLY PROMOTED</span>";
                                         } else {
-                                            if ($avg >= 98) {
+                                            if ($rounded_avg >= 98) {
                                                 $remark = "<span class='highest-honors'>PROMOTED WITH HIGHEST HONORS</span>";
-                                            } elseif ($avg >= 95) {
+                                            } elseif ($rounded_avg >= 95) {
                                                 $remark = "<span class='high-honors'>PROMOTED WITH HIGH HONORS</span>";
-                                            } elseif ($avg >= 90) {
+                                            } elseif ($rounded_avg >= 90) {
                                                 $remark = "<span class='honors'>PROMOTED WITH HONORS</span>";
                                             } else {
                                                 $remark = "<span class='promoted'>PROMOTED</span>";
@@ -383,11 +511,12 @@ if (count($ids) > 0) {
                                         $remark = "<span class='below'>Needs Improvement</span>";
                                     } else {
                                         $avg = array_sum($pupil_grades) / count($pupil_grades);
-                                        if ($avg >= 98) {
+                                        $rounded_avg = customRound($avg);
+                                        if ($rounded_avg >= 98) {
                                             $remark = "<span class='highest-honors'>With Highest Honors</span>";
-                                        } elseif ($avg >= 95) {
+                                        } elseif ($rounded_avg >= 95) {
                                             $remark = "<span class='high-honors'>With High Honors</span>";
-                                        } elseif ($avg >= 90) {
+                                        } elseif ($rounded_avg >= 90) {
                                             $remark = "<span class='honors'>With Honors</span>";
                                         } else {
                                             $remark = "";

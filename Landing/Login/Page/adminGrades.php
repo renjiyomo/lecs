@@ -21,11 +21,24 @@ $current_sy = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : null;
 $current_section = isset($_GET['section_id']) ? intval($_GET['section_id']) : null;
 $current_quarter = $_GET['quarter'] ?? 'all';
 
-$sy_res = $conn->query("SELECT * FROM school_years ORDER BY sy_id DESC");
+$sy_res = $conn->query("SELECT * FROM school_years ORDER BY start_date DESC");
 $school_years = $sy_res->fetch_all(MYSQLI_ASSOC);
 
-if (!$current_sy && !empty($school_years)) {
-    $current_sy = $school_years[0]['sy_id'];
+if ($current_sy === null) {
+    // Try to find current sy
+    $stmt = $conn->prepare("SELECT sy_id FROM school_years WHERE CURDATE() BETWEEN start_date AND end_date ORDER BY start_date DESC LIMIT 1");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $current_sy = $row['sy_id'];
+    } else {
+        // If no current, get the latest by start_date
+        $stmt = $conn->prepare("SELECT sy_id FROM school_years ORDER BY start_date DESC LIMIT 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $current_sy = $result->fetch_assoc()['sy_id'] ?? null;
+    }
+    $stmt->close();
 }
 
 $sql = "SELECT p.pupil_id, p.first_name, p.last_name, p.middle_name, p.sy_id, s.grade_level_id

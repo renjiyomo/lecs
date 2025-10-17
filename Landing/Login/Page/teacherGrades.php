@@ -10,6 +10,14 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 
 $teacher_id = intval($_SESSION['teacher_id']); // logged-in teacher's ID
 
+// Fetch teacher details to get the name
+$stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id = ?");
+$stmt->bind_param("i", $teacher_id);
+$stmt->execute();
+$teacher = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+$teacherName = implode(' ', array_filter([$teacher['first_name'], $teacher['middle_name'], $teacher['last_name']]));
+
 // Custom rounding function: round only if decimal part is >= 0.5 (DepEd policy)
 function customRound($number) {
     $floor = floor($number);
@@ -18,12 +26,12 @@ function customRound($number) {
 }
 
 // Get school years where the teacher has pupils
-$sy_sql = "SELECT DISTINCT sy.sy_id, sy.school_year
+$sy_sql = "SELECT DISTINCT sy.sy_id, sy.school_year, sy.start_date, sy.end_date
            FROM school_years sy
            JOIN sections s ON sy.sy_id = s.sy_id
            JOIN pupils p ON s.section_id = p.section_id
            WHERE p.teacher_id = ? AND s.teacher_id = ?
-           ORDER BY sy.sy_id DESC";
+           ORDER BY sy.start_date DESC";
 $sy_stmt = $conn->prepare($sy_sql);
 $sy_stmt->bind_param("ii", $teacher_id, $teacher_id);
 $sy_stmt->execute();
@@ -35,7 +43,21 @@ if (empty($school_years)) {
     $current_sy = 0; // Set to invalid value to prevent further queries
 } else {
     // Set default to most recent school year if not provided
-    $current_sy = $_GET['sy_id'] ?? $school_years[0]['sy_id']; // Default to most recent sy_id
+    $current_sy = $_GET['sy_id'] ?? null;
+    if ($current_sy === null) {
+        foreach ($school_years as $sy) {
+            $start = new DateTime($sy['start_date']);
+            $end = new DateTime($sy['end_date']);
+            $now = new DateTime();
+            if ($now >= $start && $now <= $end) {
+                $current_sy = $sy['sy_id'];
+                break;
+            }
+        }
+        if ($current_sy === null) {
+            $current_sy = $school_years[0]['sy_id'] ?? null;
+        }
+    }
 }
 
 // Set default quarter

@@ -224,3 +224,31 @@ body.dark select {
     font-weight: bold;
     color: #7c3aed;
 }
+
+.download-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+}
+        
+.download-select {
+    padding: 3px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+        
+body.light .download-select {
+    background-color: var(--card-bg-light);
+    color: var(--text-light);
+    border: 1px solid #ccc;
+}
+        
+body.dark .download-select {
+    background-color: var(--card-bg-dark);
+    color: var(--text-dark);
+    border: 1px solid #555;
+        
+}

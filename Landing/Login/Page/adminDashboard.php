@@ -184,34 +184,10 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <script src="js/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="api/dom-to-image.min.js"></script>
     <style>
-        body.dark .female-text, body.dark .male-text {
-            color: white;
-        }
-        .download-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            align-items: center;
-            margin-top: 0;
-        }
-        .download-select {
-            padding: 3px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        body.light .download-select {
-            background-color: var(--card-bg-light);
-            color: var(--text-light);
-            border: 1px solid #ccc;
-        }
-        body.dark .download-select {
-            background-color: var(--card-bg-dark);
-            color: var(--text-dark);
-            border: 1px solid #555;
-        }
+
+        
     </style>
 </head>
 <body class="light">

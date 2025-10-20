@@ -319,24 +319,12 @@ usort($pupils, function($a, $b) {
                     <option value="Q3" <?= $current_quarter === 'Q3' ? "selected" : "" ?>>Q3</option>
                     <option value="Q4" <?= $current_quarter === 'Q4' ? "selected" : "" ?>>Q4</option>
                 </select>
-                <a class="sf9-btn" href="generate_sf9.php?sy_id=<?= htmlspecialchars($current_sy) ?>" class="export-btn">Generate SF9</a>
+                <a class="sf9-btn" href="generate_sf9.php?sy_id=<?= htmlspecialchars($current_sy) ?>&quarter=<?= htmlspecialchars($current_quarter) ?>" class="export-btn">Generate SF9</a>
 
-                <div class="export-dropdown">
-                    <button type="button" class="export-btn" onclick="toggleOverallDropdown()">Certificates of Recognition ▼</button>
-                    <div id="overallOptions" class="dropdown-content">
-                        <a href="#" onclick="openOverallDateModal('docx')">Generate as DOCX</a>
-                        <a href="#" onclick="openOverallDateModal('pdf')">Generate as PDF</a>
-                    </div>
-                </div>
+                <button type="button" class="export-btn" onclick="openOverallDateModal()">Certificates of Recognition</button>
 
                 <?php if ($current_quarter !== 'all'): ?>
-                    <div class="export-dropdown">
-                        <button type="button" class="export-btn" onclick="toggleQuarterlyDropdown()">Certificate for <?= $quarter_display ?> Quarter ▼</button>
-                        <div id="quarterlyOptions" class="dropdown-content">
-                            <a href="#" onclick="openQuarterlyDateModal('docx')">Generate as DOCX</a>
-                            <a href="#" onclick="openQuarterlyDateModal('pdf')">Generate as PDF</a>
-                        </div>
-                    </div>
+                    <button type="button" class="export-btn" onclick="openQuarterlyDateModal()">Certificate for <?= $quarter_display ?> Quarter</button>
                 <?php else: ?>
                     <button type="button" class="exports-btn" disabled>Select a Quarter</button>
                 <?php endif; ?>
@@ -348,7 +336,6 @@ usort($pupils, function($a, $b) {
                     <h2>Select Certificate Issuance Date</h2>
                     <form action="generate_certificates.php" method="post">
                         <input type="hidden" name="sy_id" value="<?= htmlspecialchars($current_sy) ?>">
-                        <input type="hidden" name="format" id="overall_format" value="docx">
                         <label for="issue_date">Issuance Date:</label>
                         <input class="given-date" type="date" id="issue_date" name="issue_date" value="<?= date('Y-m-d') ?>" required>
                         <button class="generate-certi" type="submit">Generate</button>
@@ -363,7 +350,6 @@ usort($pupils, function($a, $b) {
                     <form action="generate_quarter_certificates.php" method="post">
                         <input type="hidden" name="sy_id" value="<?= htmlspecialchars($current_sy) ?>">
                         <input type="hidden" name="quarter" value="<?= htmlspecialchars($current_quarter) ?>">
-                        <input type="hidden" name="format" id="quarter_format" value="docx">
                         <label for="issue_date_quarter">Issuance Date:</label>
                         <input class="given-date" type="date" id="issue_date_quarter" name="issue_date" value="<?= date('Y-m-d') ?>" required>
                         <button class="generate-certi" type="submit">Generate</button>
@@ -609,24 +595,12 @@ usort($pupils, function($a, $b) {
             window.location.href = "?sy_id=" + encodeURIComponent(sy_id) + "&quarter=" + encodeURIComponent(this.value);
         });
 
-        function toggleOverallDropdown() {
-            document.getElementById("overallOptions").classList.toggle("show");
-        }
-
-        function toggleQuarterlyDropdown() {
-            document.getElementById("quarterlyOptions").classList.toggle("show");
-        }
-
-        function openOverallDateModal(format) {
-            document.getElementById('overall_format').value = format;
+        function openOverallDateModal() {
             document.getElementById('dateModal').style.display = 'block';
-            toggleOverallDropdown(); // Close dropdown after selection
         }
 
-        function openQuarterlyDateModal(format) {
-            document.getElementById('quarter_format').value = format;
+        function openQuarterlyDateModal() {
             document.getElementById('quarterDateModal').style.display = 'block';
-            toggleQuarterlyDropdown(); // Close dropdown after selection
         }
 
         function closeDateModal() {

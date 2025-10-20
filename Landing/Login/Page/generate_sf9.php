@@ -13,10 +13,15 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 
 $teacher_id = intval($_SESSION['teacher_id']);
 $sy_id = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : 0;
+$current_quarter = isset($_GET['quarter']) ? $_GET['quarter'] : 'all';
 
 if ($sy_id <= 0) {
     die("Invalid school year ID.");
 }
+
+// Determine max quarter number
+$quarters_order = ["Q1" => 1, "Q2" => 2, "Q3" => 3, "Q4" => 4];
+$max_q_num = ($current_quarter === 'all') ? 4 : $quarters_order[$current_quarter];
 
 // Custom rounding function: round only if decimal part is >= 0.5 (DepEd policy)
 function customRound($number) {
@@ -119,7 +124,6 @@ foreach ($pupils as $pupil) {
 }
 
 // Get grades
-$quarters_order = ["Q1" => 1, "Q2" => 2, "Q3" => 3, "Q4" => 4];
 $grades_map = [];
 $pupil_ids = array_column($pupils, 'pupil_id');
 $id_list = implode(",", array_map('intval', $pupil_ids));
@@ -166,6 +170,7 @@ foreach ($pupils as $pupil) {
         $start_q = $sub['start_quarter'] ?? 'Q1';
         $start_num = $quarters_order[$start_q];
         $quarters = $grades_map[$pupil_id][$subject_id] ?? [];
+        $required_quarter_count = 4 - $start_num + 1; // Always calculate required based on full year
         
         if (isset($components[$subject_id])) {
             // Handle MAPEH composite
@@ -173,39 +178,44 @@ foreach ($pupils as $pupil) {
             foreach ($components[$subject_id] as $comp) {
                 $comp_id = $comp['subject_id'];
                 $comp_quarters = $grades_map[$pupil_id][$comp_id] ?? [];
+                $comp_start_q = $comp['start_quarter'] ?? 'Q1';
+                $comp_start_num = $quarters_order[$comp_start_q];
                 foreach ($quarters_order as $q => $q_num) {
-                    if ($q_num >= $start_num && isset($comp_quarters[$q])) {
+                    if ($q_num >= $comp_start_num && $q_num <= $max_q_num && isset($comp_quarters[$q])) {
                         $comp_grades[$q][] = customRound($comp_quarters[$q]);
                     }
                 }
             }
+            // Calculate quarter averages
             foreach ($quarters_order as $q => $q_num) {
-                if ($q_num >= $start_num && !empty($comp_grades[$q])) {
-                    $avg = customRound(array_sum($comp_grades[$q]) / count($comp_grades[$q]));
-                    $grades['MAPEH'][strtolower($q)] = $avg;
-                }
-            }
-            // Check if all quarters for MAPEH components are graded
-            $all_components_complete = true;
-            foreach ($components[$subject_id] as $comp) {
-                $comp_id = $comp['subject_id'];
-                $comp_quarters = $grades_map[$pupil_id][$comp_id] ?? [];
-                foreach ($quarters_order as $q => $q_num) {
-                    if ($q_num >= $start_num && !isset($comp_quarters[$q])) {
-                        $all_components_complete = false;
-                        break;
+                if ($q_num >= $start_num && $q_num <= $max_q_num) {
+                    $expected_comps = 0;
+                    foreach ($components[$subject_id] as $comp) {
+                        $comp_start_num = $quarters_order[$comp['start_quarter'] ?? 'Q1'];
+                        if ($comp_start_num <= $q_num) {
+                            $expected_comps++;
+                        }
+                    }
+                    if (!empty($comp_grades[$q]) && count($comp_grades[$q]) === $expected_comps) {
+                        $quarter_avg = array_sum($comp_grades[$q]) / count($comp_grades[$q]);
+                        $grades['MAPEH'][strtolower($q)] = customRound($quarter_avg);
                     }
                 }
-                if (!$all_components_complete) break;
             }
-            if ($all_components_complete && !empty($comp_grades['Q1']) && !empty($comp_grades['Q2']) && !empty($comp_grades['Q3']) && !empty($comp_grades['Q4'])) {
-                $valid_quarters = array_filter($comp_grades, function($q) { return !empty($q); });
-                $quarter_avgs = array_map(function($q) { return array_sum($q) / count($q); }, $valid_quarters);
-                if ($quarter_avgs) {
-                    $final = customRound(array_sum($quarter_avgs) / count($quarter_avgs));
-                    $grades['MAPEH']['final'] = $final;
-                    $grades['MAPEH']['remarks'] = $final >= 75 ? 'Passed' : 'Failed';
+            // Calculate final only if full year and all required quarters are complete
+            $quarter_avgs = [];
+            $present_quarter_count = 0;
+            foreach ($quarters_order as $q => $q_num) {
+                if ($q_num >= $start_num && $q_num <= 4 && $grades['MAPEH'][strtolower($q)] !== '') {
+                    $quarter_avgs[] = (float)$grades['MAPEH'][strtolower($q)]; // Use rounded quarter avg
+                    $present_quarter_count++;
                 }
+            }
+            if ($max_q_num === 4 && $present_quarter_count === $required_quarter_count) {
+                $avg = array_sum($quarter_avgs) / $required_quarter_count;
+                $final = customRound($avg);
+                $grades['MAPEH']['final'] = $final;
+                $grades['MAPEH']['remarks'] = $final >= 75 ? 'Passed' : 'Failed';
             }
         } else {
             // Handle individual subjects and MAPEH components
@@ -224,24 +234,18 @@ foreach ($pupils as $pupil) {
             ];
             $key = $map[$subject_name] ?? null;
             if ($key) {
+                $valid_quarters = [];
                 foreach ($quarters_order as $q => $q_num) {
-                    if ($q_num >= $start_num && isset($quarters[$q])) {
+                    if ($q_num >= $start_num && $q_num <= $max_q_num && isset($quarters[$q])) {
                         $grades[$key][strtolower($q)] = customRound($quarters[$q]);
+                        $valid_quarters[$q] = $quarters[$q]; // Raw for average
                     }
                 }
-                $valid_quarters = array_filter($quarters, function($g, $q) use ($quarters_order, $start_num) {
-                    return $quarters_order[$q] >= $start_num;
-                }, ARRAY_FILTER_USE_BOTH);
-                // Check if all quarters are graded for non-MAPEH components
-                $all_quarters_complete = true;
-                foreach ($quarters_order as $q => $q_num) {
-                    if ($q_num >= $start_num && !isset($quarters[$q])) {
-                        $all_quarters_complete = false;
-                        break;
-                    }
-                }
-                if ($all_quarters_complete && !in_array($key, ['Music', 'Arts', 'Physical Education', 'Health'])) {
-                    $final = customRound(array_sum($valid_quarters) / count($valid_quarters));
+                // Calculate final only if full year and all required quarters are complete
+                $present_count = count($valid_quarters);
+                if ($max_q_num === 4 && $present_count === $required_quarter_count && !in_array($key, ['Music', 'Arts', 'Physical Education', 'Health'])) {
+                    $avg = array_sum($valid_quarters) / $present_count;
+                    $final = customRound($avg);
                     $grades[$key]['final'] = $final;
                     $grades[$key]['remarks'] = $final >= 75 ? 'Passed' : 'Failed';
                 }
@@ -250,28 +254,31 @@ foreach ($pupils as $pupil) {
     }
     
     // Calculate general average only if all learning areas have final grades
-    $final_grades = array_filter(array_column($grades, 'final'), function($g) { return $g !== ''; });
     $core_subjects = [
         'Filipino', 'English', 'Mathematics', 'Science', 'Araling Panlipunan',
         'Edukasyon sa Pagpapakatao', 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 'MAPEH'
     ];
+    $final_grades = [];
     $all_subjects_complete = true;
     foreach ($core_subjects as $subject) {
         if ($grades[$subject]['final'] === '') {
             $all_subjects_complete = false;
-            break;
+        } else {
+            $final_grades[] = $grades[$subject]['final'];
         }
     }
     if ($all_subjects_complete && count($final_grades) === count($core_subjects)) {
-        $avg = customRound(array_sum($final_grades) / count($final_grades));
-        $general_avg['final'] = $avg;
-        $num_fails = count(array_filter($final_grades, function($g) { return $g < 75; }));
-        if ($num_fails >= 3) {
-            $general_avg['remarks'] = 'Retained';
-        } elseif ($num_fails >= 1) {
-            $general_avg['remarks'] = 'Promoted';
-        } else {
-            $general_avg['remarks'] = 'Promoted';
+        $avg = array_sum($final_grades) / count($final_grades);
+        $general_avg['final'] = customRound($avg);
+        if ($max_q_num === 4) {
+            $num_fails = count(array_filter($final_grades, function($g) { return $g < 75; }));
+            if ($num_fails >= 3) {
+                $general_avg['remarks'] = 'Retained';
+            } elseif ($num_fails >= 1) {
+                $general_avg['remarks'] = 'Conditionally Promoted';
+            } else {
+                $general_avg['remarks'] = 'Promoted';
+            }
         }
     }
     

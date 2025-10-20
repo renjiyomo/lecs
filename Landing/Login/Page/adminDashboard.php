@@ -333,7 +333,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             categoryPercentage: 1.0,
             layout: {
                 padding: {
-                    right: 30
+                    right: 20
                 }
             }
         }
@@ -389,7 +389,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             datasets: [{
                 label: 'Dropout Rate (%)',
                 data: <?php echo json_encode($dropoutRatesByYear); ?>,
-                backgroundColor: ['#EF4444', '#F87171', '#FCA5A5', '#FDBA74', '#FBBF24'],
+                backgroundColor: ['#EF4444', '#F87171', '#FCA5A5'],
                 borderRadius: 6
             }]
         },
@@ -417,7 +417,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             categoryPercentage: 1.0,
             layout: {
                 padding: {
-                    right: 30
+                    right: 20
                 }
             }
         }
@@ -434,12 +434,12 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 label: 'Transfer In',
                 data: <?php echo json_encode($transferInByYear); ?>,
                 backgroundColor: '#03DAC5',
-                borderRadius: 6
+                borderRadius: 2
             }, {
                 label: 'Transfer Out',
                 data: <?php echo json_encode($transferOutByYear); ?>,
                 backgroundColor: '#BB86FC',
-                borderRadius: 6
+                borderRadius: 2
             }]
         },
         options: {
@@ -460,7 +460,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             categoryPercentage: 0.8,
             layout: {
                 padding: {
-                    right: 30
+                    right: 20
                 }
             }
         }

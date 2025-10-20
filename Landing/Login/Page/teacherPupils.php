@@ -13,7 +13,8 @@ $selected_sy = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : null;
 $selected_section = isset($_GET['section_id']) ? intval($_GET['section_id']) : null;
 $selected_status = $_GET['status'] ?? '';
 $search = $_GET['search'] ?? '';
-
+$error_message = $_GET['error'] ?? '';
+$success_message = $_GET['success'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,20 +29,26 @@ $search = $_GET['search'] ?? '';
 <body class="light">
 
 <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Confirm Deletion</h2>
-            <p id="modalMessage"></p>
-            <button id="confirmDeleteBtn" class="btn-confirm">Delete</button>
-            <button id="forceDeleteBtn" class="btn-force" style="display: none;">Force Delete</button>
-            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Confirm Deletion</h2>
+        <p id="modalMessage"></p>
+        <button id="confirmDeleteBtn" class="btn-confirm">Delete</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
 </div>
 
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
 
     <div class="main-content">
+        <?php if ($error_message): ?>
+            <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
+        <?php endif; ?>
+        <?php if ($success_message): ?>
+            <div class="success-message"><?= htmlspecialchars($success_message) ?></div>
+        <?php endif; ?>
+        
         <div class="header">
             <h1>List of Pupils</h1>
             <form method="GET" style="margin:0;">
@@ -51,7 +58,6 @@ $search = $_GET['search'] ?? '';
         </div>
 
         <form method="GET" class="filters">
-
             <!-- School Year Filter -->
             <label>School Year:
                 <select id="sySelect" name="sy_id" onchange="this.form.submit()">
@@ -214,16 +220,13 @@ $search = $_GET['search'] ?? '';
         currentPupilId = pupilId;
         const modal = document.getElementById('deleteModal');
         const modalMessage = document.getElementById('modalMessage');
-        const forceDeleteBtn = document.getElementById('forceDeleteBtn');
         const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 
         if (hasGrades) {
-            modalMessage.innerHTML = `The pupil <strong>${pupilName}</strong> has grades recorded. Deleting this pupil will also delete their grades. Proceed with caution.`;
-            forceDeleteBtn.style.display = 'inline-block';
+            modalMessage.innerHTML = `Cannot delete <strong>${pupilName}</strong>. This pupil has recorded grades. Please remove all grades before unenrolling.`;
             confirmDeleteBtn.style.display = 'none';
         } else {
-            modalMessage.innerHTML = `Are you sure you want to delete <strong>${pupilName}</strong>? This action cannot be undone.`;
-            forceDeleteBtn.style.display = 'none';
+            modalMessage.innerHTML = `Are you sure you want to unenroll <strong>${pupilName}</strong>? This action cannot be undone.`;
             confirmDeleteBtn.style.display = 'inline-block';
         }
 
@@ -235,15 +238,12 @@ $search = $_GET['search'] ?? '';
     }
 
     function confirmDelete(pupilId, pupilName) {
-        console.log('Fetching grades for pupil ID:', pupilId); // Debug
         fetch('check_grades.php?id=' + pupilId)
             .then(response => {
-                console.log('Fetch response:', response); // Debug
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
             })
             .then(data => {
-                console.log('Fetch data:', data); // Debug
                 showModal(pupilId, pupilName, data.hasGrades);
             })
             .catch(error => {
@@ -254,13 +254,7 @@ $search = $_GET['search'] ?? '';
     }
 
     document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-        console.log('Confirm delete clicked for pupil ID:', currentPupilId); // Debug
         window.location.href = 'delete_pupil.php?id=' + currentPupilId;
-    });
-
-    document.getElementById('forceDeleteBtn').addEventListener('click', () => {
-        console.log('Force delete clicked for pupil ID:', currentPupilId); // Debug
-        window.location.href = 'delete_pupil.php?id=' + currentPupilId + '&force=true';
     });
 
     window.onclick = function(event) {

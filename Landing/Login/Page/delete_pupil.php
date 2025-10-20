@@ -8,7 +8,6 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 }
 
 $pupil_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$force = isset($_GET['force']) && $_GET['force'] === 'true';
 
 if ($pupil_id <= 0) {
     header("Location: teacherPupils.php?error=Invalid pupil ID");
@@ -18,12 +17,17 @@ if ($pupil_id <= 0) {
 $conn->begin_transaction();
 
 try {
-    if ($force) {
-        // Delete associated grades first
-        $delete_grades = $conn->query("DELETE FROM grades WHERE pupil_id = $pupil_id");
-        if (!$delete_grades) {
-            throw new Exception("Failed to delete grades: " . $conn->error);
-        }
+    // Check if pupil has grades
+    $grade_check = $conn->query("SELECT COUNT(*) as grade_count FROM grades WHERE pupil_id = $pupil_id");
+    if (!$grade_check) {
+        throw new Exception("Failed to check grades: " . $conn->error);
+    }
+    $grade_count = $grade_check->fetch_assoc()['grade_count'];
+
+    if ($grade_count > 0) {
+        $conn->rollback();
+        header("Location: teacherPupils.php?error=Cannot delete pupil because they have recorded grades");
+        exit;
     }
 
     // Attempt to delete the pupil
@@ -33,10 +37,10 @@ try {
     }
 
     $conn->commit();
-    header("Location: teacherPupils.php?success=Pupil deleted successfully");
+    header("Location: teacherPupils.php?success=Pupil unenrolled successfully");
 } catch (Exception $e) {
     $conn->rollback();
-    error_log("Delete error for pupil ID $pupil_id: " . $e->getMessage()); // Log error
+    error_log("Delete error for pupil ID $pupil_id: " . $e->getMessage());
     header("Location: teacherPupils.php?error=" . urlencode($e->getMessage()));
 }
 

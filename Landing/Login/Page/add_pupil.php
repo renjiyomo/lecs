@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
         <?php if(isset($success)): ?>
             <div class="modal show" id="successModal">
                 <div class="modal-content">
-                    <h2>Success</h2>
+                    <h2 class="success-msg">Success</h2>
                     <p><?= htmlspecialchars($success) ?></p>
                     <div class="modal-buttons">
                         <button type="button" class="btn-cancel" onclick="document.getElementById('successModal').classList.remove('show')">OK</button>
@@ -114,7 +114,7 @@ if (isset($_POST['submit'])) {
         <?php if(isset($error)): ?>
             <div class="modal show" id="errorModal">
                 <div class="modal-content">
-                    <h2>Error</h2>
+                    <h2 class="error-msg">Error</h2>
                     <p><?= htmlspecialchars($error) ?></p>
                     <div class="modal-buttons">
                         <button type="button" class="btn-cancel" onclick="document.getElementById('errorModal').classList.remove('show')">OK</button>

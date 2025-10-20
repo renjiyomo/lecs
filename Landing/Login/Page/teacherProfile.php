@@ -102,7 +102,7 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
 <body class="light">
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
-
+    
     <div class="main-content">
         <div class="profile-header">
             <a href="teacherDashboard.php" class="back-arrow">←</a>
@@ -115,6 +115,10 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
         <?php if ($error_message): ?>
             <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
         <?php endif; ?>
+
+        <div class="btn-row">
+            <a href="edit_profile.php" class="edit-btn">Edit Profile</a>
+        </div>
 
         <div class="profile-grid">
             <!-- LEFT CARD -->

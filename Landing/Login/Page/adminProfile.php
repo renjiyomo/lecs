@@ -105,6 +105,10 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
             <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
         <?php endif; ?>
 
+        <div class="btn-row">
+            <a href="adminEditProfile.php" class="edit-btn">Edit Profile</a>
+        </div>
+
         <div class="profile-grid">
             <!-- LEFT CARD -->
             <div class="card left-card">

@@ -62,12 +62,14 @@ while ($hist = $history_res->fetch_assoc()) {
     $sec_stmt->execute();
     $section_name = $sec_stmt->get_result()->fetch_assoc()['section_name'];
 
-    $t_sql = "SELECT CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) AS teacher_name 
+    $t_sql = "SELECT first_name, middle_name, last_name 
               FROM teachers WHERE teacher_id = ?";
     $t_stmt = $conn->prepare($t_sql);
     $t_stmt->bind_param("i", $hist['teacher_id']);
     $t_stmt->execute();
-    $teacher_name = $t_stmt->get_result()->fetch_assoc()['teacher_name'];
+    $teacher_result = $t_stmt->get_result()->fetch_assoc();
+    $teacher_middle_initial = $teacher_result['middle_name'] ? strtoupper(substr($teacher_result['middle_name'], 0, 1)) . "." : "";
+    $teacher_name = strtoupper(htmlspecialchars($teacher_result['first_name'] . ' ' . $teacher_middle_initial . ' ' . $teacher_result['last_name']));
 
     $sy_sql = "SELECT school_year FROM school_years WHERE sy_id = ?";
     $sy_stmt = $conn->prepare($sy_sql);
@@ -301,7 +303,7 @@ foreach ($history as $level_num => $data) {
     $sheet->setCellValue($map['grade_level'], htmlspecialchars($level_num));
     $sheet->setCellValue($map['section'], htmlspecialchars(strtoupper($data['section'])));
     $sheet->setCellValue($map['school_year'], htmlspecialchars($data['school_year']));
-    $sheet->setCellValue($map['adviser'], htmlspecialchars(ucwords(strtolower(trim($data['teacher'])))));
+    $sheet->setCellValue($map['adviser'], htmlspecialchars($data['teacher']));
 
     $top_subjects = [];
     $components = [];

@@ -36,15 +36,16 @@ $suffix = ($quarter_num == '1') ? 'st' : (($quarter_num == '2') ? 'nd' : (($quar
 $quarter_display = $quarter_num . $suffix;
 
 // --- Teacher name ---
-$teacher_stmt = $conn->prepare("SELECT CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) AS teacher_name FROM teachers WHERE teacher_id=?");
+$teacher_stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id=?");
 $teacher_stmt->bind_param("i", $teacher_id);
 $teacher_stmt->execute();
 $teacher_result = $teacher_stmt->get_result()->fetch_assoc();
-$teacher_full_name = strtoupper(htmlspecialchars($teacher_result['teacher_name'] ?? ''));
+$teacher_middle_initial = $teacher_result['middle_name'] ? strtoupper(substr($teacher_result['middle_name'], 0, 1)) . "." : "";
+$teacher_full_name = strtoupper(htmlspecialchars($teacher_result['first_name'] . ' ' . $teacher_middle_initial . ' ' . $teacher_result['last_name']));
 
 // --- Principal name (latest based on start_date) ---
 $principal_stmt = $conn->prepare("
-    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name
+    SELECT t.first_name, t.middle_name, t.last_name
     FROM teachers t
     JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
     WHERE tp.position_id IN (13,14,15,16)
@@ -53,7 +54,8 @@ $principal_stmt = $conn->prepare("
 ");
 $principal_stmt->execute();
 $principal_result = $principal_stmt->get_result()->fetch_assoc();
-$principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
+$principal_middle_initial = $principal_result['middle_name'] ? strtoupper(substr($principal_result['middle_name'], 0, 1)) . "." : "";
+$principal_full_name = strtoupper(htmlspecialchars($principal_result['first_name'] . ' ' . $principal_middle_initial . ' ' . $principal_result['last_name']));
 
 // --- Pupils ---
 $sql = "SELECT p.pupil_id,p.first_name,p.last_name,p.middle_name,

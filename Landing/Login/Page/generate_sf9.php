@@ -67,16 +67,17 @@ $sy_stmt->execute();
 $sy_result = $sy_stmt->get_result()->fetch_assoc();
 $school_year = $sy_result['school_year'] ?? 'Unknown';
 
-// Get teacher name
-$teacher_stmt = $conn->prepare("SELECT CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) AS teacher_name FROM teachers WHERE teacher_id = ?");
+// Get teacher name with middle initial
+$teacher_stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id = ?");
 $teacher_stmt->bind_param("i", $teacher_id);
 $teacher_stmt->execute();
 $teacher_result = $teacher_stmt->get_result()->fetch_assoc();
-$teacher_full_name = strtoupper(htmlspecialchars($teacher_result['teacher_name'] ?? ''));
+$teacher_middle_initial = $teacher_result['middle_name'] ? strtoupper(substr($teacher_result['middle_name'], 0, 1)) . "." : "";
+$teacher_full_name = strtoupper(htmlspecialchars($teacher_result['first_name'] . ' ' . $teacher_middle_initial . ' ' . $teacher_result['last_name']));
 
 // Get principal name and position (latest based on start_date)
 $principal_stmt = $conn->prepare("
-    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name, p.position_name AS principal_position
+    SELECT t.first_name, t.middle_name, t.last_name, p.position_name AS principal_position
     FROM teachers t
     JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
     JOIN positions p ON tp.position_id = p.position_id
@@ -86,7 +87,8 @@ $principal_stmt = $conn->prepare("
 ");
 $principal_stmt->execute();
 $principal_result = $principal_stmt->get_result()->fetch_assoc();
-$principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
+$principal_middle_initial = $principal_result['middle_name'] ? strtoupper(substr($principal_result['middle_name'], 0, 1)) . "." : "";
+$principal_full_name = strtoupper(htmlspecialchars($principal_result['first_name'] . ' ' . $principal_middle_initial . ' ' . $principal_result['last_name']));
 $principal_position = formatPosition(htmlspecialchars($principal_result['principal_position'] ?? ''));
 
 // Get pupils
@@ -296,7 +298,7 @@ foreach ($pupils as $pupil) {
     $templateProcessor->setValue('age', htmlspecialchars($pupil['age']));
     $templateProcessor->setValue('sex', htmlspecialchars($pupil['sex']));
     $templateProcessor->setValue('grade_level1', htmlspecialchars($pupil['grade_level_id']));
-    $templateProcessor->setValue('section', htmlspecialchars($pupil['section_name']));
+    $templateProcessor->setValue('section', strtoupper(htmlspecialchars($pupil['section_name'])));
     $templateProcessor->setValue('lrn', htmlspecialchars($pupil['lrn']));
     $templateProcessor->setValue('teacher', $teacher_full_name);
     $templateProcessor->setValue('principal', $principal_full_name);

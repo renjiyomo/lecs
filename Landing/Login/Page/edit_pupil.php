@@ -1,96 +1,152 @@
 <?php
 include 'lecs_db.php';
+session_start();
+
+if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
+    header("Location: /lecs/Landing/Login/login.php");
+    exit;
+}
+
 $current_page = basename($_SERVER['PHP_SELF']); 
 
-// ✅ Validate pupil_id
+// Validate pupil_id
 if (!isset($_GET['id'])) {
     die("No pupil selected!");
 }
 $pupil_id = intval($_GET['id']);
 
-// ✅ Fetch existing pupil data
+// Fetch existing pupil data
 $result = $conn->query("SELECT * FROM pupils WHERE pupil_id=$pupil_id");
 if ($result->num_rows == 0) {
     die("Pupil not found!");
 }
 $pupil = $result->fetch_assoc();
 
-// Default form data = existing values
+// Initialize form data
 $formData = $pupil;
 
-// ✅ Handle form submission
+// Extract status and date from remarks
+$status_from_remarks = 'enrolled';
+$status_date = '';
+
+if (!empty($pupil['remarks'])) {
+    $remarks = trim($pupil['remarks']);
+    if (preg_match('/^(T\/I|DRPLE|T\/O) DATE:(\d{4}-\d{2}-\d{2})$/', $remarks, $matches)) {
+        $code = $matches[1];
+        $status_date = $matches[2];
+
+        if ($code === 'T/I') {
+            $status_from_remarks = 'transferred_in';
+        } elseif ($code === 'T/O') {
+            $status_from_remarks = 'transferred_out';
+        } elseif ($code === 'DRPLE') {
+            $status_from_remarks = 'dropped';
+        }
+    }
+}
+
+// Override status if derived from remarks
+$formData['status'] = $status_from_remarks;
+$formData['status_date'] = $status_date;
+
+// Handle form submission
 if (isset($_POST['update'])) {
-    // Personal Information
     $lrn = $conn->real_escape_string($_POST['lrn']);
     $last_name = $conn->real_escape_string($_POST['last_name']);
     $first_name = $conn->real_escape_string($_POST['first_name']);
     $middle_name = $conn->real_escape_string($_POST['middle_name']);
     $sex = $conn->real_escape_string($_POST['sex']);
     $birthdate = $_POST['birthdate'];
-    $age = $_POST['age'];
+    $age = intval($_POST['age']);
     $mother_tongue = $conn->real_escape_string($_POST['mother_tongue']);
     $ip_ethnicity = $conn->real_escape_string($_POST['ip_ethnicity']);
     $religion = $conn->real_escape_string($_POST['religion']);
 
-    // ✅ Address (merged field)
     $house_no_street = $conn->real_escape_string($_POST['house_no_street']);
     $barangay = $conn->real_escape_string($_POST['barangay']);
     $municipality = $conn->real_escape_string($_POST['municipality']);
     $province = $conn->real_escape_string($_POST['province']);
 
-    // Parent & Guardian
     $father_name = $conn->real_escape_string($_POST['father_name']);
     $mother_name = $conn->real_escape_string($_POST['mother_name']);
     $guardian_name = $conn->real_escape_string($_POST['guardian_name']);
     $relationship_to_guardian = $conn->real_escape_string($_POST['relationship_to_guardian']);
     $contact_number = $conn->real_escape_string($_POST['contact_number']);
 
-    // Enrollment Info
     $learning_modality = $conn->real_escape_string($_POST['learning_modality']);
-    $remarks = $conn->real_escape_string($_POST['remarks']);
     $section_id = intval($_POST['section_id']);
     $sy_id = intval($_POST['sy_id']);
     $status = $conn->real_escape_string($_POST['status']);
+    $status_date = !empty($_POST['status_date']) ? $_POST['status_date'] : null;
 
-    // ✅ Prevent duplicate LRN in same School Year (except this record)
-    $check = $conn->query("SELECT pupil_id FROM pupils WHERE lrn='$lrn' AND sy_id=$sy_id AND pupil_id!=$pupil_id");
-    if ($check->num_rows > 0) {
-        $error = "This LRN is already enrolled in the selected School Year.";
+    // Generate remarks
+    $remarks = '';
+    if ($status === 'transferred_in' && $status_date) {
+        $remarks = "T/I DATE:" . $status_date;
+    } elseif ($status === 'transferred_out' && $status_date) {
+        $remarks = "T/O DATE:" . $status_date;
+    } elseif ($status === 'dropped' && $status_date) {
+        $remarks = "DRPLE DATE:" . $status_date;
+    }
+
+    // Validate date required
+    if (in_array($status, ['dropped', 'transferred_in', 'transferred_out']) && empty($status_date)) {
+        $error = "Please select a date for the selected status.";
     } else {
-        $update = "UPDATE pupils SET 
-            lrn='$lrn',
-            last_name='$last_name',
-            first_name='$first_name',
-            middle_name='$middle_name',
-            sex='$sex',
-            birthdate='$birthdate',
-            age=$age,
-            mother_tongue='$mother_tongue',
-            ip_ethnicity='$ip_ethnicity',
-            religion='$religion',
-            house_no_street='$house_no_street',
-            barangay='$barangay',
-            municipality='$municipality',
-            province='$province',
-            father_name='$father_name',
-            mother_name='$mother_name',
-            guardian_name='$guardian_name',
-            relationship_to_guardian='$relationship_to_guardian',
-            contact_number='$contact_number',
-            learning_modality='$learning_modality',
-            remarks='$remarks',
-            sy_id=$sy_id,
-            section_id=$section_id,
-            status='$status'
-            WHERE pupil_id=$pupil_id";
-
-        if ($conn->query($update)) {
-            $success = "Pupil updated successfully!";
-            // Refresh form data
-            $result = $conn->query("SELECT * FROM pupils WHERE pupil_id=$pupil_id");
-            $formData = $result->fetch_assoc();
+        // Check LRN duplicate (exclude current pupil)
+        $check = $conn->query("SELECT pupil_id FROM pupils WHERE lrn='$lrn' AND sy_id=$sy_id AND pupil_id!=$pupil_id");
+        if ($check->num_rows > 0) {
+            $error = "This LRN is already enrolled in the selected School Year.";
         } else {
-            $error = "Update failed: " . $conn->error;
+            $update = "UPDATE pupils SET 
+                lrn='$lrn',
+                last_name='$last_name',
+                first_name='$first_name',
+                middle_name='$middle_name',
+                sex='$sex',
+                birthdate='$birthdate',
+                age=$age,
+                mother_tongue='$mother_tongue',
+                ip_ethnicity='$ip_ethnicity',
+                religion='$religion',
+                house_no_street='$house_no_street',
+                barangay='$barangay',
+                municipality='$municipality',
+                province='$province',
+                father_name='$father_name',
+                mother_name='$mother_name',
+                guardian_name='$guardian_name',
+                relationship_to_guardian='$relationship_to_guardian',
+                contact_number='$contact_number',
+                learning_modality='$learning_modality',
+                remarks='$remarks',
+                sy_id=$sy_id,
+                section_id=$section_id,
+                status='$status'
+                WHERE pupil_id=$pupil_id";
+
+            if ($conn->query($update)) {
+                $success = "Pupil updated successfully!";
+                // Refresh data
+                $result = $conn->query("SELECT * FROM pupils WHERE pupil_id=$pupil_id");
+                $pupil = $result->fetch_assoc();
+                $formData = $pupil;
+
+                // Re-extract status & date
+                $status_from_remarks = 'enrolled';
+                $status_date = '';
+                if (!empty($pupil['remarks'])) {
+                    if (preg_match('/^(T\/I|DRPLE|T\/O) DATE:(\d{4}-\d{2}-\d{2})$/', $pupil['remarks'], $m)) {
+                        $code = $m[1];
+                        $status_date = $m[2];
+                        $status_from_remarks = $code === 'T/I' ? 'transferred_in' : ($code === 'T/O' ? 'transferred_out' : 'dropped');
+                    }
+                }
+                $formData['status'] = $status_from_remarks;
+                $formData['status_date'] = $status_date;
+            } else {
+                $error = "Update failed: " . $conn->error;
+            }
         }
     }
 }
@@ -105,6 +161,11 @@ if (isset($_POST['update'])) {
 <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
 <link href="css/adminAddPupil.css" rel="stylesheet">
 <link rel="stylesheet" href="css/sidebar.css">
+<style>
+    .status-date-group { display: flex; gap: 10px; align-items: center; }
+    .status-date-group input[type="date"] { flex: 1; }
+    #status_date_container { display: none; }
+</style>
 </head>
 <body class="light">
 <div class="container">
@@ -115,11 +176,31 @@ if (isset($_POST['update'])) {
             Edit Pupil
         </h1>
 
-        <?php if(isset($success)) echo "<p class='success'>$success</p>"; ?>
-        <?php if(isset($error)) echo "<p class='error'>$error</p>"; ?>
+        <?php if(isset($success)): ?>
+            <div class="modal show" id="successModal">
+                <div class="modal-content">
+                    <h2 class="success-msg">Success</h2>
+                    <p><?= htmlspecialchars($success) ?></p>
+                    <div class="modal-buttons">
+                        <button type="button" class="btn-cancel" onclick="document.getElementById('successModal').classList.remove('show')">OK</button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if(isset($error)): ?>
+            <div class="modal show" id="errorModal">
+                <div class="modal-content">
+                    <h2 class="error-msg">Error</h2>
+                    <p><?= htmlspecialchars($error) ?></p>
+                    <div class="modal-buttons">
+                        <button type="button" class="btn-cancel" onclick="document.getElementById('errorModal').classList.remove('show')">OK</button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <form method="POST">
-            <!-- ✅ Same form fields as add_pupil.php -->
+            <!-- Personal Information -->
             <fieldset>
                 <legend>Personal Information</legend>
                 <div class="form-grid">
@@ -170,6 +251,7 @@ if (isset($_POST['update'])) {
                 </div>
             </fieldset>
 
+            <!-- Address -->
             <fieldset>
                 <legend>Address</legend>
                 <div class="form-grid">
@@ -205,6 +287,7 @@ if (isset($_POST['update'])) {
                 </div>
             </fieldset>
 
+            <!-- Parent & Guardian -->
             <fieldset>
                 <legend>Parent & Guardian Information</legend>
                 <div class="form-grid">
@@ -231,6 +314,7 @@ if (isset($_POST['update'])) {
                 </div>
             </fieldset>
 
+            <!-- Enrollment Information -->
             <fieldset>
                 <legend>Enrollment Information</legend>
                 <div class="form-grid">
@@ -266,16 +350,24 @@ if (isset($_POST['update'])) {
                         <label>Learning Modality</label>
                         <input type="text" name="learning_modality" value="<?= htmlspecialchars($formData['learning_modality'] ?? '') ?>">
                     </div>
-                    <div class="form-group">
-                        <label>Remarks</label>
-                        <input type="text" name="remarks" value="<?= htmlspecialchars($formData['remarks'] ?? '') ?>">
-                    </div>
+
+                    <!-- Status -->
                     <div class="form-group">
                         <label>Status</label>
-                        <select name="status" required>
-                            <option value="enrolled" <?= ($formData['status']=="enrolled")?"selected":"" ?>>Enrolled</option>
-                            <option value="dropped" <?= ($formData['status']=="dropped")?"selected":"" ?>>Dropped</option>
+                        <select name="status" id="status" required>
+                            <option value="enrolled" <?= ($formData['status'] == 'enrolled') ? 'selected' : '' ?>>Enrolled</option>
+                            <option value="dropped" <?= ($formData['status'] == 'dropped') ? 'selected' : '' ?>>Dropped</option>
+                            <option value="transferred_in" <?= ($formData['status'] == 'transferred_in') ? 'selected' : '' ?>>Transferred In</option>
+                            <option value="transferred_out" <?= ($formData['status'] == 'transferred_out') ? 'selected' : '' ?>>Transferred Out</option>
                         </select>
+                    </div>
+
+                    <!-- Date (Conditional) -->
+                    <div class="form-group" id="status_date_container">
+                        <label>Date <span id="date_required" style="color:red; display:none;">*</span></label>
+                        <div class="status-date-group">
+                            <input type="date" name="status_date" id="status_date" value="<?= htmlspecialchars($formData['status_date'] ?? '') ?>">
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -296,20 +388,17 @@ document.getElementById("birthdate")?.addEventListener("change", function() {
     document.getElementById("age").value = age;
 });
 
-// Reload sections when school year changes
+// Reload sections
 document.getElementById("sy_id").addEventListener("change", function(){
     const sy_id = this.value;
     const sectionDropdown = document.getElementById("section_id");
     sectionDropdown.innerHTML = "<option>Loading...</option>";
-
     fetch("get_sections.php?sy_id=" + sy_id)
-        .then(response => response.text())
-        .then(data => {
-            sectionDropdown.innerHTML = data;
-        });
+        .then(res => res.text())
+        .then(data => sectionDropdown.innerHTML = data);
 });
 
-// ✅ Dynamic Province → Municipality → Barangay
+// Address cascading
 document.getElementById('province').addEventListener('change', function(){
     const province = this.value;
     fetch('get_municipalities.php?province=' + encodeURIComponent(province))
@@ -324,37 +413,55 @@ document.getElementById('municipality').addEventListener('change', function(){
     const municipality = this.value;
     fetch('get_barangays.php?municipality=' + encodeURIComponent(municipality))
         .then(res => res.text())
-        .then(data => {
-            document.getElementById('barangay').innerHTML = data;
-        });
+        .then(data => document.getElementById('barangay').innerHTML = data);
 });
 
-// ✅ Preselect saved Municipality + Barangay when editing
+// Preload address on edit
 window.addEventListener('DOMContentLoaded', function() {
-    const province = document.getElementById('province').value;
-    const savedMunicipality = "<?= $formData['municipality'] ?? '' ?>";
-    const savedBarangay = "<?= $formData['barangay'] ?? '' ?>";
+    const province = "<?= $formData['province'] ?>";
+    const savedMunicipality = "<?= $formData['municipality'] ?>";
+    const savedBarangay = "<?= $formData['barangay'] ?>";
 
-    if(province){
+    if (province) {
         fetch('get_municipalities.php?province=' + encodeURIComponent(province))
             .then(res => res.text())
             .then(data => {
                 document.getElementById('municipality').innerHTML = data;
-                if(savedMunicipality){
+                if (savedMunicipality) {
                     document.getElementById('municipality').value = savedMunicipality;
-
                     fetch('get_barangays.php?municipality=' + encodeURIComponent(savedMunicipality))
                         .then(res => res.text())
                         .then(data => {
                             document.getElementById('barangay').innerHTML = data;
-                            if(savedBarangay){
-                                document.getElementById('barangay').value = savedBarangay;
-                            }
+                            if (savedBarangay) document.getElementById('barangay').value = savedBarangay;
                         });
                 }
             });
     }
+
+    // Initialize status date visibility
+    toggleStatusDate();
 });
+
+// Toggle date field
+function toggleStatusDate() {
+    const status = document.getElementById('status').value;
+    const container = document.getElementById('status_date_container');
+    const dateInput = document.getElementById('status_date');
+    const requiredMark = document.getElementById('date_required');
+
+    if (['dropped', 'transferred_in', 'transferred_out'].includes(status)) {
+        container.style.display = 'block';
+        dateInput.required = true;
+        requiredMark.style.display = 'inline';
+    } else {
+        container.style.display = 'none';
+        dateInput.required = false;
+        requiredMark.style.display = 'none';
+    }
+}
+
+document.getElementById('status').addEventListener('change', toggleStatusDate);
 </script>
 </body>
 </html>

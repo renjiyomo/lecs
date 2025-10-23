@@ -15,6 +15,16 @@ $selected_status = $_GET['status'] ?? '';
 $search = $_GET['search'] ?? '';
 $error_message = $_GET['error'] ?? '';
 $success_message = $_GET['success'] ?? '';
+
+// Map status values to display labels
+$statusLabels = [
+    'enrolled' => 'Enrolled',
+    'dropped' => 'Dropped',
+    'transferred_in' => 'Transferred In',
+    'transferred_out' => 'Transferred Out',
+    'promoted' => 'Promoted',
+    'retained' => 'Retained'
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +40,7 @@ $success_message = $_GET['success'] ?? '';
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
+        <span class="close" onclick="closeModal()">×</span>
         <h2>Confirm Deletion</h2>
         <p id="modalMessage"></p>
         <button id="confirmDeleteBtn" class="btn-confirm">Delete</button>
@@ -110,11 +120,15 @@ $success_message = $_GET['success'] ?? '';
                 </select>
             </label>
 
+            <!-- Enhanced Status Filter -->
             <label>Status:
                 <select name="status" onchange="this.form.submit()">
                     <option value="">All</option>
-                    <option value="enrolled" <?= ($selected_status=="enrolled") ? "selected" : "" ?>>Enrolled</option>
-                    <option value="dropped" <?= ($selected_status=="dropped") ? "selected" : "" ?>>Dropped</option>
+                    <?php foreach ($statusLabels as $value => $label): ?>
+                        <option value="<?= $value ?>" <?= ($selected_status === $value) ? 'selected' : '' ?>>
+                            <?= $label ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </label>
 
@@ -175,18 +189,24 @@ $success_message = $_GET['success'] ?? '';
                     while ($row = $result->fetch_assoc()) {
                         $fullname = strtoupper($row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name']);
                         $escaped_fullname = htmlspecialchars($fullname, ENT_QUOTES, 'UTF-8');
+
+                        // Map status to display label and CSS class
+                        $statusKey = $row['status'];
+                        $displayStatus = $statusLabels[$statusKey] ?? ucfirst($statusKey);
+                        $statusClass = 'status-' . str_replace('_ | ', '-', $statusKey);
+
                         echo "<tr>
                                 <td>{$row['lrn']}</td>
                                 <td>{$fullname}</td>
                                 <td>{$row['age']}</td>
-                                <td>" . substr($row['sex'],0,1) . "</td>
+                                <td>" . substr($row['sex'], 0, 1) . "</td>
                                 <td>Grade {$row['level_name']} - {$row['section_name']}</td>
-                                <td>" . ucfirst($row['status']) . "</td>
+                                <td><span class='status-badge $statusClass'>$displayStatus</span></td>
                                 <td class='action-buttons'>
                                     <a href='pupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
                                     <a href='edit_pupil.php?id={$row['pupil_id']}' class='btn-action edit-btn'>Edit</a>
                                     <a href='delete_pupil.php?id={$row['pupil_id']}' class='btn-action delete-btn' 
-                                    onclick=\"return confirmDelete({$row['pupil_id']}, '{$escaped_fullname}')\">Unenroll</a>
+                                       onclick=\"return confirmDelete({$row['pupil_id']}, '{$escaped_fullname}')\">Unenroll</a>
                                 </td>
                             </tr>";
                     }
@@ -250,7 +270,7 @@ $success_message = $_GET['success'] ?? '';
                 console.error('Error checking grades:', error);
                 showModal(pupilId, pupilName, false);
             });
-        return false; // Prevent default link behavior
+        return false;
     }
 
     document.getElementById('confirmDeleteBtn').addEventListener('click', () => {

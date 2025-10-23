@@ -36,10 +36,21 @@ if (isset($_POST['submit'])) {
     $contact_number = $conn->real_escape_string($_POST['contact_number']);
 
     $learning_modality = $conn->real_escape_string($_POST['learning_modality']);
-    $remarks = $conn->real_escape_string($_POST['remarks']);
     $section_id = intval($_POST['section_id']);
     $sy_id = intval($_POST['sy_id']);
     $status = $conn->real_escape_string($_POST['status']);
+    $status_date = !empty($_POST['status_date']) ? $_POST['status_date'] : null;
+
+    // Generate remarks based on status
+    $remarks = '';
+    if ($status === 'transferred_in' && $status_date) {
+        $remarks = "T/I DATE:" . $status_date;
+    } elseif ($status === 'transferred_out' && $status_date) {
+        $remarks = "T/O DATE:" . $status_date;
+    } elseif ($status === 'dropped' && $status_date) {
+        $remarks = "DRPLE DATE:" . $status_date;
+    }
+    // Enrolled → remarks = empty
 
     $secCheck = $conn->query("SELECT section_id 
                               FROM sections 
@@ -90,6 +101,7 @@ if (isset($_POST['submit'])) {
 <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
 <link href="css/adminAddPupil.css" rel="stylesheet">
 <link rel="stylesheet" href="css/sidebar.css">
+
 </head>
 <body class="light">
 <div class="container">
@@ -165,7 +177,7 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
 
-        <form method="POST">
+        <form method="POST" id="addPupilForm">
             <fieldset>
                 <legend>Personal Information</legend>
                 <div class="form-grid">
@@ -216,6 +228,7 @@ if (isset($_POST['submit'])) {
                 </div>
             </fieldset>
 
+            <!-- Address -->
             <fieldset>
                 <legend>Address</legend>
                 <div class="form-grid">
@@ -265,6 +278,7 @@ if (isset($_POST['submit'])) {
                 </div>
             </fieldset>
 
+            <!-- Parent & Guardian -->
             <fieldset>
                 <legend>Parent & Guardian Information</legend>
                 <div class="form-grid">
@@ -291,6 +305,7 @@ if (isset($_POST['submit'])) {
                 </div>
             </fieldset>
 
+            <!-- Enrollment Information -->
             <fieldset>
                 <legend>Enrollment Information</legend>
                 <div class="form-grid">
@@ -326,16 +341,22 @@ if (isset($_POST['submit'])) {
                         <label>Learning Modality</label>
                         <input type="text" name="learning_modality" value="<?= htmlspecialchars($formData['learning_modality'] ?? '') ?>">
                     </div>
-                    <div class="form-group">
-                        <label>Remarks</label>
-                        <input type="text" name="remarks" value="<?= htmlspecialchars($formData['remarks'] ?? '') ?>">
-                    </div>
+
+                    <!-- Status + Conditional Date -->
                     <div class="form-group">
                         <label>Status</label>
-                        <select name="status" required>
+                        <select name="status" id="status" required>
                             <option value="enrolled" <?= (isset($formData['status']) && $formData['status']=="enrolled")?"selected":"" ?>>Enrolled</option>
                             <option value="dropped" <?= (isset($formData['status']) && $formData['status']=="dropped")?"selected":"" ?>>Dropped</option>
+                            <option value="transferred_in" <?= (isset($formData['status']) && $formData['status']=="transferred_in")?"selected":"" ?>>Transferred In</option>
+                            <option value="transferred_out" <?= (isset($formData['status']) && $formData['status']=="transferred_out")?"selected":"" ?>>Transferred Out</option>
                         </select>
+                    </div>
+
+                    <!-- Conditional Date Field -->
+                    <div class="form-group status-date-group" id="statusDateGroup">
+                        <label id="statusDateLabel">Date</label>
+                        <input type="date" name="status_date" id="status_date" value="<?= htmlspecialchars($formData['status_date'] ?? '') ?>">
                     </div>
                 </div>
             </fieldset>
@@ -346,6 +367,7 @@ if (isset($_POST['submit'])) {
 </div>
 
 <script>
+// Auto-calculate age
 document.getElementById("birthdate")?.addEventListener("change", function() {
     const birthdate = new Date(this.value);
     const today = new Date();
@@ -355,6 +377,30 @@ document.getElementById("birthdate")?.addEventListener("change", function() {
     document.getElementById("age").value = age;
 });
 
+// Show/hide date field based on status
+function toggleStatusDate() {
+    const status = document.getElementById('status').value;
+    const dateGroup = document.getElementById('statusDateGroup');
+    const dateInput = document.getElementById('status_date');
+    const label = document.getElementById('statusDateLabel');
+
+    if (['dropped', 'transferred_in', 'transferred_out'].includes(status)) {
+        dateGroup.classList.add('show');
+        dateInput.required = true;
+        label.textContent = status === 'dropped' ? 'Drop Date' : 
+                              status === 'transferred_in' ? 'Transfer In Date' : 'Transfer Out Date';
+    } else {
+        dateGroup.classList.remove('show');
+        dateInput.required = false;
+        dateInput.value = '';
+    }
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', toggleStatusDate);
+document.getElementById('status').addEventListener('change', toggleStatusDate);
+
+// Existing scripts (SY, Province, etc.)
 document.getElementById("sy_id").addEventListener("change", function(){
     const sy_id = this.value;
     const sectionDropdown = document.getElementById("section_id");
@@ -386,6 +432,7 @@ document.getElementById('municipality').addEventListener('change', function(){
         });
 });
 
+// Import modal scripts (unchanged)
 const importBtn = document.getElementById('openImportModal');
 const importModal = document.getElementById('importModal');
 const closeModal = document.getElementById('closeImportModal');

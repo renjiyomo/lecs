@@ -453,3 +453,10 @@ button.loading {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+.status-date-group {
+    display: none;
+}
+.status-date-group.show {
+    display: flex;
+}

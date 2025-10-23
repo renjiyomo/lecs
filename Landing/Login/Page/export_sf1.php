@@ -44,6 +44,19 @@ $parts = explode('-', $school_year);
 $start_year = $parts[0];
 $cutoff_date = $start_year . '-10-31';
 
+// --- Principal name (latest based on start_date) ---
+$principal_stmt = $conn->prepare("
+    SELECT CONCAT(t.first_name, ' ', COALESCE(t.middle_name, ''), ' ', t.last_name) AS principal_name
+    FROM teachers t
+    JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
+    WHERE tp.position_id IN (13,14,15,16)
+    ORDER BY tp.start_date DESC
+    LIMIT 1
+");
+$principal_stmt->execute();
+$principal_result = $principal_stmt->get_result()->fetch_assoc();
+$principal_full_name = strtoupper(htmlspecialchars($principal_result['principal_name'] ?? ''));
+
 $males_sql = "SELECT p.* FROM pupils p WHERE p.section_id = ? AND p.sy_id = ? AND p.sex = 'Male' ORDER BY p.last_name, p.first_name";
 $males_stmt = $conn->prepare($males_sql);
 $males_stmt->bind_param("ii", $section_id, $sy_id);
@@ -75,6 +88,9 @@ $sheet->setCellValue('AM4', htmlspecialchars(strtoupper($section['section_name']
 
 // Set region if needed
 $sheet->setCellValue('K3', htmlspecialchars('V (BICOL)'));
+
+// Set principal name
+$sheet->setCellValue('AN12', htmlspecialchars($principal_full_name));
 
 // Insert rows if needed to push fixed section down
 if ($offset > 0) {

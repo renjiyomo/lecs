@@ -493,6 +493,62 @@ document.getElementById("import_sy_id").addEventListener("change", function(){
             sectionDropdown.innerHTML = data;
         });
 });
+
+// Auto-fill pupil info when existing LRN detected
+document.querySelector("input[name='lrn']").addEventListener("input", function() {
+    const lrn = this.value.trim();
+
+    // Only trigger when exactly 12 digits
+    if (/^\d{12}$/.test(lrn)) {
+        fetch("get_pupil_info.php?lrn=" + lrn)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Auto-fill all related fields
+                    document.querySelector("input[name='last_name']").value = data.last_name || "";
+                    document.querySelector("input[name='first_name']").value = data.first_name || "";
+                    document.querySelector("input[name='middle_name']").value = data.middle_name || "";
+                    document.querySelector("select[name='sex']").value = data.sex || "";
+                    document.querySelector("input[name='birthdate']").value = data.birthdate || "";
+                    document.querySelector("input[name='age']").value = data.age || "";
+                    document.querySelector("input[name='mother_tongue']").value = data.mother_tongue || "";
+                    document.querySelector("input[name='ip_ethnicity']").value = data.ip_ethnicity || "";
+                    document.querySelector("input[name='religion']").value = data.religion || "";
+
+                    // Address
+                    document.querySelector("input[name='house_no_street']").value = data.house_no_street || "";
+                    document.querySelector("select[name='province']").value = data.province || "";
+                    
+                    // Trigger municipality & barangay reload
+                    fetch('get_municipalities.php?province=' + encodeURIComponent(data.province))
+                        .then(res => res.text())
+                        .then(municipalities => {
+                            document.getElementById('municipality').innerHTML = municipalities;
+                            document.querySelector("select[name='municipality']").value = data.municipality || "";
+                            return fetch('get_barangays.php?municipality=' + encodeURIComponent(data.municipality));
+                        })
+                        .then(res => res.text())
+                        .then(barangays => {
+                            document.getElementById('barangay').innerHTML = barangays;
+                            document.querySelector("select[name='barangay']").value = data.barangay || "";
+                        });
+
+                    // Parents & guardian
+                    document.querySelector("input[name='father_name']").value = data.father_name || "";
+                    document.querySelector("input[name='mother_name']").value = data.mother_name || "";
+                    document.querySelector("input[name='guardian_name']").value = data.guardian_name || "";
+                    document.querySelector("input[name='relationship_to_guardian']").value = data.relationship_to_guardian || "";
+                    document.querySelector("input[name='contact_number']").value = data.contact_number || "";
+
+                    console.log("Auto-filled pupil data from latest record.");
+                } else {
+                    console.log("No existing LRN found.");
+                }
+            })
+            .catch(err => console.error("Fetch error:", err));
+    }
+});
+
 </script>
 </body>
 </html>

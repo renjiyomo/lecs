@@ -11,7 +11,7 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 // Load dependencies
 require 'vendor/autoload.php';
 
-// Namespaces for Excel and FPDI
+// Namespaces
 use PhpOffice\PhpSpreadsheet\IOFactory as ExcelIOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -51,14 +51,15 @@ $format = isset($_GET['format']) ? $_GET['format'] : 'excel';
 $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 $sy_id = isset($_GET['sy']) ? intval($_GET['sy']) : 0;
 
-// Get school year dates
-$sy_start = $sy_end = null;
+// Get school year info
+$school_year_text = '';
 if ($sy_id > 0) {
-    $stmt_sy = $conn->prepare("SELECT start_date, end_date FROM school_years WHERE sy_id = ?");
+    $stmt_sy = $conn->prepare("SELECT school_year, start_date, end_date FROM school_years WHERE sy_id = ?");
     $stmt_sy->bind_param("i", $sy_id);
     $stmt_sy->execute();
     $sy_res = $stmt_sy->get_result();
     if ($sy_row = $sy_res->fetch_assoc()) {
+        $school_year_text = '(' . htmlspecialchars($sy_row['school_year']) . ')';
         $sy_start = $sy_row['start_date'];
         $sy_end = $sy_row['end_date'];
     }
@@ -78,7 +79,7 @@ if (!empty($search)) {
     $types .= "ss";
 }
 
-if ($sy_id > 0) {
+if (!empty($sy_start) && !empty($sy_end)) {
     $where .= " AND EXISTS (SELECT 1 FROM teacher_positions tp WHERE tp.teacher_id = t.teacher_id AND tp.start_date <= ? AND (tp.end_date >= ? OR tp.end_date IS NULL))";
     $params[] = $sy_end;
     $params[] = $sy_start;
@@ -112,7 +113,7 @@ if ($format === 'excel') {
     $spreadsheet = ExcelIOFactory::load($template_path);
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Center headers (A1:C3)
+    // Center headers
     $headerStyle = [
         'borders' => [
             'allBorders' => ['borderStyle' => Border::BORDER_THIN],
@@ -131,16 +132,7 @@ if ($format === 'excel') {
         $sheet->setCellValue('B' . $row, htmlspecialchars($teacher['teacher_name']));
         $sheet->setCellValue('C' . $row, htmlspecialchars(formatPosition($teacher['position'])));
 
-        $style = [
-            'borders' => [
-                'allBorders' => ['borderStyle' => Border::BORDER_THIN],
-            ],
-            'alignment' => [
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical' => Alignment::VERTICAL_CENTER,
-            ],
-        ];
-        $sheet->getStyle('A' . $row . ':C' . $row)->applyFromArray($style);
+        $sheet->getStyle('A' . $row . ':C' . $row)->applyFromArray($headerStyle);
         $row++;
     }
 
@@ -157,32 +149,33 @@ if ($format === 'excel') {
 // PDF EXPORT USING HEADER.PDF (FPDI)
 // =============================
 else {
-    $header_pdf = 'template/header.pdf'; // Converted from your header.docx
+    $header_pdf = 'template/header.pdf';
 
     $pdf = new Fpdi();
-
-    // ✅ Disable TCPDF's default header and footer
     $pdf->setPrintHeader(false);
     $pdf->setPrintFooter(false);
-
     $pdf->AddPage();
 
-    // Import the header design
+    // Import header
     if (file_exists($header_pdf)) {
         $pageCount = $pdf->setSourceFile($header_pdf);
         $tplIdx = $pdf->importPage(1);
-        $pdf->useTemplate($tplIdx, 0, 0, 210); // Full A4 width
-    } else {
-        $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 10, 'Header template not found', 0, 1, 'C');
+        $pdf->useTemplate($tplIdx, 0, 0, 210);
     }
 
-    // Move below the header (adjust spacing)
+    // Move below the header
     $pdf->Ln(45);
 
     // Title
     $pdf->SetFont('helvetica', 'B', 14);
     $pdf->Cell(0, 10, 'List of Personnel', 0, 1, 'C');
+
+    // ✅ Add School Year (small text)
+    if (!empty($school_year_text)) {
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->Cell(0, 5, $school_year_text, 0, 1, 'C');
+    }
+
     $pdf->Ln(5);
 
     // Table

@@ -135,11 +135,6 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
           <span class="toggle-pass" id="togglePass"><i class="fa-solid fa-eye"></i></span>
         </div>
 
-        <div class="remember">
-          <input type="checkbox" id="remember" name="remember">
-          <label for="remember">Remember me for 7 days</label>
-        </div>
-
         <button type="submit" class="btn">Sign In</button>
         <a href="#" class="forgot" id="forgotBtn">Forgot password?</a>
       </form>

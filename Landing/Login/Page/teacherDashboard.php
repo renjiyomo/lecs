@@ -10,44 +10,18 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 
 $teacher_id = intval($_SESSION['teacher_id']); // logged-in teacher's ID
 
-// Fetch teacher details to get the name
-$stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id = ?");
-$stmt->bind_param("i", $teacher_id);
-$stmt->execute();
-$teacher = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-$teacherName = implode(' ', array_filter([$teacher['first_name'], $teacher['middle_name'], $teacher['last_name']]));
+// ✅ Stats for cards (only pupils by this teacher)
+$studentCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id")->fetch_assoc()['total'];
+$maleCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id AND sex = 'Male'")->fetch_assoc()['total'];
+$femaleCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id AND sex = 'Female'")->fetch_assoc()['total'];
 
 // ✅ Get school years
-$sy_res = $conn->query("SELECT * FROM school_years ORDER BY start_date DESC");
+$sy_res = $conn->query("SELECT * FROM school_years ORDER BY sy_id DESC");
 $school_years = $sy_res->fetch_all(MYSQLI_ASSOC);
 $current_sy = $_GET['sy_id'] ?? null;
 
 if ($current_sy === null) {
-    // Try to find current sy
-    $stmt = $conn->prepare("SELECT sy_id FROM school_years WHERE CURDATE() BETWEEN start_date AND end_date ORDER BY start_date DESC LIMIT 1");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $current_sy = $row['sy_id'];
-    } else {
-        // If no current, get the latest by start_date
-        $stmt = $conn->prepare("SELECT sy_id FROM school_years ORDER BY start_date DESC LIMIT 1");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $current_sy = $result->fetch_assoc()['sy_id'] ?? null;
-    }
-    $stmt->close();
-}
-
-// ✅ Stats for cards (only pupils by this teacher for current sy)
-$studentCount = 0;
-$maleCount = 0;
-$femaleCount = 0;
-if ($current_sy !== null) {
-    $studentCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id AND sy_id = $current_sy")->fetch_assoc()['total'];
-    $maleCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id AND sy_id = $current_sy AND sex = 'Male'")->fetch_assoc()['total'];
-    $femaleCount = $conn->query("SELECT COUNT(*) AS total FROM pupils WHERE teacher_id = $teacher_id AND sy_id = $current_sy AND sex = 'Female'")->fetch_assoc()['total'];
+    $current_sy = $conn->query("SELECT sy_id FROM school_years ORDER BY sy_id DESC LIMIT 1")->fetch_assoc()['sy_id'] ?? null;
 }
 
 // ✅ Fetch pupils for this teacher & school year

@@ -102,6 +102,10 @@ $search = $_GET['search'] ?? '';
                     <option value="">All</option>
                     <option value="enrolled" <?= ($selected_status=="enrolled") ? "selected" : "" ?>>Enrolled</option>
                     <option value="dropped" <?= ($selected_status=="dropped") ? "selected" : "" ?>>Dropped</option>
+                    <option value="promoted" <?= ($selected_status=="promoted") ? "selected" : "" ?>>Promoted</option>
+                    <option value="retained" <?= ($selected_status=="retained") ? "selected" : "" ?>>Retained</option>
+                    <option value="transferred_in" <?= ($selected_status=="transferred_in") ? "selected" : "" ?>>Transferred In</option>
+                    <option value="transferred_out" <?= ($selected_status=="transferred_out") ? "selected" : "" ?>>Transferred Out</option>
                 </select>
             </label>
 
@@ -158,16 +162,25 @@ $search = $_GET['search'] ?? '';
                 $result = $conn->query($sql);
 
                 if ($result && $result->num_rows > 0) {
+                    $status_display = [
+                        'enrolled' => 'Enrolled',
+                        'dropped' => 'Dropped',
+                        'promoted' => 'Promoted',
+                        'retained' => 'Retained',
+                        'transferred_in' => 'Transferred In',
+                        'transferred_out' => 'Transferred Out',
+                    ];
                     while ($row = $result->fetch_assoc()) {
                         $fullname = strtoupper($row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name']);
                         $escaped_fullname = htmlspecialchars($fullname, ENT_QUOTES, 'UTF-8');
+                        $display_status = $status_display[$row['status']] ?? ucfirst($row['status']);
                         echo "<tr>
                                 <td>{$row['lrn']}</td>
                                 <td>{$fullname}</td>
                                 <td>{$row['age']}</td>
                                 <td>" . substr($row['sex'],0,1) . "</td>
                                 <td>Grade {$row['level_name']} - {$row['section_name']}</td>
-                                <td>" . ucfirst($row['status']) . "</td>
+                                <td>{$display_status}</td>
                                 <td class='action-buttons'>
                                     <a href='adminPupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
                                 </td>

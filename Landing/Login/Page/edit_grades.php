@@ -75,6 +75,148 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['selected_pupil_id']))
             }
         }
     }
+
+    // Recalculate grades and status to update pupil status
+    $top_subjects = [];
+    $components = [];
+    $sub_res = $conn->query("SELECT subject_id, subject_name, start_quarter, parent_subject_id
+                             FROM subjects
+                             WHERE grade_level_id = {$selected_pupil['grade_level_id']}
+                             AND sy_id = $sy_id
+                             ORDER BY display_order, subject_name ASC");
+    while ($sub = $sub_res->fetch_assoc()) {
+        if ($sub['parent_subject_id']) {
+            $components[$sub['parent_subject_id']][] = $sub;
+        } else {
+            $top_subjects[] = $sub;
+        }
+    }
+
+    $grades = [];
+    $g_res = $conn->query("SELECT subject_id, quarter, grade
+                           FROM grades
+                           WHERE pupil_id = $selected_pupil_id AND sy_id = $sy_id");
+    while ($g = $g_res->fetch_assoc()) {
+        $grades[$g['subject_id']][$g['quarter']] = intval($g['grade']);
+    }
+
+    $general_finals = [];
+    $all_grades_complete = true;
+    $required_subjects = 0;
+    $quarter_map = ['Q1' => 1, 'Q2' => 2, 'Q3' => 3, 'Q4' => 4];
+    $required_quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+    foreach ($top_subjects as $sub) {
+        $sid = $sub['subject_id'];
+        $sub_name = strtolower($sub['subject_name']);
+        $has_comp = isset($components[$sid]);
+        $start_quarter = $sub['start_quarter'] ?? 'Q1';
+        if (($grade_level == 1 || $grade_level == 2) && $sub_name == "science") continue;
+        if (($grade_level >= 4 && $grade_level <= 6) && $sub_name == "mother tongue") continue;
+        if (($grade_level <= 3) && $sub_name == "edukasyong pantahanan at pangkabuhayan / tle") continue;
+        $required_subjects++;
+        if ($has_comp && $sub_name === 'mapeh') {
+            $mapeh_order = [
+                'Music' => 1,
+                'Arts' => 2,
+                'Physical Education' => 3,
+                'Health' => 4
+            ];
+            usort($components[$sid], function($a, $b) use ($mapeh_order) {
+                $orderA = $mapeh_order[$a['subject_name']] ?? 99;
+                $orderB = $mapeh_order[$b['subject_name']] ?? 99;
+                return $orderA <=> $orderB;
+            });
+        }
+        $q_grades = ['Q1' => '', 'Q2' => '', 'Q3' => '', 'Q4' => ''];
+        $subject_required_quarters = array_slice($required_quarters, array_search($start_quarter, $required_quarters));
+        if ($has_comp) {
+            $q_sums = ['Q1' => 0, 'Q2' => 0, 'Q3' => 0, 'Q4' => 0];
+            $q_counts = ['Q1' => 0, 'Q2' => 0, 'Q3' => 0, 'Q4' => 0];
+            foreach ($components[$sid] as $comp) {
+                $cid = $comp['subject_id'];
+                $comp_start_quarter = $comp['start_quarter'] ?? 'Q1';
+                $comp_required_quarters = array_slice($required_quarters, array_search($comp_start_quarter, $required_quarters));
+                foreach ($comp_required_quarters as $q) {
+                    if (isset($grades[$cid][$q])) {
+                        $q_sums[$q] += $grades[$cid][$q];
+                        $q_counts[$q]++;
+                    } else {
+                        $all_grades_complete = false;
+                    }
+                }
+                foreach ($required_quarters as $q) {
+                    if (!in_array($q, $comp_required_quarters) && isset($grades[$cid][$q])) {
+                        $all_grades_complete = false;
+                    }
+                }
+            }
+            $final_sum = 0;
+            $final_count = 0;
+            foreach ($subject_required_quarters as $q) {
+                if ($q_counts[$q] > 0) {
+                    $q_grades[$q] = round($q_sums[$q] / $q_counts[$q]);
+                    $final_sum += $q_grades[$q];
+                    $final_count++;
+                }
+            }
+            if ($final_count > 0) $general_finals[] = round($final_sum / $final_count);
+            if ($final_count < count($subject_required_quarters) ||
+                $q_counts[$subject_required_quarters[0]] < count($components[$sid])) {
+                $all_grades_complete = false;
+            }
+        } else {
+            foreach ($subject_required_quarters as $q) {
+                $q_grades[$q] = isset($grades[$sid][$q]) ? intval($grades[$sid][$q]) : '';
+                if ($q_grades[$q] === '') {
+                    $all_grades_complete = false;
+                }
+            }
+            foreach ($required_quarters as $q) {
+                if (!in_array($q, $subject_required_quarters) && isset($grades[$sid][$q])) {
+                    $all_grades_complete = false;
+                }
+            }
+            $gs = array_filter($q_grades);
+            if (count($gs) > 0) $general_finals[] = round(array_sum($gs) / count($gs));
+        }
+    }
+    $num_fails = 0;
+    $overall_rem = '';
+    if ($all_grades_complete && count($general_finals) > 0 && count($general_finals) == $required_subjects) {
+        $general_avg = round(array_sum($general_finals) / count($general_finals));
+        foreach ($general_finals as $final) {
+            if ($final < 75) $num_fails++;
+        }
+        if ($num_fails >= 3) {
+            $overall_rem = 'RETAINED';
+        } elseif ($num_fails >= 1) {
+            $overall_rem = 'CONDITIONALLY PROMOTED';
+        } else {
+            if ($general_avg >= 98) {
+                $overall_rem = 'PROMOTED WITH HIGHEST HONORS';
+            } elseif ($general_avg >= 95) {
+                $overall_rem = 'PROMOTED WITH HIGH HONORS';
+            } elseif ($general_avg >= 90) {
+                $overall_rem = 'PROMOTED WITH HONORS';
+            } else {
+                $overall_rem = 'PROMOTED';
+            }
+        }
+    } else {
+        $overall_rem = 'INCOMPLETE';
+    }
+
+    // Update pupil status based on overall remarks
+    $new_status = 'enrolled';
+    if ($overall_rem === 'RETAINED') {
+        $new_status = 'retained';
+    } elseif (in_array($overall_rem, ['PROMOTED', 'CONDITIONALLY PROMOTED', 'PROMOTED WITH HONORS', 'PROMOTED WITH HIGH HONORS', 'PROMOTED WITH HIGHEST HONORS'])) {
+        $new_status = 'promoted';
+    }
+    $status_stmt = $conn->prepare("UPDATE pupils SET status = ? WHERE pupil_id = ? AND sy_id = ?");
+    $status_stmt->bind_param("sii", $new_status, $selected_pupil_id, $sy_id);
+    $status_stmt->execute();
+
     unset($_SESSION['imported_grades']);
     header("Location: edit_grades.php?pupil_id=$selected_pupil_id&sy_id=$sy_id");
     exit;

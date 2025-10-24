@@ -258,7 +258,7 @@ while ($g = $g_res->fetch_assoc()) {
                 <?php 
                 $general_avg = '';
                 $overall_rem = '';
-                if ($all_grades_complete && count($general_finals) == $required_subjects) {
+                if ($all_grades_complete && count($general_finals) == $required_subjects && count($general_finals) > 0) {
                     $general_avg = round(array_sum($general_finals) / count($general_finals));
                     $num_fails = count(array_filter($general_finals, fn($final) => $final < 75));
                     if ($num_fails >= 3) {

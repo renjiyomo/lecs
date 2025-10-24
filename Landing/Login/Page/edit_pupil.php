@@ -25,28 +25,32 @@ $pupil = $result->fetch_assoc();
 // Initialize form data
 $formData = $pupil;
 
-// Extract status and date from remarks
-$status_from_remarks = 'enrolled';
+// Extract date from remarks and handle potential old data override
 $status_date = '';
-
+$derived_status = $pupil['status'];
 if (!empty($pupil['remarks'])) {
     $remarks = trim($pupil['remarks']);
     if (preg_match('/^(T\/I|DRPLE|T\/O) DATE:(\d{4}-\d{2}-\d{2})$/', $remarks, $matches)) {
         $code = $matches[1];
         $status_date = $matches[2];
-
-        if ($code === 'T/I') {
-            $status_from_remarks = 'transferred_in';
-        } elseif ($code === 'T/O') {
-            $status_from_remarks = 'transferred_out';
-        } elseif ($code === 'DRPLE') {
-            $status_from_remarks = 'dropped';
+        switch ($code) {
+            case 'T/I':
+                $derived_status = 'transferred_in';
+                break;
+            case 'DRPLE':
+                $derived_status = 'dropped';
+                break;
+            case 'T/O':
+                $derived_status = 'transferred_out';
+                break;
         }
     }
 }
 
-// Override status if derived from remarks
-$formData['status'] = $status_from_remarks;
+// Override status for old data where status was 'enrolled' but remarks indicate otherwise
+if ($pupil['status'] === 'enrolled' && $derived_status !== 'enrolled') {
+    $formData['status'] = $derived_status;
+}
 $formData['status_date'] = $status_date;
 
 // Handle form submission
@@ -133,16 +137,28 @@ if (isset($_POST['update'])) {
                 $formData = $pupil;
 
                 // Re-extract status & date
-                $status_from_remarks = 'enrolled';
                 $status_date = '';
+                $derived_status = $pupil['status'];
                 if (!empty($pupil['remarks'])) {
-                    if (preg_match('/^(T\/I|DRPLE|T\/O) DATE:(\d{4}-\d{2}-\d{2})$/', $pupil['remarks'], $m)) {
-                        $code = $m[1];
-                        $status_date = $m[2];
-                        $status_from_remarks = $code === 'T/I' ? 'transferred_in' : ($code === 'T/O' ? 'transferred_out' : 'dropped');
+                    if (preg_match('/^(T\/I|DRPLE|T\/O) DATE:(\d{4}-\d{2}-\d{2})$/', $pupil['remarks'], $matches)) {
+                        $code = $matches[1];
+                        $status_date = $matches[2];
+                        switch ($code) {
+                            case 'T/I':
+                                $derived_status = 'transferred_in';
+                                break;
+                            case 'DRPLE':
+                                $derived_status = 'dropped';
+                                break;
+                            case 'T/O':
+                                $derived_status = 'transferred_out';
+                                break;
+                        }
                     }
                 }
-                $formData['status'] = $status_from_remarks;
+                if ($pupil['status'] === 'enrolled' && $derived_status !== 'enrolled') {
+                    $formData['status'] = $derived_status;
+                }
                 $formData['status_date'] = $status_date;
             } else {
                 $error = "Update failed: " . $conn->error;
@@ -357,6 +373,8 @@ if (isset($_POST['update'])) {
                         <select name="status" id="status" required>
                             <option value="enrolled" <?= ($formData['status'] == 'enrolled') ? 'selected' : '' ?>>Enrolled</option>
                             <option value="dropped" <?= ($formData['status'] == 'dropped') ? 'selected' : '' ?>>Dropped</option>
+                            <option value="promoted" <?= ($formData['status'] == 'promoted') ? 'selected' : '' ?>>Promoted</option>
+                            <option value="retained" <?= ($formData['status'] == 'retained') ? 'selected' : '' ?>>Retained</option>
                             <option value="transferred_in" <?= ($formData['status'] == 'transferred_in') ? 'selected' : '' ?>>Transferred In</option>
                             <option value="transferred_out" <?= ($formData['status'] == 'transferred_out') ? 'selected' : '' ?>>Transferred Out</option>
                         </select>

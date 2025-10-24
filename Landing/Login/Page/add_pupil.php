@@ -41,51 +41,56 @@ if (isset($_POST['submit'])) {
     $status = $conn->real_escape_string($_POST['status']);
     $status_date = !empty($_POST['status_date']) ? $_POST['status_date'] : null;
 
-    // Generate remarks based on status
-    $remarks = '';
-    if ($status === 'transferred_in' && $status_date) {
-        $remarks = "T/I DATE:" . $status_date;
-    } elseif ($status === 'transferred_out' && $status_date) {
-        $remarks = "T/O DATE:" . $status_date;
-    } elseif ($status === 'dropped' && $status_date) {
-        $remarks = "DRPLE DATE:" . $status_date;
-    }
-    // Enrolled → remarks = empty
-
-    $secCheck = $conn->query("SELECT section_id 
-                              FROM sections 
-                              WHERE section_id=$section_id 
-                                AND teacher_id=$teacher_id 
-                                AND sy_id=$sy_id");
-    if ($secCheck->num_rows === 0) {
-        $error = "You are not allowed to add pupils to this section.";
+    // Validate date required for certain statuses
+    if (in_array($status, ['dropped', 'transferred_in', 'transferred_out']) && empty($status_date)) {
+        $error = "Please select a date for the selected status.";
     } else {
-        $check = $conn->query("SELECT pupil_id 
-                               FROM pupils 
-                               WHERE lrn='$lrn' AND sy_id=$sy_id");
-        if ($check->num_rows > 0) {
-            $error = "This LRN is already enrolled in the selected School Year.";
+        // Generate remarks based on status
+        $remarks = '';
+        if ($status === 'transferred_in' && $status_date) {
+            $remarks = "T/I DATE:" . $status_date;
+        } elseif ($status === 'transferred_out' && $status_date) {
+            $remarks = "T/O DATE:" . $status_date;
+        } elseif ($status === 'dropped' && $status_date) {
+            $remarks = "DRPLE DATE:" . $status_date;
+        }
+        // Enrolled → remarks = empty
+
+        $secCheck = $conn->query("SELECT section_id 
+                                  FROM sections 
+                                  WHERE section_id=$section_id 
+                                    AND teacher_id=$teacher_id 
+                                    AND sy_id=$sy_id");
+        if ($secCheck->num_rows === 0) {
+            $error = "You are not allowed to add pupils to this section.";
         } else {
-            $insertPupil = "INSERT INTO pupils 
-                (teacher_id, lrn, last_name, first_name, middle_name, sex, birthdate, age,
-                 mother_tongue, ip_ethnicity, religion,
-                 house_no_street, barangay, municipality, province,
-                 father_name, mother_name, guardian_name, relationship_to_guardian,
-                 contact_number, learning_modality, remarks,
-                 sy_id, section_id, status)
-                VALUES 
-                ($teacher_id,'$lrn','$last_name','$first_name','$middle_name','$sex','$birthdate',$age,
-                 '$mother_tongue','$ip_ethnicity','$religion',
-                 '$house_no_street','$barangay','$municipality','$province',
-                 '$father_name','$mother_name','$guardian_name','$relationship_to_guardian',
-                 '$contact_number','$learning_modality','$remarks',
-                 $sy_id,$section_id,'$status')";
-            
-            if ($conn->query($insertPupil)) {
-                $success = "Pupil enrolled successfully!";
-                $formData = [];
+            $check = $conn->query("SELECT pupil_id 
+                                   FROM pupils 
+                                   WHERE lrn='$lrn' AND sy_id=$sy_id");
+            if ($check->num_rows > 0) {
+                $error = "This LRN is already enrolled in the selected School Year.";
             } else {
-                $error = "Insert failed: " . $conn->error;
+                $insertPupil = "INSERT INTO pupils 
+                    (teacher_id, lrn, last_name, first_name, middle_name, sex, birthdate, age,
+                     mother_tongue, ip_ethnicity, religion,
+                     house_no_street, barangay, municipality, province,
+                     father_name, mother_name, guardian_name, relationship_to_guardian,
+                     contact_number, learning_modality, remarks,
+                     sy_id, section_id, status)
+                    VALUES 
+                    ($teacher_id,'$lrn','$last_name','$first_name','$middle_name','$sex','$birthdate',$age,
+                     '$mother_tongue','$ip_ethnicity','$religion',
+                     '$house_no_street','$barangay','$municipality','$province',
+                     '$father_name','$mother_name','$guardian_name','$relationship_to_guardian',
+                     '$contact_number','$learning_modality','$remarks',
+                     $sy_id,$section_id,'$status')";
+                
+                if ($conn->query($insertPupil)) {
+                    $success = "Pupil enrolled successfully!";
+                    $formData = [];
+                } else {
+                    $error = "Insert failed: " . $conn->error;
+                }
             }
         }
     }
@@ -348,6 +353,8 @@ if (isset($_POST['submit'])) {
                         <select name="status" id="status" required>
                             <option value="enrolled" <?= (isset($formData['status']) && $formData['status']=="enrolled")?"selected":"" ?>>Enrolled</option>
                             <option value="dropped" <?= (isset($formData['status']) && $formData['status']=="dropped")?"selected":"" ?>>Dropped</option>
+                            <option value="promoted" <?= (isset($formData['status']) && $formData['status']=="promoted")?"selected":"" ?>>Promoted</option>
+                            <option value="retained" <?= (isset($formData['status']) && $formData['status']=="retained")?"selected":"" ?>>Retained</option>
                             <option value="transferred_in" <?= (isset($formData['status']) && $formData['status']=="transferred_in")?"selected":"" ?>>Transferred In</option>
                             <option value="transferred_out" <?= (isset($formData['status']) && $formData['status']=="transferred_out")?"selected":"" ?>>Transferred Out</option>
                         </select>

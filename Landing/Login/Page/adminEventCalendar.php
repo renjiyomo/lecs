@@ -14,7 +14,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Event Calendar</title>
+  <title>Event Calendar | LECS Online Student Grading System</title>
   <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/eventCalendar.css">

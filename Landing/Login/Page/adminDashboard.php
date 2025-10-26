@@ -1,9 +1,7 @@
 <?php 
-// adminDashboard.php
 include 'lecs_db.php';
 session_start();
 
-// Restrict access to admin only
 if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
     header("Location: /lecs/Landing/Login/login.php");
     exit;
@@ -11,7 +9,6 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 
 $teacher_id = intval($_SESSION['teacher_id']);
 
-// Fetch teacher details to get the name
 $stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id = ?");
 $stmt->bind_param("i", $teacher_id);
 $stmt->execute();
@@ -19,12 +16,10 @@ $teacher = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 $teacherName = implode(' ', array_filter([$teacher['first_name'], $teacher['middle_name'], $teacher['last_name']]));
 
-// Basic counts
 $studentCount = (int)$conn->query("SELECT COUNT(*) AS total FROM pupils")->fetch_assoc()['total'];
 $teacherCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type = 't'")->fetch_assoc()['total'];
 $nonTeachingCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type = 'a'")->fetch_assoc()['total'];
 
-// All school years (ordered by start_date if you have that column in school_years)
 $allYearsQuery = $conn->query("
     SELECT school_year, start_date, end_date
     FROM school_years
@@ -40,7 +35,6 @@ while ($row = $allYearsQuery->fetch_assoc()) {
     ];
 }
 
-// Enrolled per year
 $enrollmentData = $conn->query("
     SELECT sy.school_year, COUNT(p.pupil_id) AS total
     FROM pupils p
@@ -50,7 +44,6 @@ $enrollmentData = $conn->query("
     ORDER BY sy.start_date
 ");
 
-// Dropped per year
 $droppedData = $conn->query("
     SELECT sy.school_year, COUNT(p.pupil_id) AS total
     FROM pupils p
@@ -60,7 +53,6 @@ $droppedData = $conn->query("
     ORDER BY sy.start_date
 ");
 
-// Gender counts per year (ensure we cast to ints)
 $genderPerYearQuery = $conn->query("
     SELECT sy.school_year, p.sex, COUNT(*) AS total
     FROM pupils p
@@ -72,13 +64,12 @@ $genderPerYear = [];
 while ($row = $genderPerYearQuery->fetch_assoc()) {
     $year = $row['school_year'];
     $sexRaw = strtolower(trim($row['sex'] ?? ''));
-    // Normalize sex to male/female
+
     if (strpos($sexRaw, 'm') === 0) {
         $sex = 'male';
     } elseif (strpos($sexRaw, 'f') === 0) {
         $sex = 'female';
     } else {
-        // skip unknown
         continue;
     }
     if (!isset($genderPerYear[$year])) {
@@ -87,7 +78,6 @@ while ($row = $genderPerYearQuery->fetch_assoc()) {
     $genderPerYear[$year][$sex] = (int)$row['total'];
 }
 
-// Overall gender totals
 $genderData = $conn->query("
     SELECT sex, COUNT(*) AS total
     FROM pupils
@@ -104,7 +94,6 @@ while ($row = $genderData->fetch_assoc()) {
     }
 }
 
-// Build arrays for enrolled/dropped charts (ensures integer values and consistent order with $allYears)
 $studentsByYear = array_fill(0, count($allYears), 0);
 $enrollmentMap = [];
 while ($row = $enrollmentData->fetch_assoc()) {
@@ -123,7 +112,6 @@ foreach ($allYears as $i => $year) {
     $droppedByYear[$i] = $droppedMap[$year] ?? 0;
 }
 
-// Compute dropout rates (DEPED Simple Dropout Rate: dropped / total_enrolled * 100)
 $dropoutRatesByYear = array_fill(0, count($allYears), 0);
 $dropoutRatesMap = [];
 foreach ($allYears as $i => $year) {
@@ -135,7 +123,6 @@ foreach ($allYears as $i => $year) {
     $dropoutRatesMap[$year] = $rate;
 }
 
-// Transfer in and out per year
 $transferQuery = $conn->query("SELECT remarks FROM pupils WHERE remarks <> ''");
 $transferInMap = array_fill_keys($allYears, 0);
 $transferOutMap = array_fill_keys($allYears, 0);
@@ -179,7 +166,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LECS GIS</title>
+    <title>LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/sidebar.css">

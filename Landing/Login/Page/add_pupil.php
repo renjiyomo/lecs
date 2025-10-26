@@ -102,7 +102,7 @@ if (isset($_POST['submit'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Pupil</title>
+<title>Add Pupil | LECS Online Student Grading System</title>
 <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
 <link href="css/adminAddPupil.css" rel="stylesheet">
 <link rel="stylesheet" href="css/sidebar.css">

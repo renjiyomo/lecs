@@ -160,7 +160,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+    <title>Edit Profile | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link href="css/sidebar.css" rel="stylesheet">
     <link href="css/adminAddTeacher.css" rel="stylesheet">
@@ -168,7 +168,7 @@ $stmt->close();
 </head>
 <body class="light">
 <div class="container">
-    <?php include 'teacherSidebar.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
     <div class="main-content">
         <div class="header">

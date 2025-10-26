@@ -15,7 +15,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade Levels</title>
+    <title>Grade Levels | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/adminGradeLevel.css">
     <link rel="stylesheet" href="css/sidebar.css">

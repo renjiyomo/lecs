@@ -82,7 +82,7 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LECS SIS - Admin Profile</title>
+    <title>Profile | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/all.min.css">

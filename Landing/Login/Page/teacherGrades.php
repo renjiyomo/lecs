@@ -287,7 +287,7 @@ usort($pupils, function($a, $b) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Grades of Pupils</title>
+    <title>Grades of Pupils | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/adminGrades.css">
     <link rel="stylesheet" href="css/sidebar.css">

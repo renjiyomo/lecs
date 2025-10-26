@@ -240,7 +240,7 @@ $stmt->close();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Personnel</title>
+<title>Edit Personnel | LECS Online Student Grading System</title>
 <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
 <link href="css/sidebar.css" rel="stylesheet">
 <link href="css/adminAddTeacher.css" rel="stylesheet">

@@ -55,7 +55,7 @@ $address = $hasValidAddress ? implode(", ", $addressParts) : "No address provide
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LECS SIS - Pupil Details</title>
+    <title>Pupil Details | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/pupilsProfile.css">
     <link rel="stylesheet" href="css/all.min.css">

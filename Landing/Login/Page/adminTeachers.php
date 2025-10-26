@@ -150,7 +150,7 @@ if (!empty($types)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>List of Personnel</title>
+  <title>List of Personnel | LECS Online Student Grading System</title>
   <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
   <link href="css/sidebar.css" rel="stylesheet">
   <link href="css/adminTeachers.css" rel="stylesheet">

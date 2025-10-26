@@ -67,7 +67,7 @@ while ($g = $g_res->fetch_assoc()) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Grades</title>
+    <title>Grades of Pupil | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/editGrades.css">
     <link rel="stylesheet" href="css/sidebar.css">

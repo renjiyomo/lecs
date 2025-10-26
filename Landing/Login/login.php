@@ -86,7 +86,7 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | LECS Online Student Grading System</title>
     <link rel="icon" href="image/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="css/all.min.css">

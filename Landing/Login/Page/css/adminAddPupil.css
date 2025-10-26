@@ -21,12 +21,12 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-body.light {
+:root.light {
     background-color: var(--background-light);
     color: var(--text-light);
 }
 
-body.dark {
+:root.dark {
     background-color: var(--background-dark);
     color: var(--text-dark);
 }
@@ -80,7 +80,7 @@ fieldset {
     
 }
 
-body.dark fieldset {
+:root.dark fieldset {
     border-color: var(--border-dark);
     background-color: var(--card-dark);
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
@@ -123,10 +123,10 @@ select {
     transition: border 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
-body.dark input[type="text"],
-body.dark input[type="number"],
-body.dark input[type="date"],
-body.dark select {
+:root.dark input[type="text"],
+:root.dark input[type="number"],
+:root.dark input[type="date"],
+:root.dark select {
     background-color: var(--input-bg-dark);
     border-color: var(--border-dark);
     color: var(--text-dark);
@@ -227,12 +227,12 @@ select:focus {
     transform: translateY(-1px);
 }
 
-body.dark .import-btn {
+:root.dark .import-btn {
     background-color: #1e40af;
     color: #ffffff;
 }
 
-body.dark .import-btn:hover {
+:root.dark .import-btn:hover {
     background-color: #1e3a8a;
 }
 
@@ -265,7 +265,7 @@ body.dark .import-btn:hover {
     transition: all 0.3s ease;
 }
 
-body.dark .modal-content { background-color: var(--card-dark); }
+:root.dark .modal-content { background-color: var(--card-dark); }
 
 .modal-content h2 {
     font-size: 22px;
@@ -294,9 +294,9 @@ body.dark .modal-content { background-color: var(--card-dark); }
     font-size: 14px;
 }
 
-body.dark .import-form select, 
-body.dark .import-form input[type="file"] {
-    background-color: var(--inpu    t-bg-dark);
+:root.dark .import-form select, 
+:root.dark .import-form input[type="file"] {
+    background-color: var(--input-bg-dark);
     border-color: var(--border-dark);
     color: var(--text-dark);
 }
@@ -314,7 +314,7 @@ body.dark .import-form input[type="file"] {
     background-color: #e2e8f0;
 }
 
-body.dark .custom-file-upload {
+:root.dark .custom-file-upload {
     background-color: #4755699a;
     color: var(--text-dark);
 }
@@ -323,12 +323,12 @@ body.dark .custom-file-upload {
     cursor: pointer;
 }
 
-body.dark .sf1-file{
+:root.dark .sf1-file{
     background-color: var(--input-bg-dark);
     cursor: pointer;
 }
 
-body.dark .custom-file-upload:hover {
+:root.dark .custom-file-upload:hover {
     background-color: #5f6f85;
 }
 
@@ -361,12 +361,12 @@ body.dark .custom-file-upload:hover {
 
 .btn-cancel:hover { background: #d1d5db; }
 
-body.dark .btn-cancel {
+:root.dark .btn-cancel {
     background: #334155;
     color: #f9fafb;
 }
 
-body.dark .btn-cancel:hover { background: #475569; }
+:root.dark .btn-cancel:hover { background: #475569; }
 
 .btn-force {
     background: linear-gradient(135deg, #4a90e2, #357ABD);
@@ -385,7 +385,7 @@ body.dark .btn-cancel:hover { background: #475569; }
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-body.dark .btn-force {
+:root.dark .btn-force {
     background: linear-gradient(135deg, #60a5fa, #3b82f6);
 }
 
@@ -417,12 +417,12 @@ body.dark .btn-force {
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-body.dark .btn-okay {
+:root.dark .btn-okay {
     background: #2e7d32;
     color: #f9fafb;
 }
 
-body.dark .btn-okay:hover {
+:root.dark .btn-okay:hover {
     background: #256628;
 }
 

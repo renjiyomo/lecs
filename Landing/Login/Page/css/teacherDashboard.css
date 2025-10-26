@@ -34,12 +34,12 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-body.light .main-content {
+:root.light .main-content {
     background-color: var(--background-light);
     color: var(--text-light);
 }
 
-body.dark .main-content {
+:root.dark .main-content {
     background-color: var(--background-dark);
     color: var(--text-dark);
 }
@@ -70,12 +70,12 @@ p {
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
-body.light .card {
+:root.light .card {
     background-color: var(--card-light);
     color: var(--text-light);
 }
 
-body.dark .card {
+:root.dark .card {
     background-color: var(--card-dark);
     color: var(--text-dark);
 }
@@ -116,22 +116,22 @@ body.dark .card {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.light .sy-select select {
+:root.light .sy-select select {
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
 
-body.light .sy-select select:hover {
+:root.light .sy-select select:hover {
     background-color: var(--hover-light);
     border-color: var(--primary-color);
 }
 
-body.dark .sy-select select {
+:root.dark .sy-select select {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
 
-body.dark .sy-select select:hover {
+:root.dark .sy-select select:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
@@ -150,12 +150,12 @@ body.dark .sy-select select:hover {
     text-align: left;
 }
 
-body.light .pupil-table {
+:root.light .pupil-table {
     background-color: var(--card-light);
     color: var(--text-light);
 }
 
-body.dark .pupil-table {
+:root.dark .pupil-table {
     background-color: var(--card-dark);
     color: var(--text-dark);
 }
@@ -165,7 +165,7 @@ body.dark .pupil-table {
     color: var(--text-light);
 }
 
-body.dark .pupil-table thead {
+:root.dark .pupil-table thead {
     background-color: #374151;
     color: var(--text-dark);
 }
@@ -183,7 +183,7 @@ body.dark .pupil-table thead {
 
 }
 
-body.dark th {
+:root.dark th {
     background-color: #334155;
     border-bottom: 1px solid #202936;
 }

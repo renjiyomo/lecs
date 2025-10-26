@@ -108,8 +108,8 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
 
 <script>
 function setMode(mode) {
-    document.body.classList.remove('light', 'dark');
-    document.body.classList.add(mode);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(mode);
     document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
     if (mode === 'light') {
         document.querySelector('.light-mode').classList.add('active');
@@ -117,10 +117,16 @@ function setMode(mode) {
         document.querySelector('.dark-mode').classList.add('active');
     }
     localStorage.setItem('theme', mode);
+    // Update charts if they exist (for dashboard page)
+    if (typeof updateChartsTheme === 'function') {
+        updateChartsTheme();
+    }
 }
 
+// Sync toggle buttons with current theme on page load
 document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('theme') || 'light';
+    const savedMode = localStorage.getItem('theme') || 
+                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     setMode(savedMode);
 });
 

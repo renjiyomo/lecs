@@ -18,10 +18,23 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
     background-color: var(--background-color);
     color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Theme switching */
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+    --border: var(--border-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+    --border: var(--border-dark);
 }
 
 .container {
@@ -36,19 +49,6 @@ body {
     min-height: 100vh;
     background-color: var(--background-color);
     transition: background-color 0.3s, color 0.3s;
-}
-
-/* Theme switching */
-body.light {
-    --background-color: var(--background-light);
-    --text-color: var(--text-light);
-    --border: var(--border-light);
-}
-
-body.dark {
-    --background-color: var(--background-dark);
-    --text-color: var(--text-dark);
-    --border: var(--border-dark);
 }
 
 /* Heading */
@@ -95,32 +95,32 @@ h1 {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.light #schoolYear{
+:root.light #schoolYear{
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
 
-body.light #schoolYear:hover {
+:root.light #schoolYear:hover {
     background-color: var(--hover-light);
     border-color: var(--primary-color);
 }
 
-body.dark #schoolYear {
+:root.dark #schoolYear {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
 
-body.dark #schoolYear:hover {
+:root.dark #schoolYear:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
 
-body.dark #grade_level {
+:root.dark #grade_level {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
 
-body.dark #grade_level:hover {
+:root.dark #grade_level:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
@@ -137,22 +137,22 @@ body.dark #grade_level:hover {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.light #quarter{
+:root.light #quarter{
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
 
-body.light #quarter:hover {
+:root.light #quarter:hover {
     background-color: var(--hover-light);
     border-color: var(--primary-color);
 }
 
-body.dark #quarter {
+:root.dark #quarter {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
 
-body.dark #quarter:hover {
+:root.dark #quarter:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
@@ -168,22 +168,22 @@ body.dark #quarter:hover {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-body.light #section{
+:root.light #section{
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
 
-body.light #section:hover {
+:root.light #section:hover {
     background-color: var(--hover-light);
     border-color: var(--primary-color);
 }
 
-body.dark #section {
+:root.dark #section {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
 
-body.dark #section:hover {
+:root.dark #section:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
@@ -211,11 +211,11 @@ thead {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-body.light thead {
+:root.light thead {
     background-color: #d1d5db;
     color: var(--text-light);
 }
-body.dark thead {
+:root.dark thead {
     background-color: #374151;
     color: var(--text-dark);
 }
@@ -225,10 +225,10 @@ td, th {
     padding: 12px 10px;
     border-bottom: 1px solid var(--border);
 }
-body.light td {
+:root.light td {
     background-color: #f9fafb;
 }
-body.dark td, body.dark th {
+:root.dark td, :root.dark th {
     background-color: #334155;
 }
 
@@ -247,12 +247,12 @@ body.dark td, body.dark th {
 }
 
 /* Normal grades */
-body.light .grade-box {
+:root.light .grade-box {
     background-color: #e5e7eb;
     color: var(--text-light);
     border: 1px solid #d1d5db;
 }
-body.dark .grade-box {
+:root.dark .grade-box {
     background-color: #374151;
     color: var(--text-dark);
     border: 1px solid #4b5563;
@@ -266,13 +266,13 @@ body.dark .grade-box {
 }
 
 /* Not applicable subjects */
-body.light .grade-box.not-applicable {
+:root.light .grade-box.not-applicable {
     background-color: var(--not-applicable-light);
     color: var(--text-light);
     border: 1px dashed var(--not-applicable-border);
     opacity: 0.9; /* Increased opacity for visibility */
 }
-body.dark .grade-box.not-applicable {
+:root.dark .grade-box.not-applicable {
     background-color: var(--not-applicable-dark);
     color: var(--text-dark);
     border: 1px dashed var(--not-applicable-border);
@@ -350,12 +350,12 @@ body.dark .grade-box.not-applicable {
 }
 
 
-body.dark .given-date{
+:root.dark .given-date{
     background-color: var(--border-dark);
     color: white;
 }
 
-body.dark .modal-content{
+:root.dark .modal-content{
     background-color: var(--background-dark);
 }
 
@@ -363,6 +363,7 @@ body.dark .modal-content{
 position: relative;
 display: inline-block;
 }
+
 .dropdown-content {
 display: none;
 position: absolute;
@@ -374,27 +375,33 @@ border: 1px solid var(--sidebar-dark);
 border-radius: 4px;
 margin-top: 2px;
 }
+
 .dropdown-content a {
 color: black;
 padding: 12px 16px;
 text-decoration: none;
 display: block;
 }
+
 .dropdown-content a:hover {
 background-color: #f1f1f1;
 border-radius: 4px;
 }
-body.dark .dropdown-content {
+
+:root.dark .dropdown-content {
 background-color: var(--sidebar-dark);
 border: 1px solid var(--border-color);
 }
-body.dark .dropdown-content a {
+
+:root.dark .dropdown-content a {
 color: #fff;
 }
-body.dark .dropdown-content a:hover {
+
+:root.dark .dropdown-content a:hover {
 background-color: var(--text-light);
 border-radius: 4px;
 }
+
 .show {
 display: block;
 }

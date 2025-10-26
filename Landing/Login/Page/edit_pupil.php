@@ -171,19 +171,20 @@ if (isset($_POST['update'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Pupil | LECS Online Student Grading System</title>
-<link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
-<link href="css/adminAddPupil.css" rel="stylesheet">
-<link rel="stylesheet" href="css/sidebar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Pupil | LECS Online Student Grading System</title>
+    <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
+    <link href="css/adminAddPupil.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <?php include 'theme-script.php'; ?>
 <style>
     .status-date-group { display: flex; gap: 10px; align-items: center; }
     .status-date-group input[type="date"] { flex: 1; }
     #status_date_container { display: none; }
 </style>
 </head>
-<body class="light">
+<body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
     <div class="main-content">

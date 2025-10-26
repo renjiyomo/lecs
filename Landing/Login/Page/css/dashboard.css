@@ -18,6 +18,16 @@
     --org-grade-title-dark: #f87171;
 }
 
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -35,17 +45,17 @@ body {
     flex: 1;
     padding: 20px 40px;
     margin-left: 290px;
-    min-height: 100vh;   
+    min-height: 100vh;
     background-color: var(--background-color);
     transition: background-color 0.3s, color 0.3s;
 }
 
-body.light .main-content {
+:root.light .main-content {
     background-color: var(--background-light);
     color: var(--text-light);
 }
 
-body.dark .main-content {
+:root.dark .main-content {
     background-color: var(--background-dark);
     color: var(--text-dark);
 }
@@ -75,12 +85,12 @@ p {
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
 
-body.light .card {
+:root.light .card {
     background-color: var(--card-bg-light);
     color: var(--text-light);
 }
 
-body.dark .card {
+:root.dark .card {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
 }
@@ -98,6 +108,7 @@ body.dark .card {
     display: flex;
     gap: 20px;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 .chart-container {
@@ -109,12 +120,12 @@ body.dark .card {
     position: relative;
 }
 
-body.light .chart-container {
+:root.light .chart-container {
     background-color: var(--card-bg-light);
     color: var(--text-light);
 }
 
-body.dark .chart-container {
+:root.dark .chart-container {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
 }
@@ -131,13 +142,13 @@ select {
     font-size: 14px;
 }
 
-body.light select {
+:root.light select {
     background-color: var(--card-bg-light);
     color: var(--text-light);
     border: 1px solid #ccc;
 }
 
-body.dark select {
+:root.dark select {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
     border: 1px solid #555;
@@ -207,18 +218,16 @@ body.dark select {
     font-weight: bold;
 }
 
-.charts { display:flex; gap:20px; flex-wrap:wrap; }
-.chart-container { background:#fff; border-radius:8px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
 .enrolled-chart { width: 640px; }
 .gender-chart { width: 360px; }
 .transferred-chart { width: 640px; }
 .dropped-chart { width: 360px; }
-.small-chart { height: 260px; width: 260px; margin:0 auto; }
-.filter-container { text-align:right; margin-bottom:6px; }
-.gender-legend { text-align:center; margin-top:10px; }
-.gender-legend span { display:inline-block; margin:0 10px; font-weight:600; }
-.female-text { color:#7c3aed; } /* purple */
-.male-text { color:#06b6d4; } /* teal */
+.small-chart { height: 260px; width: 260px; margin: 0 auto; }
+.filter-container { text-align: right; margin-bottom: 6px; }
+.gender-legend { text-align: center; margin-top: 10px; }
+.gender-legend span { display: inline-block; margin: 0 10px; font-weight: 600; }
+.female-text { color: #7c3aed; }
+.male-text { color: #06b6d4; }
 
 .axis-title {
     font-weight: bold;
@@ -233,22 +242,21 @@ body.dark select {
     align-items: center;
     margin-top: 0;
 }
-        
+
 .download-select {
     padding: 3px;
     border-radius: 6px;
     font-size: 14px;
 }
-        
-body.light .download-select {
+
+:root.light .download-select {
     background-color: var(--card-bg-light);
     color: var(--text-light);
     border: 1px solid #ccc;
 }
-        
-body.dark .download-select {
+
+:root.dark .download-select {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
     border: 1px solid #555;
-        
 }

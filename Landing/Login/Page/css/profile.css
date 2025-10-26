@@ -26,48 +26,48 @@ body {
 }
 
 /* Light mode */
-body.light {
+:root.light {
     background-color: var(--background-light);
     color: var(--text-light);
 }
 
-body.light .input-row input {
+:root.light .input-row input {
     color: var(--text-light);
 }
 
-body.light .divider {
+:root.light .divider {
     border-top: 1px solid var(--divider-light);
 }
 
-body.light .back-arrow {
+:root.light .back-arrow {
     color: var(--text-light);
 }
 
-body.light .toggle-pass {
+:root.light .toggle-pass {
     color: var(--text-light);
 }
 
 /* Dark mode */
-body.dark {
+:root.dark {
     background-color: var(--background-dark);
     color: var(--text-dark);
 }
 
 
-body.dark .input-row input {
+:root.dark .input-row input {
     background: var(--input-dark);
     color: var(--text-dark);
 }
 
-body.dark .divider {
+:root.dark .divider {
     border-top: 1px solid var(--divider-dark);
 }
 
-body.dark .back-arrow {
+:root.dark .back-arrow {
     color: var(--text-dark);
 }
 
-body.dark .toggle-pass {
+:root.dark .toggle-pass {
     color: var(--text-dark);
 }
 
@@ -112,7 +112,7 @@ body.dark .toggle-pass {
     background-color: transparent;
 }
 
-body.dark .card{
+:root.dark .card{
     background-color: #243447;
     border: 1px solid #475569;
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
@@ -192,7 +192,7 @@ body.dark .card{
     align-items: center;
 }
 
-body.dark .acc-details{
+:root.dark .acc-details{
     border-bottom: 1px solid var(--divider-dark);
 }
 
@@ -296,7 +296,7 @@ body.dark .acc-details{
 }
 
 
-body.dark .address-box {
+:root.dark .address-box {
     color: #e2e8f0; 
 }
 
@@ -308,7 +308,7 @@ body.dark .address-box {
     border-radius: 8px;
 }
 
-body.dark .address-box i {
+:root.dark .address-box i {
     background-color: var(--input-dark);
 }
 

@@ -90,10 +90,10 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
     <link rel="icon" href="image/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="css/all.min.css">
+    <?php include 'theme-script.php'; ?> <!-- Add theme script -->
 </head>
-<body class="light">
+<body> <!-- Removed class="light" -->
   <div class="login-container">
-
     <div class="login-left">
       <div class="header-left">
         <img src="image/very slow logo.gif" alt="School Logo" class="logo-left">
@@ -168,27 +168,26 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
 
   <script>
     // Light/Dark toggle
-const body = document.body;
-const darkBtn = document.getElementById("darkModeBtn");
-const lightBtn = document.getElementById("lightModeBtn");
+    const darkBtn = document.getElementById("darkModeBtn");
+    const lightBtn = document.getElementById("lightModeBtn");
 
-function setMode(mode) {
-    body.classList.remove("light", "dark");
-    body.classList.add(mode);
-    darkBtn.style.display = mode === "dark" ? "none" : "inline-block";
-    lightBtn.style.display = mode === "light" ? "none" : "inline-block";
-    // Save the mode to localStorage
-    localStorage.setItem('theme', mode);
-}
+    function setMode(mode) {
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(mode);
+        darkBtn.style.display = mode === "dark" ? "none" : "inline-block";
+        lightBtn.style.display = mode === "light" ? "none" : "inline-block";
+        localStorage.setItem('theme', mode);
+    }
 
-darkBtn.onclick = () => setMode("dark");
-lightBtn.onclick = () => setMode("light");
+    darkBtn.onclick = () => setMode("dark");
+    lightBtn.onclick = () => setMode("light");
 
-// Apply the saved mode when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('theme') || 'light'; // Default to light if no preference is saved
-    setMode(savedMode);
-});
+    // Apply the saved mode when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedMode = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setMode(savedMode);
+    });
 
     // Modals
     const helpBtn = document.getElementById("helpBtn");

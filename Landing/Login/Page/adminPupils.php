@@ -25,8 +25,9 @@ $search = $_GET['search'] ?? '';
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link href="css/adminPupils.css" rel="stylesheet">
     <link rel="stylesheet" href="css/sidebar.css">
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 
 <div id="deleteModal" class="modal">
         <div class="modal-content">

@@ -1,5 +1,3 @@
-
-
 * {
   margin: 0;
   padding: 0;
@@ -7,58 +5,47 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+:root {
+  --background-light: #f4f4f9;
+  --background-dark: #1e293b;
+  --text-light: #111;
+  --text-dark: #fff;
+  --container-light: #fff;
+  --container-dark: #334155;
+  --right-light: #fafafa;
+  --right-dark: #334155;
+  --input-light: #eee;
+  --input-dark: #1e293b;
+  --forgot-light: #1a73e8;
+  --forgot-dark: #f9ef58;
+}
+
+:root.light {
+  --background: var(--background-light);
+  --text: var(--text-light);
+  --container-bg: var(--container-light);
+  --right-bg: var(--right-light);
+  --input-bg: var(--input-light);
+  --forgot-color: var(--forgot-light);
+}
+
+:root.dark {
+  --background: var(--background-dark);
+  --text: var(--text-dark);
+  --container-bg: var(--container-dark);
+  --right-bg: var(--right-dark);
+  --input-bg: var(--input-dark);
+  --forgot-color: var(--forgot-dark);
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: var(--background);
+  color: var(--text);
   transition: background 0.3s, color 0.3s;
-}
-
-body.light {
-  background: #f4f4f9;
-  color: #111;
-}
-
-body.light .login-container {
-  background: #fff;
-}
-
-body.light .login-right {
-  background: #fafafa;
-  color: #111;
-}
-
-body.light .input-box input {
-  background: #eee;
-  color: #111;
-}
-
-body.light .forgot {
-  color: #1a73e8;
-}
-
-body.dark {
-  background: #1e293b;
-  color: #fff;
-}
-
-body.dark .login-container {
-  background: #334155;
-}
-
-body.dark .login-right {
-  background: #334155;
-  color: #fff;
-}
-
-body.dark .input-box input {
-  background: #1e293b;
-  color: #fff;
-}
-
-body.dark .forgot {
-  color: #f9ef58;
 }
 
 .login-container {
@@ -68,7 +55,8 @@ body.dark .forgot {
   height: 620px;
   border-radius: 12px;
   overflow: hidden;
-  transition: background 0.3s, color 0.3s;
+  background: var(--container-bg);
+  transition: background 0.3s;
 }
 
 .login-left {
@@ -94,13 +82,13 @@ body.dark .forgot {
 .title-text h1 {
   font-size: 34px;
   font-weight: bold;
-  color: #000;
+  color: #000; /* Consider making this dynamic if needed */
 }
 
 .title-text p {
   font-size: 20px;
   font-weight: bold;
-  color: #000;
+  color: #000; /* Consider making this dynamic if needed */
 }
 
 .login-right {
@@ -111,6 +99,8 @@ body.dark .forgot {
   align-items: center;
   justify-content: center;
   position: relative;
+  background: var(--right-bg);
+  color: var(--text);
   transition: background 0.3s, color 0.3s;
 }
 
@@ -177,6 +167,8 @@ form {
   border-radius: 6px;
   border: none;
   outline: none;
+  background: var(--input-bg);
+  color: var(--text);
   transition: background 0.3s, color 0.3s;
 }
 
@@ -189,17 +181,6 @@ form {
   font-size: 14px;
 }
 
-.remember {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.remember input {
-  margin-right: 8px;
-}
-
 .btn {
   width: 100%;
   padding: 14px;
@@ -210,7 +191,7 @@ form {
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .btn:hover {
@@ -223,6 +204,7 @@ form {
   text-align: center;
   text-decoration: none;
   font-size: 14px;
+  color: var(--forgot-color);
   transition: color 0.3s;
 }
 
@@ -244,8 +226,8 @@ form {
 }
 
 .modal-content {
-  background: #fff;
-  color: #111;
+  background: var(--container-bg);
+  color: var(--text);
   padding: 25px;
   border-radius: 12px;
   width: 500px;
@@ -254,11 +236,6 @@ form {
   box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
   animation: fadeIn 0.3s ease-in-out;
   transition: background 0.3s, color 0.3s;
-}
-
-body.dark .modal-content {
-  background: #333;
-  color: #fff;
 }
 
 .modal-content h2 {

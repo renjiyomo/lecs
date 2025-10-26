@@ -10,20 +10,22 @@
     --border-color: #d1d5db;
 }
 
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+}
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     transition: background-color 0.3s, color 0.3s;
-}
-
-body.light {
-    background-color: var(--background-light);
-    color: var(--text-light);
-}
-
-body.dark {
-    background-color: var(--background-dark);
-    color: var(--text-dark);
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 .container {
@@ -76,9 +78,9 @@ body.dark {
     font-size: 14px;
 }
 
-body.dark .filters select, 
-body.dark .filters input,
-body.dark .header input[type="text"] {
+:root.dark .filters select, 
+:root.dark .filters input,
+:root.dark .header input[type="text"] {
     background-color: #334155;
     border-color: #475569;
     color: var(--text-dark);
@@ -93,7 +95,7 @@ table {
     font-size: 14px;
 }
 
-body.dark table {
+:root.dark table {
     background-color: var(--sidebar-dark);
 }
 
@@ -103,7 +105,7 @@ th, td {
     border-bottom: 1px solid var(--border-color);
 }
 
-body.dark th, body.dark td {
+:root.dark th, :root.dark td {
     border-color: #334155;
 }
 
@@ -113,7 +115,7 @@ th {
     
 }
 
-body.dark th {
+:root.dark th {
     background-color: #334155;
     border-bottom: 1px solid #202936;
 }
@@ -180,20 +182,20 @@ body.dark th {
 }
 
 /* Adapt for dark mode */
-body.dark .view-btn {
+:root.dark .view-btn {
     background-color: #4ade80; 
 
 }
-body.dark .view-btn:hover {
+:root.dark .view-btn:hover {
     background-color: #51d882;
 
 }
 
-body.dark .edit-btn {
+:root.dark .edit-btn {
     background: linear-gradient(135deg, #4a90e2, #357ABD);
 
 }
-body.dark .edit-btn:hover {
+:root.dark .edit-btn:hover {
     background-color: #1d4ed8;
 
 }
@@ -234,7 +236,7 @@ body.dark .edit-btn:hover {
             margin-top: 0;
         }
 
-body.dark .modal-content{
+:root.dark .modal-content{
     color: #fff;
     background-color: var(--background-dark);
 }

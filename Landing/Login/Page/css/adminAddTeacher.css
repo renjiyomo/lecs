@@ -16,20 +16,22 @@
     --modal-shadow-dark: rgba(0,0,0,0.4);
 }
 
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+}
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     transition: background-color 0.3s, color 0.3s;
-}
-
-body.light {
-    background-color: var(--background-light);
-    color: var(--text-light);
-}
-
-body.dark {
-    background-color: var(--background-dark);
-    color: var(--text-dark);
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 .container {
@@ -64,7 +66,7 @@ body.dark {
     margin-bottom: 20px;
 }
 
-body.dark .form-section {
+:root.dark .form-section {
     background-color: #243447;
     border: 1px solid #475569;
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
@@ -111,17 +113,17 @@ body.dark .form-section {
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
-body.dark .input-group input,
-body.dark .input-group select,
-body.dark .small-dropdown {
+:root.dark .input-group input,
+:root.dark .input-group select,
+:root.dark .small-dropdown {
     background-color: #1e293b;
     border-color: #475569;
     color: var(--text-dark);
 }
 
-body.dark .input-group input:focus,
-body.dark .input-group select:focus,
-body.dark .small-dropdown:focus {
+:root.dark .input-group input:focus,
+:root.dark .input-group select:focus,
+:root.dark .small-dropdown:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
@@ -135,7 +137,7 @@ body.dark .small-dropdown:focus {
     cursor: pointer;
 }
 
-body.dark .input-group select {
+:root.dark .input-group select {
     background-image: url("data:image/svg+xml;utf8,<svg fill='%23cbd5e1' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
 }
 
@@ -167,7 +169,7 @@ body.dark .input-group select {
     color: var(--primary-color);
 }
 
-body.dark .password-field i {
+:root.dark .password-field i {
     color: #cbd5e1;
 }
 
@@ -260,7 +262,7 @@ body.dark .password-field i {
     color: var(--text-light);
 }
 
-body.dark #with-account-section label {
+:root.dark #with-account-section label {
     color: var(--text-dark);
 }
 
@@ -288,14 +290,14 @@ body.dark #with-account-section label {
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
-body.dark #with-account-section select {
+:root.dark #with-account-section select {
     background-color: #1e293b;
     border-color: #475569;
     color: var(--text-dark);
     background-image: url("data:image/svg+xml;utf8,<svg fill='%23cbd5e1' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
 }
 
-body.dark #with-account-section select:focus {
+:root.dark #with-account-section select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
@@ -324,7 +326,7 @@ body.dark #with-account-section select:focus {
     transition: background-color 0.3s, color 0.3s;
 }
 
-body.dark .modal-content {
+:root.dark .modal-content {
     background: var(--modal-bg-dark);
     box-shadow: 0 4px 20px var(--modal-shadow-dark);
 }
@@ -336,7 +338,7 @@ body.dark .modal-content {
     color: var(--modal-error);
 }
 
-body.dark .modal-content h2 {
+:root.dark .modal-content h2 {
     color: #f87171;
 }
 
@@ -346,7 +348,7 @@ body.dark .modal-content h2 {
     color: var(--modal-text-light);
 }
 
-body.dark .modal-content p {
+:root.dark .modal-content p {
     color: var(--modal-text-dark);
 }
 
@@ -381,7 +383,7 @@ body.dark .modal-content p {
     transition: color 0.2s;
 }
 
-body.dark .info-icon {
+:root.dark .info-icon {
     color: #60a5fa;
 }
 
@@ -389,7 +391,7 @@ body.dark .info-icon {
     color: #1d4ed8;
 }
 
-body.dark .info-icon:hover {
+:root.dark .info-icon:hover {
     color: #93c5fd;
 }
 
@@ -401,7 +403,7 @@ body.dark .info-icon:hover {
     margin-top: 12px;
 }
 
-body.dark .principal-dates-section {
+:root.dark .principal-dates-section {
     background-color: #1e293b;
     border-color: #475569;
 }
@@ -424,7 +426,7 @@ body.dark .principal-dates-section {
     color: var(--text-light);
 }
 
-body.dark .input-with-label label {
+:root.dark .input-with-label label {
     color: var(--text-dark);
 }
 
@@ -437,7 +439,7 @@ body.dark .input-with-label label {
     transition: border-color 0.2s, background-color 0.2s;
 }
 
-body.dark .input-with-label input {
+:root.dark .input-with-label input {
     background-color: #1e293b;
     border-color: #475569;
     color: var(--text-dark);
@@ -449,6 +451,6 @@ body.dark .input-with-label input {
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
-body.dark .input-with-label input:focus {
+:root.dark .input-with-label input:focus {
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }

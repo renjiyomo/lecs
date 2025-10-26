@@ -86,8 +86,9 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/all.min.css">
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
 

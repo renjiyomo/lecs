@@ -238,15 +238,16 @@ $stmt->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Personnel | LECS Online Student Grading System</title>
-<link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
-<link href="css/sidebar.css" rel="stylesheet">
-<link href="css/adminAddTeacher.css" rel="stylesheet">
-<link href="css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Personnel | LECS Online Student Grading System</title>
+    <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
+    <link href="css/sidebar.css" rel="stylesheet">
+    <link href="css/adminAddTeacher.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
 

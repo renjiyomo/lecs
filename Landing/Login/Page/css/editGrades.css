@@ -47,13 +47,13 @@ body {
     color: var(--primary-hover);
 }
 
-body.light {
+:root.light {
     --background-color: var(--background-light);
     --text-color: var(--text-light);
     --border: var(--border-light);
 }
 
-body.dark {
+:root.dark {
     --background-color: var(--background-dark);
     --text-color: var(--text-dark);
     --border: var(--border-dark);
@@ -93,7 +93,8 @@ thead {
     background-color: var(--border-light);
     color: var(--text-light);
 }
-body.dark thead {
+
+:root.dark thead {
     background-color: #374151;
     color: var(--text-dark);
 }
@@ -110,16 +111,16 @@ td {
     padding: 12px;
     border-bottom: 1px solid var(--border);
 }
-body.light td {
+:root.light td {
     background-color: #ffffff;
 }
-body.dark td {
+:root.dark td {
     background-color: #1f2937;
 }
-body.light tr:nth-child(even) td {
+:root.light tr:nth-child(even) td {
     background-color: #f9fafb;
 }
-body.dark tr:nth-child(even) td {
+:root.dark tr:nth-child(even) td {
     background-color: #111827;
 }
 
@@ -135,11 +136,11 @@ input[type="number"] {
     font-size: 14px;
 }
 
-body.light input[type="number"] {
+:root.light input[type="number"] {
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
-body.dark input[type="number"] {
+:root.dark input[type="number"] {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
@@ -182,13 +183,13 @@ input[type="number"]:focus {
     box-sizing: border-box;
 }
 
-body.light .grade-box {
+:root.light .grade-box {
     background-color: #e5e7eb;
     color: var(--text-light);
     border: 1px solid #d1d5db;
 }
 
-body.dark .grade-box {
+:root.dark .grade-box {
     background-color: #374151;
     color: var(--text-dark);
     border: 1px solid #4b5563;
@@ -201,14 +202,14 @@ body.dark .grade-box {
     
 }
 
-body.light .grade-box.not-applicable {
+:root.light .grade-box.not-applicable {
     background-color: var(--not-applicable-light);
     color: var(--text-light);
     border: 1px dashed var(--not-applicable-border);
     opacity: 0.9;
     min-width: 70px;
 }
-body.dark .grade-box.not-applicable {
+:root.dark .grade-box.not-applicable {
     background-color: var(--not-applicable-dark);
     color: var(--text-dark);
     border: 1px dashed var(--not-applicable-border);
@@ -237,19 +238,19 @@ body.dark .grade-box.not-applicable {
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
 }
-body.light .sy-selection {
+:root.light .sy-selection {
     background-color: var(--card-light);
     border-color: var(--border-light);
 }
-body.light .sy-selection:hover {
+:root.light .sy-selection:hover {
     background-color: var(--hover-light);
     border-color: var(--primary-color);
 }
-body.dark .sy-selection {
+:root.dark .sy-selection {
     background-color: var(--card-dark);
     border-color: var(--border-dark);
 }
-body.dark .sy-selection:hover {
+:root.dark .sy-selection:hover {
     background-color: var(--hover-dark);
     border-color: var(--primary-color);
 }
@@ -287,12 +288,12 @@ body.dark .sy-selection:hover {
     transform: translateY(-1px);
 }
 
-body.dark .import-btn {
+:root.dark .import-btn {
     background-color: #1e40af;
     color: #ffffff;
 }
 
-body.dark .import-btn:hover {
+:root.dark .import-btn:hover {
     background-color: #1e3a8a;
 }
 
@@ -312,7 +313,7 @@ body.dark .import-btn:hover {
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-body.dark .export-btn {
+:root.dark .export-btn {
     background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
@@ -346,7 +347,7 @@ body.dark .export-btn {
     margin-top: 0;
 }
 
-body.dark .modal-content { background-color: var(--card-dark); }
+:root.dark .modal-content { background-color: var(--card-dark); }
 
 .modal-content h2 {
     font-size: 22px;
@@ -363,7 +364,7 @@ body.dark .modal-content { background-color: var(--card-dark); }
     font-size: 14px;
 }
 
-body.dark .import-form input[type="file"] {
+:root.dark .import-form input[type="file"] {
     background-color: var(--input-bg-dark);
     border-color: var(--border-dark);
     color: var(--text-dark);
@@ -382,12 +383,12 @@ body.dark .import-form input[type="file"] {
     background-color: #e2e8f0;
 }
 
-body.dark .custom-file-upload {
+:root.dark .custom-file-upload {
     background-color: #4755699a;
     color: var(--text-dark);
 }
 
-body.dark .custom-file-upload:hover {
+:root.dark .custom-file-upload:hover {
     background-color: #5f6f85;
 }
         

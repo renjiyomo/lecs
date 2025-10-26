@@ -38,12 +38,12 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-body.light .main-content {
+:root.light .main-content {
     background-color: var(--background-light);
     color: var(--text-light);
 }
 
-body.dark .main-content {
+:root.dark .main-content {
     background-color: var(--background-dark);
     color: var(--text-dark);
 }
@@ -62,12 +62,12 @@ h1 {
     position: relative;
 }
 
-body.light .chart-container {
+:root.light .chart-container {
     background-color: var(--card-bg-light);
     color: var(--text-light);
 }
 
-body.dark .chart-container {
+:root.dark .chart-container {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
 }
@@ -84,13 +84,13 @@ select {
     font-size: 14px;
 }
 
-body.light select {
+:root.light select {
     background-color: var(--card-bg-light);
     color: var(--text-light);
     border: 1px solid #ccc;
 }
 
-body.dark select {
+:root.dark select {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
     border: 1px solid #555;
@@ -113,7 +113,7 @@ body.dark select {
     color: var(--text-light);
 }
 
-body.dark .org-chart-container {
+:root.dark .org-chart-container {
     color: var(--text-dark);
 }
 
@@ -152,7 +152,7 @@ body.dark .org-chart-container {
     font-size: 14px;
 }
 
-body.dark .org-grade-title {
+:root.dark .org-grade-title {
     background-color: var(--org-bg-dark);
 }
 
@@ -168,7 +168,7 @@ body.dark .org-grade-title {
     border: 1px solid var(--org-card-bg-dark);
 }
 
-body.dark .org-card {
+:root.dark .org-card {
     background-color: var(--org-card-bg-dark);
     border: 1px solid var(--background-dark);
 }
@@ -191,7 +191,7 @@ body.dark .org-card {
     margin-bottom: 4px;
 }
 
-body.dark .org-name {
+:root.dark .org-name {
     color: var(--text-dark);
     background-color: var(--card-bg-dark);
 }
@@ -203,8 +203,8 @@ body.dark .org-name {
     margin: 0;
 }
 
-body.dark .org-position,
-body.dark .org-section {
+:root.dark .org-position,
+:root.dark .org-section {
     color: #a0aec0;
 }
 
@@ -212,7 +212,7 @@ body.dark .org-section {
     color: var(--text-light);
 }
 
-body.dark .org-no-teachers {
+:root.dark .org-no-teachers {
     color: var(--text-dark);
 }
 
@@ -221,7 +221,7 @@ body.dark .org-no-teachers {
     color: var(--org-title-light);
 }
 
-body.dark .org-non-teaching-title {
+:root.dark .org-non-teaching-title {
     color: var(--org-title-dark);
 }
 

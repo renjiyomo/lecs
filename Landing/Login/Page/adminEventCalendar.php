@@ -18,8 +18,9 @@ $teacher_id = intval($_SESSION['teacher_id']);
   <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/eventCalendar.css">
+  <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
   <div class="container">
     <?php include 'sidebar.php'; ?>
 

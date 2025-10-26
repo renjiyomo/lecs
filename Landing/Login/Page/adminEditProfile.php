@@ -165,8 +165,9 @@ $stmt->close();
     <link href="css/sidebar.css" rel="stylesheet">
     <link href="css/adminAddTeacher.css" rel="stylesheet">
     <link href="css/all.min.css" rel="stylesheet">
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
 

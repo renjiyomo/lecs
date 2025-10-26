@@ -19,12 +19,12 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-body.light {
+:root.light {
   background-color: var(--background-light);
   color: var(--text-light);
 }
 
-body.dark {
+:root.dark {
   background-color: var(--background-dark);
   color: var(--text-dark);
 }
@@ -67,7 +67,7 @@ body.dark {
   box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
 }
 
-body.dark .header input[type="text"] {
+:root.dark .header input[type="text"] {
   background-color: #334155;
   border-color: #475569;
   color: var(--text-dark);
@@ -110,7 +110,7 @@ body.dark .header input[type="text"] {
   outline: none;
 }
 
-body.dark .filter-form select {
+:root.dark .filter-form select {
   background: #334155;
   border-color: #475569;
   color: var(--text-dark);
@@ -135,7 +135,7 @@ table {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-body.dark table {
+:root.dark table {
   background-color: var(--sidebar-dark);
 }
 
@@ -145,7 +145,7 @@ th, td {
   border-bottom: 1px solid var(--border-color);
 }
 
-body.dark th, body.dark td {
+:root.dark th, :root.dark td {
   border-color: #334155;
 }
 
@@ -156,7 +156,7 @@ th {
   text-transform: uppercase;
 }
 
-body.dark th {
+:root.dark th {
   background-color: #334155;
   border-bottom: 1px solid #202936;
 }
@@ -165,7 +165,7 @@ tbody tr:hover {
   background-color: #f9fafb;
 }
 
-body.dark tbody tr:hover {
+:root.dark tbody tr:hover {
   background-color: #334155;
 }
 
@@ -233,7 +233,7 @@ body.dark tbody tr:hover {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-body.dark .modal-content {
+:root.dark .modal-content {
   background: #1e293b;
   color: white;
 }
@@ -263,7 +263,7 @@ body.dark .modal-content {
   color: #666;
 }
 
-body.dark .close-btn {
+:root.dark .close-btn {
   color: #f1f5f9;
 }
 
@@ -295,8 +295,8 @@ body.dark .close-btn {
   outline: none;
 }
 
-body.dark .modal input[type="text"],
-body.dark .modal select {
+:root.dark .modal input[type="text"],
+:root.dark .modal select {
   background: #334155;
   border-color: #475569;
   color: var(--text-dark);
@@ -392,8 +392,8 @@ body.dark .modal select {
   outline: none;
 }
 
-body.dark .section-name-container select,
-body.dark .section-name-container input[type="text"] {
+:root.dark .section-name-container select,
+:root.dark .section-name-container input[type="text"] {
   background: #334155;
   border-color: #475569;
   color: var(--text-dark);
@@ -404,7 +404,7 @@ body.dark .section-name-container input[type="text"] {
   color: #6b7280;
 }
 
-body.dark .section-name-container input[type="text"]::placeholder {
+:root.dark .section-name-container input[type="text"]::placeholder {
   color: #9ca3af;
 }
 
@@ -438,16 +438,16 @@ body.dark .section-name-container input[type="text"]::placeholder {
 }
 
 
-body.dark .dropdown-content {
+:root.dark .dropdown-content {
     background-color: var(--sidebar-dark);
     border: 1px solid var(--border-color);
 }
 
-body.dark .dropdown-content a {
+:root.dark .dropdown-content a {
     color: #fff;
 }
 
-body.dark .dropdown-content a:hover {
+:root.dark .dropdown-content a:hover {
     background-color: var(--text-light);
     border-radius: 4px;
 }

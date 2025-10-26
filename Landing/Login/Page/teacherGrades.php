@@ -291,8 +291,9 @@ usort($pupils, function($a, $b) {
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/adminGrades.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
 

@@ -172,12 +172,9 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     <link rel="stylesheet" href="css/sidebar.css">
     <script src="js/chart.js"></script>
     <script src="api/dom-to-image.min.js"></script>
-    <style>
-
-        
-    </style>
+    <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
 
 <div class="container">
     <?php include 'sidebar.php'; ?>
@@ -454,8 +451,8 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     });
 
     function updateChartsTheme() {
-        const isDark = document.body.classList.contains('dark');
-        const textColor = isDark ? '#ffffff' : '#000000';
+        const isDark = document.documentElement.classList.contains('dark');
+        const textColor = isDark ? '#f1f5f9' : '#1f2937'; // Match --text-dark and --text-light
         const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
         const tooltipBg = isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)';
 

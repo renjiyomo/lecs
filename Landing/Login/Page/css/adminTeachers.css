@@ -10,20 +10,22 @@
     --border-color: #d1d5dbcb;
 }
 
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+}
+
 body {
     margin: 0;
-   font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
-}
-
-body.light {
-    background-color: var(--background-light);
-    color: var(--text-light);
-}
-
-body.dark {
-    background-color: var(--background-dark);
-    color: var(--text-dark);
 }
 
 .container {
@@ -71,8 +73,8 @@ body.dark {
     margin-right: 5px;
 }
 
-body.dark .filters select,
-body.dark .header input[type="text"] {
+:root.dark .filters select,
+:root.dark .header input[type="text"] {
     background-color: #334155;
     border-color: #475569;
     color: var(--text-dark);
@@ -109,7 +111,7 @@ table {
     overflow: hidden;
 }
 
-body.dark table {
+:root.dark table {
     background-color: var(--sidebar-dark);
 }
 
@@ -119,7 +121,7 @@ th, td {
     border-bottom: 1px solid var(--border-color);
 }
 
-body.dark th, body.dark td {
+:root.dark th, :root.dark td {
     border-color: #334155;
 }
 
@@ -128,7 +130,7 @@ th {
     font-weight: 600;
 }
 
-body.dark th {
+:root.dark th {
     background-color: #334155;
     border-bottom: 1px solid #202936;
 }
@@ -249,7 +251,7 @@ body.dark th {
   border: 1px solid #ef4444;
 }
 
-body.dark .modal-content {
+:root.dark .modal-content {
   background: #1e293b;
   color: white;
 }
@@ -284,16 +286,16 @@ body.dark .modal-content {
 }
 
 
-body.dark .dropdown-content {
+:root.dark .dropdown-content {
     background-color: var(--sidebar-dark);
     border: 1px solid var(--border-color);
 }
 
-body.dark .dropdown-content a {
+:root.dark .dropdown-content a {
     color: #fff;
 }
 
-body.dark .dropdown-content a:hover {
+:root.dark .dropdown-content a:hover {
     background-color: var(--text-light);
     border-radius: 4px;
 }

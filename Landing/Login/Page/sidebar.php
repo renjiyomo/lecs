@@ -105,7 +105,7 @@ $full_name = trim($adminData['first_name'] . ' ' . $middle_initial . ' ' . $admi
 
     <div class="sidebar-bottom">
         <div class="toggle-mode">
-            <button class="toggle-btn light-mode active" onclick="setMode('light')">☀ Light</button>
+            <button class="toggle-btn light-mode" onclick="setMode('light')">☀ Light</button>
             <button class="toggle-btn dark-mode" onclick="setMode('dark')">🌙 Dark</button>
         </div>
         <div class="profile-menu">
@@ -128,23 +128,29 @@ $full_name = trim($adminData['first_name'] . ' ' . $middle_initial . ' ' . $admi
 
 <script>
 function setMode(mode) {
-    document.body.classList.remove('light', 'dark');
-    document.body.classList.add(mode);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(mode);
     document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
     if (mode === 'light') {
         document.querySelector('.light-mode').classList.add('active');
     } else {
         document.querySelector('.dark-mode').classList.add('active');
     }
-
     localStorage.setItem('theme', mode);
+    // Update charts if they exist (for dashboard page)
+    if (typeof updateChartsTheme === 'function') {
+        updateChartsTheme();
+    }
 }
 
+// Sync toggle buttons with current theme on page load
 document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('theme') || 'light'; 
+    const savedMode = localStorage.getItem('theme') || 
+                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     setMode(savedMode);
 });
 
+// Sidebar functionality (unchanged)
 const classInfoLink = document.getElementById("classInfoLink");
 const classInfoSubmenu = document.getElementById("classInfoSubmenu");
 const classInfoIcon = document.getElementById("classInfoIcon");
@@ -154,7 +160,6 @@ classInfoLink.addEventListener("click", function(e) {
     classInfoSubmenu.classList.toggle("show");
     classInfoIcon.classList.toggle("fa-angle-right");
     classInfoIcon.classList.toggle("fa-angle-down");
-
     if (classInfoSubmenu.classList.contains("show")) {
         classInfoSubmenu.style.maxHeight = classInfoSubmenu.scrollHeight + "px";
     } else {

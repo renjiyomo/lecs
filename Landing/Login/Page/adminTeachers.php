@@ -154,8 +154,9 @@ if (!empty($types)) {
   <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
   <link href="css/sidebar.css" rel="stylesheet">
   <link href="css/adminTeachers.css" rel="stylesheet">
+  <?php include 'theme-script.php'; ?>
 </head>
-<body class="light">
+<body>
   <div class="container">
     <?php include 'sidebar.php'; ?>
     <div class="main-content">

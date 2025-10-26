@@ -19,12 +19,12 @@ body {
 }
 
 /* Theme Colors */
-body.light .main-content {
+:root.light .main-content {
   background: #f4f4f5;
   color: #111827;
 }
 
-body.dark .main-content {
+:root.dark .main-content {
   background: #1E293B;
   color: #F9FAFB;
 }
@@ -58,7 +58,7 @@ body.dark .main-content {
   color: #111827;
 }
 
-body.dark .controls input {
+:root.dark .controls input {
   background: #334155;
   border: 1px solid #475569;
   color: #F9FAFB;
@@ -92,7 +92,7 @@ body.dark .controls input {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-body.dark #calendar {
+:root.dark #calendar {
   background: #334155;
   color: #F9FAFB;
 }
@@ -122,7 +122,7 @@ body.dark #calendar {
   animation: fadeIn 0.25s ease;
 }
 
-body.dark .modal-content {
+:root.dark .modal-content {
   background: #1E293B;
   color: #F9FAFB;
 }
@@ -146,8 +146,8 @@ body.dark .modal-content {
   transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-body.dark .modal-content input,
-body.dark .modal-content textarea {
+:root.dark .modal-content input,
+:root.dark .modal-content textarea {
   background: #334155;
   border: 1px solid #475569;
   color: #F9FAFB;
@@ -229,7 +229,7 @@ label {
   display: none;
 }
 
-body.dark .fc-tooltip {
+:root.dark .fc-tooltip {
   background: #f9fafb;
   color: #111827;
 }

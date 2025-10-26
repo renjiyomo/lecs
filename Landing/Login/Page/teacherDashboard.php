@@ -91,7 +91,7 @@ $has_more = $total_pupils > ($page * 10);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LECS SIS - Teacher Dashboard</title>
+    <title>LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/teacherDashboard.css">
     <link rel="stylesheet" href="css/sidebar.css">

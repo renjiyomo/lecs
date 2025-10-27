@@ -44,7 +44,7 @@ $sql = "SELECT p.pupil_id, p.first_name, p.last_name, p.middle_name, p.lrn,
         FROM pupils p
         JOIN sections s ON p.section_id = s.section_id
         JOIN grade_levels g ON s.grade_level_id = g.grade_level_id
-        WHERE p.sy_id = ? AND p.section_id = ? AND p.status = 'enrolled'
+        WHERE p.sy_id = ? AND p.section_id = ?
         ORDER BY p.last_name ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $sy_id, $section_id);
@@ -52,7 +52,7 @@ $stmt->execute();
 $pupils = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if (empty($pupils)) {
-    die("No enrolled pupils found.");
+    die("No pupils found.");
 }
 
 $formatted_date = date('jS \d\a\y \o\f F Y', strtotime($issue_date));
@@ -100,7 +100,7 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
             // Blank out unused slot
             $templateProcessor->setValue("name{$slot}", "____________________________");
             $templateProcessor->setValue("lrn{$slot}", "_______________");
-            $templateProcessor->setValue("grade_level{$slot}", htmlspecialchars($p['level_name']));
+            $templateProcessor->setValue("grade_level{$slot}", "");
             $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
             $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
             $templateProcessor->setValue("principal{$slot}", $principal_full_name);

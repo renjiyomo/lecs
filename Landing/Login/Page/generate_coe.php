@@ -74,7 +74,7 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
 
     // Determine filename based on pupils' last names
     $last_names = array_map(function($p) { return $p['last_name']; }, $pupils_in_file);
-    $filename = "COE_" . implode("_", $last_names) . ".docx";
+    $filename = "COE_" . implode("_&_", $last_names) . ".docx";
     $tempFile = sys_get_temp_dir() . "/coe_" . uniqid() . ".docx";
     copy($templateFile, $tempFile);
     $temp_files[] = [$tempFile, $filename];

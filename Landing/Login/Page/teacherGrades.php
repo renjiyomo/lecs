@@ -1,6 +1,7 @@
 <?php
 include 'lecs_db.php';
 session_start();
+date_default_timezone_set('Asia/Manila');
 
 // Restrict access to teachers only
 if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {

@@ -300,6 +300,11 @@ usort($pupils, function($a, $b) {
     <div class="main-content">
         <h1>Grades of Pupils</h1>
 
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="error-message"><?= htmlspecialchars($_SESSION['message']) ?></div>
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+
         <?php if (isset($no_school_years_message)): ?>
             <div class="error-message"><?= htmlspecialchars($no_school_years_message) ?></div>
         <?php else: ?>
@@ -337,6 +342,7 @@ usort($pupils, function($a, $b) {
                     <h2>Select Certificate Issuance Date</h2>
                     <form action="generate_certificates.php" method="post">
                         <input type="hidden" name="sy_id" value="<?= htmlspecialchars($current_sy) ?>">
+                        <input type="hidden" name="quarter" value="<?= htmlspecialchars($current_quarter) ?>">
                         <label for="issue_date">Issuance Date:</label>
                         <input class="given-date" type="date" id="issue_date" name="issue_date" value="<?= date('Y-m-d') ?>" required>
                         <button class="generate-certi" type="submit">Generate</button>

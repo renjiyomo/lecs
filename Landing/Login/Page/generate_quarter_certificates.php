@@ -149,7 +149,11 @@ foreach ($pupils as $p) {
     }
 }
 
-if(!$honors_pupils){ die("No pupils with honors found for this quarter."); }
+if(!$honors_pupils){ 
+    $_SESSION['message'] = "No pupils with honors found for this quarter.";
+    header("Location: teacherGrades.php?sy_id=$sy_id&quarter=$quarter");
+    exit;
+}
 
 usort($honors_pupils,function($a,$b){ return (float)$b['average']<=> (float)$a['average']; });
 

@@ -446,3 +446,82 @@ display: block;
 .sf9-btn:hover {
     background: linear-gradient(135deg, #4a91e2e0, #3579bde2);
 }
+
+.error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(243, 244, 246, 0.95);
+    border: 1px solid rgba(229, 231, 235, 0.8);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    z-index: 1000;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    animation: popIn 0.4s ease-out forwards, popOut 0.4s ease-in 2s forwards;
+}
+
+@keyframes popIn {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes popOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+}
+
+:root.dark .error-message {
+    background-color: rgb(30, 41, 59);
+    border-color: rgba(71, 85, 105, 0.8);
+    color: #f1f5f9;
+}
+
+.error-message::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    opacity: 0;
+    animation: backdropFadeIn 0.4s ease-out forwards;
+    border-radius: 12px;
+}
+
+@keyframes backdropFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.error-message.fade-out::before {
+    animation: backdropFadeOut 0.4s ease-in forwards;
+}
+
+@keyframes backdropFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

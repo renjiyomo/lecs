@@ -13,6 +13,7 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 $teacher_id = intval($_SESSION['teacher_id']);
 $sy_id      = isset($_POST['sy_id']) ? intval($_POST['sy_id']) : 0;
 $issue_date = isset($_POST['issue_date']) ? $_POST['issue_date'] : date('Y-m-d');
+$quarter = isset($_POST['quarter']) ? $_POST['quarter'] : '';
 
 if (!DateTime::createFromFormat('Y-m-d', $issue_date)) {
     die("Invalid date format.");
@@ -155,7 +156,13 @@ foreach ($pupils as $p) {
     }
 }
 
-if(!$honors_pupils){ die("No pupils with honors found."); }
+if(!$honors_pupils){ 
+    $_SESSION['message'] = "No pupils with honors found.";
+    $redirect = "teacherGrades.php?sy_id=$sy_id";
+    if ($quarter) $redirect .= "&quarter=$quarter";
+    header("Location: $redirect");
+    exit;
+}
 
 usort($honors_pupils, function($a, $b) {
     if ($a['rounded_avg'] == $b['rounded_avg']) {

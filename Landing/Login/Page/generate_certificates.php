@@ -173,7 +173,7 @@ usort($honors_pupils, function($a, $b) {
 
 $formatted_date = date('jS \d\a\y \o\f F Y',strtotime($issue_date));
 $total = count($honors_pupils);
-$files_needed = ($total <= 2) ? 1 : 2;
+$files_needed = ceil($total / 2); // Exactly 2 pupils per file
 
 // --- Prepare template ---
 $templateFile = __DIR__."/template/Certificate_of_Recognition_template2.docx";
@@ -181,16 +181,14 @@ $templateFile = __DIR__."/template/Certificate_of_Recognition_template2.docx";
 // --- Generate files ---
 $zip = new ZipArchive();
 $temp_files = [];
-$certificates_per_file = ceil($total / $files_needed);
 
 for ($file_index = 0; $file_index < $files_needed; $file_index++) {
-    $start = $file_index * $certificates_per_file;
-    $end = min($start + $certificates_per_file, $total);
-    $pupils_in_file = array_slice($honors_pupils, $start, $end - $start);
+    $start = $file_index * 2;
+    $pupils_in_file = array_slice($honors_pupils, $start, 2); // Take exactly 2 pupils
 
     // Determine filename based on pupils' last names
     $last_names = array_map(function($p) { return $p['last_name']; }, $pupils_in_file);
-    $filename = "Certificate_" . implode("_", $last_names) . ".docx";
+    $filename = "Certificate_" . implode("_&_", $last_names) . ".docx";
     $tempFile = sys_get_temp_dir() . "/cert_" . uniqid() . ".docx";
     copy($templateFile, $tempFile);
     $temp_files[] = [$tempFile, $filename];
@@ -198,7 +196,7 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
     // Process template
     $templateProcessor = new TemplateProcessor($tempFile);
 
-    // Fill certificates in this file
+    // Fill certificates in this file (exactly 2 slots)
     for ($i = 0; $i < 2; $i++) {
         $slot = $i + 1;
         if (isset($pupils_in_file[$i])) {
@@ -224,7 +222,6 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
                     '</w:t></w:r>';
 
             $templateProcessor->setValue("name{$slot}", $nameXml, 1);
-
             $templateProcessor->setValue("remark{$slot}", htmlspecialchars($p['remark']));
             $templateProcessor->setValue("grade_level{$slot}", htmlspecialchars($p['grade_level_id']));
             $templateProcessor->setValue("section{$slot}", htmlspecialchars($p['section_name']));
@@ -234,13 +231,12 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
             $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
             $templateProcessor->setValue("principal{$slot}", $principal_full_name);
         } else {
-            // Fill unused slot with defaults
-            $p = $pupils_in_file[0];
-            $templateProcessor->setValue("name{$slot}", "First Name Middle Initial. Last Name");
-            $templateProcessor->setValue("remark{$slot}", "WITH HONORS");
+            // Leave unused slot empty (no placeholder data)
+            $templateProcessor->setValue("name{$slot}", "______________________________");
+            $templateProcessor->setValue("remark{$slot}", "_______________");
             $templateProcessor->setValue("grade_level{$slot}", htmlspecialchars($p['grade_level_id']));
             $templateProcessor->setValue("section{$slot}", htmlspecialchars($p['section_name']));
-            $templateProcessor->setValue("average{$slot}", "98.56");
+            $templateProcessor->setValue("average{$slot}", "_______");
             $templateProcessor->setValue("school_year{$slot}", htmlspecialchars($school_year));
             $templateProcessor->setValue("issue_date{$slot}", htmlspecialchars($formatted_date));
             $templateProcessor->setValue("teacher{$slot}", $teacher_full_name);
@@ -254,7 +250,6 @@ for ($file_index = 0; $file_index < $files_needed; $file_index++) {
 // --- Output files as ZIP if multiple files ---
 if ($files_needed > 1) {
     $zipFile = sys_get_temp_dir() . "/certificates_" . date('Ymd') . ".zip";
-    $zip = new ZipArchive();
     if ($zip->open($zipFile, ZipArchive::CREATE) === true) {
         foreach ($temp_files as $file) {
             $zip->addFile($file[0], $file[1]);

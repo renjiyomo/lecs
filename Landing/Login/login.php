@@ -80,6 +80,13 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
         }
     }
 }
+
+$flagPath = 'image/Flag1.png';
+$flagBase64 = '';
+if (file_exists($flagPath)) {
+    $flagImage = file_get_contents($flagPath);
+    $flagBase64 = 'data:image/png;base64,' . base64_encode($flagImage);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,16 +94,21 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | LECS Online Student Grading System</title>
-    <link rel="icon" href="image/lecs-logo no bg.png" type="image/x-icon">
+    <link rel="icon" href="image/lecs-logo no bg1.png" type="image/x-icon">
+    <style>
+      .login-left {
+        background: url('<?php echo htmlspecialchars($flagBase64); ?>') center/cover no-repeat !important;
+        }
+    </style>
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="css/all.min.css">
-    <?php include 'theme-script.php'; ?> <!-- Add theme script -->
+    <?php include 'theme-script.php'; ?>
 </head>
-<body> <!-- Removed class="light" -->
+<body>
   <div class="login-container">
     <div class="login-left">
       <div class="header-left">
-        <img src="image/very slow logo.gif" alt="School Logo" class="logo-left">
+        <img src="image/very slow logo1.gif" alt="School Logo" class="logo-left">
         <div class="title-text">
           <h1>Welcome to</h1>
           <p>Online Student Grading System</p>
@@ -110,7 +122,7 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
         <i class="fa-solid fa-sun toggle-icon" id="lightModeBtn" style="display:none;"></i>
       </div>
 
-      <img src="image/lecs-logo no bg.png" alt="School Logo" class="logo">
+      <img src="image/lecs-logo no bg1.png" alt="School Logo" class="logo">
       <h2>Libon East Central School</h2>
       <p class="subtext">Libon East District</p>
 

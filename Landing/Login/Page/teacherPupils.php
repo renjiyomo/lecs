@@ -9,12 +9,45 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 't') {
 
 $teacher_id = intval($_SESSION['teacher_id']);
 
-$selected_sy = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : null;
+$selected_sy = isset($_GET['sy_id']) ? ($_GET['sy_id'] !== '' ? intval($_GET['sy_id']) : null) : null;
 $selected_section = isset($_GET['section_id']) ? intval($_GET['section_id']) : null;
 $selected_status = $_GET['status'] ?? '';
 $search = $_GET['search'] ?? '';
 $error_message = $_GET['error'] ?? '';
 $success_message = $_GET['success'] ?? '';
+
+if (!isset($_GET['sy_id'])) {
+    $currentDate = '2025-10-27';
+    $recentQuery = "
+        SELECT sy.sy_id
+        FROM school_years sy
+        JOIN pupils p ON p.sy_id = sy.sy_id
+        JOIN sections s ON p.section_id = s.section_id
+        WHERE s.teacher_id = $teacher_id
+        AND '$currentDate' BETWEEN sy.start_date AND sy.end_date
+        ORDER BY sy.school_year DESC
+        LIMIT 1
+    ";
+    $recentRes = $conn->query($recentQuery);
+    if ($recentRes->num_rows > 0) {
+        $recent = $recentRes->fetch_assoc();
+        $selected_sy = intval($recent['sy_id']);
+    } else {
+        $recentQuery = "
+            SELECT sy.sy_id
+            FROM school_years sy
+            JOIN pupils p ON p.sy_id = sy.sy_id
+            JOIN sections s ON p.section_id = s.section_id
+            WHERE s.teacher_id = $teacher_id
+            ORDER BY sy.school_year DESC
+            LIMIT 1
+        ";
+        $recentRes = $conn->query($recentQuery);
+        if ($recent = $recentRes->fetch_assoc()) {
+            $selected_sy = intval($recent['sy_id']);
+        }
+    }
+}
 
 // Map status values to display labels
 $statusLabels = [
@@ -84,7 +117,7 @@ $statusLabels = [
                     if ($selected_section) {
                         $syQuery .= " AND p.section_id = $selected_section";
                     }
-                    $syQuery .= " ORDER BY sy.sy_id DESC";
+                    $syQuery .= " ORDER BY sy.school_year DESC";
 
                     $syRes = $conn->query($syQuery);
                     while ($sy = $syRes->fetch_assoc()) {

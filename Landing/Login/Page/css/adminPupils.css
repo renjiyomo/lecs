@@ -8,6 +8,8 @@
     --text-dark: #f1f5f9;
     --accent: #e5e7eb;
     --border-color: #d1d5db;
+    --border-light: #d1d5db;
+    --border-dark: #475569;
 }
 
 :root.light {
@@ -225,6 +227,7 @@ th {
             background-color: #fff;
             margin: 15% auto;
             padding: 20px;
+            border: 1px solid #888;
             border-radius: 12px;
             width: 400px;
             max-width: 90%;
@@ -242,7 +245,6 @@ th {
 }
 
         .modal-content button {
-            padding: 10px 20px;
             margin: 10px;
             border: none;
             border-radius: 5px;
@@ -251,14 +253,17 @@ th {
         .modal-content .btn-confirm {
             background-color: #dc3545;
             color: white;
+            padding: 10px 20px;
         }
         .modal-content .btn-force {
             background-color: #ff9800;
             color: white;
+            padding: 10px 20px;
         }
         .modal-content .btn-cancel {
             background-color: #6c757d;
             color: white;
+            padding: 10px 20px;
         }
         .close {
             position: absolute;
@@ -267,3 +272,30 @@ th {
             font-size: 20px;
             cursor: pointer;
         }
+
+.generate-certi{
+    display: inline-block;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #4a90e2, #357ABD);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    border: none;
+
+}
+
+.given-date{
+    padding: 5px 10px;
+    border: none;
+    background-color: var(--border-light);
+    border-radius: 3px;
+}
+
+:root.dark .given-date{
+    background-color: var(--border-dark);
+    color: white;
+}

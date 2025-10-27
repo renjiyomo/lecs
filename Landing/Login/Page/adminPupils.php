@@ -48,6 +48,20 @@ $search = $_GET['search'] ?? '';
         </div>
 </div>
 
+<div id="coeDateModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCOEDateModal()">&times;</span>
+        <h2>Select Certificate Issuance Date</h2>
+        <form action="generate_coe.php" method="post">
+            <input type="hidden" name="sy_id" value="<?= htmlspecialchars($selected_sy) ?>">
+            <input type="hidden" name="section_id" value="<?= htmlspecialchars($selected_section) ?>">
+            <label for="issue_date">Issuance Date:</label>
+            <input class="given-date" type="date" id="issue_date" name="issue_date" value="<?= date('Y-m-d') ?>" required>
+            <button class="generate-certi" type="submit">Generate</button>
+        </form>
+    </div>
+</div>
+
 <div class="container">
     <?php include 'sidebar.php'; ?>
 
@@ -121,6 +135,9 @@ $search = $_GET['search'] ?? '';
             <div class="header-buttons">
                 <button type="button" class="export-btn" <?= ($selected_sy && $selected_section) ? '' : 'disabled' ?>>
                     <?= ($selected_sy && $selected_section) ? 'Export SF1' : 'Select School Year & Class' ?>
+                </button>
+                <button type="button" class="export-btn" onclick="openCOEDateModal()" <?= ($selected_sy && $selected_section) ? '' : 'disabled' ?>>
+                    <?= ($selected_sy && $selected_section) ? 'Generate COE' : 'Select School Year & Class' ?>
                 </button>
             </div>
         </form>
@@ -274,10 +291,21 @@ $search = $_GET['search'] ?? '';
         window.location.href = 'delete_pupil.php?id=' + currentPupilId + '&force=true';
     });
 
+    function openCOEDateModal() {
+        document.getElementById('coeDateModal').style.display = 'block';
+    }
+
+    function closeCOEDateModal() {
+        document.getElementById('coeDateModal').style.display = 'none';
+    }
+
     window.onclick = function(event) {
-        const modal = document.getElementById('deleteModal');
-        if (event.target == modal) {
+        const deleteModal = document.getElementById('deleteModal');
+        const coeModal = document.getElementById('coeDateModal');
+        if (event.target == deleteModal) {
             closeModal();
+        } else if (event.target == coeModal) {
+            closeCOEDateModal();
         }
     };
 

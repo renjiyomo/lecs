@@ -10,15 +10,15 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 $teacher_id = intval($_SESSION['teacher_id']);
 
 // Fetch all school years
-$allYearsQuery = $conn->query("
+$schoolYearsQuery = $conn->query("
     SELECT school_year, sy_id, start_date, end_date
     FROM school_years
-    ORDER BY start_date
+    ORDER BY school_year DESC
 ");
 
-$allYears = [];
-while ($row = $allYearsQuery->fetch_assoc()) {
-    $allYears[] = $row['school_year'];
+$schoolYears = [];
+while ($row = $schoolYearsQuery->fetch_assoc()) {
+    $schoolYears[] = $row;
 }
 
 function arabic_to_roman($num) {
@@ -54,8 +54,22 @@ function format_position($pos) {
 }
 
 $orgData = [];
-foreach ($allYears as $year) {
-    $syRow = $conn->query("SELECT * FROM school_years WHERE school_year = '$year'")->fetch_assoc();
+$currentDate = '2025-10-27';
+$latestYear = '';
+
+foreach ($schoolYears as $sy) {
+    if ($currentDate >= $sy['start_date'] && $currentDate <= $sy['end_date']) {
+        $latestYear = $sy['school_year'];
+        break;
+    }
+}
+
+if (!$latestYear && !empty($schoolYears)) {
+    $latestYear = $schoolYears[0]['school_year'];
+}
+
+foreach ($schoolYears as $syRow) {
+    $year = $syRow['school_year'];
     $syId = $syRow['sy_id'];
     $start = $syRow['start_date'];
     $end = $syRow['end_date'];
@@ -139,7 +153,6 @@ foreach ($allYears as $year) {
     ];
 }
 
-$latestYear = !empty($allYears) ? end($allYears) : '';
 ?>
 
 <!DOCTYPE html>
@@ -162,8 +175,8 @@ $latestYear = !empty($allYears) ? end($allYears) : '';
         <div class="chart-container org-chart">
             <div class="filter-container">
                 <select id="orgYearFilter">
-                    <?php foreach ($allYears as $year): ?>
-                        <option value="<?= $year; ?>" <?= $year === $latestYear ? 'selected' : ''; ?>><?= $year; ?></option>
+                    <?php foreach ($schoolYears as $sy): ?>
+                        <option value="<?= $sy['school_year']; ?>" <?= $sy['school_year'] === $latestYear ? 'selected' : ''; ?>><?= $sy['school_year']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

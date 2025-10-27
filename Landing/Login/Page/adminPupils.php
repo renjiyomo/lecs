@@ -10,7 +10,15 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 
 $teacher_id = intval($_SESSION['teacher_id']);
 
-$selected_sy = isset($_GET['sy_id']) ? intval($_GET['sy_id']) : null;
+$selected_sy = isset($_GET['sy_id']) && $_GET['sy_id'] !== '' ? intval($_GET['sy_id']) : null;
+
+if (!isset($_GET['sy_id'])) {
+    $recentRes = $conn->query("SELECT sy_id FROM school_years ORDER BY school_year DESC LIMIT 1");
+    if ($recent = $recentRes->fetch_assoc()) {
+        $selected_sy = intval($recent['sy_id']);
+    }
+}
+
 $selected_section = isset($_GET['section_id']) ? intval($_GET['section_id']) : null;
 $selected_status = $_GET['status'] ?? '';
 $search = $_GET['search'] ?? '';
@@ -63,7 +71,7 @@ $search = $_GET['search'] ?? '';
                         SELECT DISTINCT sy.sy_id, sy.school_year
                         FROM pupils p
                         JOIN school_years sy ON p.sy_id = sy.sy_id
-                        ORDER BY sy.sy_id DESC
+                        ORDER BY sy.school_year DESC
                     ");
                     while ($sy = $syRes->fetch_assoc()) {
                         $selected = ($selected_sy == $sy['sy_id']) ? "selected" : "";

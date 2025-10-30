@@ -1,8 +1,27 @@
 /* General Layout */
+
+:root {
+    --background-light: #f4f4f5;
+    --background-dark: #1e293b;
+    --text-light: #1f2937;
+    --text-dark: #f1f5f9;
+}
+
+:root.light {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+}
+
+:root.dark {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+}
+
 body {
   font-family: 'Inter', Arial, sans-serif;
   margin: 0;
   display: flex;
+  background-color: var(--background-color);
   transition: background 0.3s ease, color 0.3s ease;
 }
 

@@ -12,6 +12,10 @@ $teacher_id = intval($_SESSION['teacher_id']);
 
 $sy_res = $conn->query("SELECT * FROM school_years ORDER BY sy_id DESC");
 $school_years = $sy_res->fetch_all(MYSQLI_ASSOC);
+
+$empty_res = $conn->query("SELECT sy_id, school_year FROM school_years WHERE sy_id NOT IN (SELECT DISTINCT sy_id FROM subjects) ORDER BY sy_id DESC");
+$empty_sys = $empty_res->fetch_all(MYSQLI_ASSOC);
+
 $current_sy = $_GET['sy_id'] ?? '';
 ?>
 <!DOCTYPE html>
@@ -45,7 +49,8 @@ $current_sy = $_GET['sy_id'] ?? '';
         <div class="alert success">
             <?php if ($_GET['success'] === "added") echo "Subject successfully added!";
                   elseif ($_GET['success'] === "updated") echo "Subject successfully updated!";
-                  elseif ($_GET['success'] === "deleted") echo "Subject successfully deleted!"; ?>
+                  elseif ($_GET['success'] === "deleted") echo "Subject successfully deleted!";
+                  elseif ($_GET['success'] === "copied") echo "Subjects copied successfully!"; ?>
         </div>
       <?php endif; ?>
 
@@ -87,6 +92,7 @@ $current_sy = $_GET['sy_id'] ?? '';
       <a href="export_subjects.php?format=pdf&search=<?php echo urlencode($_GET['search'] ?? ''); ?>&grade_id=<?php echo urlencode($_GET['grade_id'] ?? ''); ?>&sy_id=<?php echo urlencode($_GET['sy_id'] ?? ''); ?>">Export as PDF</a>
     </div>
   </div>
+  <button type="button" class="add-btn" onclick="openCopyModal()">Copy Subjects</button>
   <button type="button" class="add-btn" onclick="openAddModal()">Add Subject</button>
 </div>
 
@@ -178,6 +184,32 @@ $current_sy = $_GET['sy_id'] ?? '';
       ?>
     </div>
 </div>
+</div>
+
+<!-- Copy Subjects Modal -->
+<div id="copyModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Copy Subjects</h2>
+      <button class="close-btn" onclick="closeCopyModal()">&times;</button>
+    </div>
+    <form method="POST" action="copy_subjects.php">
+      <select name="source_sy_id" required>
+        <option value="">Select Source School Year</option>
+        <?php foreach ($school_years as $sy): ?>
+          <option value="<?= $sy['sy_id'] ?>"><?= htmlspecialchars($sy['school_year']) ?></option>
+        <?php endforeach; ?>
+      </select>
+      <select name="target_sy_id" required>
+        <option value="">Select Target School Year</option>
+        <?php foreach ($empty_sys as $sy): ?>
+          <option value="<?= $sy['sy_id'] ?>"><?= htmlspecialchars($sy['school_year']) ?></option>
+        <?php endforeach; ?>
+      </select>
+      <button type="submit" class="save-btn">Copy</button>
+      <button type="button" class="cancel-btn" onclick="closeCopyModal()">Cancel</button>
+    </form>
+  </div>
 </div>
 
 <!-- Add Subject Modal -->
@@ -304,6 +336,13 @@ $current_sy = $_GET['sy_id'] ?? '';
     document.getElementById("exportOptions").classList.toggle("show");
   }
 
+  function openCopyModal() {
+    document.getElementById("copyModal").style.display = "flex";
+  }
+  function closeCopyModal() {
+    document.getElementById("copyModal").style.display = "none";
+  }
+
   function openAddModal() {
     document.getElementById("addModal").style.display = "flex";
     document.getElementById("addStartQuarter").value = "Q1";
@@ -374,6 +413,7 @@ $current_sy = $_GET['sy_id'] ?? '';
 
   window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
+      closeCopyModal();
       closeAddModal();
       closeEditModal();
       closeDeleteModal();

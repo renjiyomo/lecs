@@ -344,7 +344,16 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="form-group">
                         <label>Learning Modality</label>
-                        <input type="text" name="learning_modality" value="<?= htmlspecialchars($formData['learning_modality'] ?? '') ?>">
+                        <select name="learning_modality" required>
+                            <option value="">Select Modality</option>
+                            <option value="Modular (Print)" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Modular (Print)") ? "selected" : "" ?>>Modular (Print)</option>
+                            <option value="Modular Digital" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Modular Digital") ? "selected" : "" ?>>Modular Digital</option>
+                            <option value="Online" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Online") ? "selected" : "" ?>>Online</option>
+                            <option value="Educational TV" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Educational TV") ? "selected" : "" ?>>Educational TV</option>
+                            <option value="Radio-based Instruction" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Radio-based Instruction") ? "selected" : "" ?>>Radio-based Instruction</option>
+                            <option value="Homeschooling" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Homeschooling") ? "selected" : "" ?>>Homeschooling</option>
+                            <option value="Face to Face" <?= (isset($formData['learning_modality']) && $formData['learning_modality'] == "Face to Face") ? "selected" : "" ?>>Face to Face</option>
+                        </select>
                     </div>
 
                     <!-- Status + Conditional Date -->

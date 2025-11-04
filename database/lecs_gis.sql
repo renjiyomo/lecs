@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2025 at 11:18 AM
+-- Generation Time: Nov 04, 2025 at 07:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -879,7 +879,51 @@ INSERT INTO `grades` (`grade_id`, `pupil_id`, `subject_id`, `quarter`, `grade`, 
 (7713, 951, 32, 'Q1', 90, 13),
 (7714, 951, 32, 'Q2', 90, 13),
 (7715, 951, 32, 'Q3', 92, 13),
-(7716, 951, 32, 'Q4', 96, 13);
+(7716, 951, 32, 'Q4', 96, 13),
+(8582, 960, 57, 'Q1', 86, 13),
+(8583, 960, 57, 'Q2', 86, 13),
+(8584, 960, 57, 'Q3', 87, 13),
+(8585, 960, 57, 'Q4', 89, 13),
+(8586, 960, 59, 'Q1', 87, 13),
+(8587, 960, 59, 'Q2', 87, 13),
+(8588, 960, 59, 'Q3', 88, 13),
+(8589, 960, 59, 'Q4', 90, 13),
+(8590, 960, 58, 'Q1', 85, 13),
+(8591, 960, 58, 'Q2', 84, 13),
+(8592, 960, 58, 'Q3', 85, 13),
+(8593, 960, 58, 'Q4', 88, 13),
+(8594, 960, 56, 'Q1', 85, 13),
+(8595, 960, 56, 'Q2', 84, 13),
+(8596, 960, 56, 'Q3', 86, 13),
+(8597, 960, 56, 'Q4', 88, 13),
+(8598, 960, 4, 'Q1', 85, 13),
+(8599, 960, 4, 'Q2', 86, 13),
+(8600, 960, 4, 'Q3', 87, 13),
+(8601, 960, 4, 'Q4', 90, 13),
+(8602, 960, 61, 'Q1', 87, 13),
+(8603, 960, 61, 'Q2', 89, 13),
+(8604, 960, 61, 'Q3', 90, 13),
+(8605, 960, 61, 'Q4', 91, 13),
+(8606, 960, 62, 'Q1', 87, 13),
+(8607, 960, 62, 'Q2', 88, 13),
+(8608, 960, 62, 'Q3', 91, 13),
+(8609, 960, 62, 'Q4', 91, 13),
+(8610, 960, 63, 'Q1', 90, 13),
+(8611, 960, 63, 'Q2', 90, 13),
+(8612, 960, 63, 'Q3', 92, 13),
+(8613, 960, 63, 'Q4', 93, 13),
+(8614, 960, 64, 'Q1', 89, 13),
+(8615, 960, 64, 'Q2', 90, 13),
+(8616, 960, 64, 'Q3', 90, 13),
+(8617, 960, 64, 'Q4', 91, 13),
+(8618, 960, 13, 'Q1', 84, 13),
+(8619, 960, 13, 'Q2', 85, 13),
+(8620, 960, 13, 'Q3', 86, 13),
+(8621, 960, 13, 'Q4', 87, 13),
+(8622, 960, 32, 'Q1', 84, 13),
+(8623, 960, 32, 'Q2', 83, 13),
+(8624, 960, 32, 'Q3', 86, 13),
+(8625, 960, 32, 'Q4', 87, 13);
 
 -- --------------------------------------------------------
 
@@ -1760,7 +1804,7 @@ INSERT INTO `pupils` (`pupil_id`, `teacher_id`, `lrn`, `last_name`, `first_name`
 (957, 6, '111762190114', 'SEGUBIENSE', 'CRIZA', 'BALMACEDA', 'Female', '2014-08-07', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'SEGUBIENSE, JOSE SARIOLA JR', 'BALMACEDA,AIZA,SON,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
 (958, 6, '501214190016', 'SEGUBIENSE', 'KENDRA LOUISE', 'RONQUILLO', 'Female', '2013-10-17', 10, 'Tagalog', '', 'Christianity', '', 'Las PiÑas', 'PeÑaranda', 'Nueva Ecija', 'SEGUBIENSE, REX SASOTA', 'RONQUILLO,MARY ANN,SANCHEZ,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
 (959, 6, '111762190142', 'SERRANO', 'SUMMER BRIELLE', '-', 'Female', '2014-05-05', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', '', 'SERRANO,JAN CHARMAINE,OSILLADA,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
-(960, 6, '111762190101', 'TOJERO', 'RHIANE JADE', 'SATUITO', 'Female', '2014-06-02', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'TOJERO, MANUEL MADRIAGA JR', 'SATUITO,ROSELA,SASOTA,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
+(960, 6, '111762190101', 'TOJERO', 'RHIANE JADE', 'SATUITO', 'Female', '2014-06-02', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'TOJERO, MANUEL MADRIAGA JR', 'SATUITO,ROSELA,SASOTA,', '', '', '', 'Face to Face', '', 13, 15, 'promoted'),
 (961, 6, '111762190104', 'TUAL', 'KAZANDRA MAE', 'BALMACEDA', 'Female', '2012-12-09', 10, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'TUAL, MARK MANGAHIS', 'BALMACEDA,MYRA,BAUTISTA,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
 (962, 6, '111762190122', 'TUGBO', 'ZARIAH ELLISE', 'SEGUI', 'Female', '2014-04-19', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'TUGBO, JOSEPH PRECONES', 'SEGUI,NUELISA,RAYALA,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
 (963, 6, '111762190170', 'VASQUEZ', 'SAYLHENE', 'SAYSON', 'Female', '2014-08-27', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'VASQUEZ, KIRVIN SAN JUAN', 'SAYSON,ARLENE,RANON,', '', '', '', 'Face to Face', '', 13, 15, 'enrolled'),
@@ -2037,7 +2081,6 @@ INSERT INTO `sections` (`section_id`, `section_name`, `grade_level_id`, `teacher
 (39, 'Fighters', 1, 30, 13),
 (40, 'Incredibles', 1, 29, 13),
 (41, 'Experts', 2, 43, 13),
-(42, 'Fighters', 2, 23, 13),
 (43, 'Incredibles', 2, 44, 13),
 (44, 'Experts', 3, 45, 13),
 (45, 'Fighters', 3, 46, 13),
@@ -2055,7 +2098,8 @@ INSERT INTO `sections` (`section_id`, `section_name`, `grade_level_id`, `teacher
 (57, 'Rizal', 2, 23, 29),
 (59, 'Rizal', 2, 23, 28),
 (60, 'Winners', 23, 23, 26),
-(61, 'Dalton', 1, 55, 13);
+(61, 'Dalton', 1, 55, 13),
+(62, 'Fighters', 2, 23, 13);
 
 -- --------------------------------------------------------
 
@@ -2242,7 +2286,147 @@ INSERT INTO `subjects` (`subject_id`, `subject_name`, `grade_level_id`, `sy_id`,
 (153, 'Music', 23, 14, 145, 'Q1', 0),
 (154, 'Physical Education', 23, 14, 145, 'Q1', 0),
 (155, 'Science', 23, 14, NULL, 'Q1', 0),
-(156, 'Araling Panlipunan', 1, 13, NULL, 'Q1', 0);
+(157, 'Filipino', 4, 29, NULL, 'Q1', 0),
+(158, 'Mathematics', 4, 29, NULL, 'Q1', 0),
+(159, 'Mathematics', 1, 29, NULL, 'Q1', 0),
+(160, 'Science', 3, 29, NULL, 'Q1', 0),
+(161, 'Science', 4, 29, NULL, 'Q1', 0),
+(162, 'English', 4, 29, NULL, 'Q1', 0),
+(163, 'Filipino', 1, 29, NULL, 'Q2', 0),
+(164, 'English', 1, 29, NULL, 'Q3', 0),
+(165, 'Mother Tongue', 1, 29, NULL, 'Q1', 0),
+(166, 'Edukasyon sa Pagpapakatao', 1, 29, NULL, 'Q1', 0),
+(167, 'MAPEH', 1, 29, NULL, 'Q1', 0),
+(168, 'Araling Panlipunan', 3, 29, NULL, 'Q1', 0),
+(169, 'Mother Tongue', 2, 29, NULL, 'Q1', 0),
+(170, 'Filipino', 2, 29, NULL, 'Q1', 0),
+(171, 'English', 2, 29, NULL, 'Q1', 0),
+(172, 'Araling Panlipunan', 1, 29, NULL, 'Q1', 0),
+(173, 'Araling Panlipunan', 2, 29, NULL, 'Q1', 0),
+(174, 'MAPEH', 2, 29, NULL, 'Q1', 0),
+(175, 'Edukasyon sa Pagpapakatao', 2, 29, NULL, 'Q1', 0),
+(176, 'Mathematics', 2, 29, NULL, 'Q1', 0),
+(177, 'MAPEH', 3, 29, NULL, 'Q1', 0),
+(178, 'Edukasyon sa Pagpapakatao', 3, 29, NULL, 'Q1', 0),
+(179, 'English', 3, 29, NULL, 'Q1', 0),
+(180, 'Filipino', 3, 29, NULL, 'Q1', 0),
+(181, 'Mathematics', 3, 29, NULL, 'Q1', 0),
+(182, 'Mother Tongue', 3, 29, NULL, 'Q1', 0),
+(183, 'Araling Panlipunan', 4, 29, NULL, 'Q1', 0),
+(184, 'MAPEH', 4, 29, NULL, 'Q1', 0),
+(185, 'Edukasyon sa Pagpapakatao', 4, 29, NULL, 'Q1', 0),
+(186, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 4, 29, NULL, 'Q1', 0),
+(187, 'Araling Panlipunan', 5, 29, NULL, 'Q1', 0),
+(188, 'MAPEH', 5, 29, NULL, 'Q1', 0),
+(189, 'Edukasyon sa Pagpapakatao', 5, 29, NULL, 'Q1', 0),
+(190, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 5, 29, NULL, 'Q1', 0),
+(191, 'English', 5, 29, NULL, 'Q1', 0),
+(192, 'Filipino', 5, 29, NULL, 'Q1', 0),
+(193, 'Mathematics', 5, 29, NULL, 'Q1', 0),
+(194, 'Science', 5, 29, NULL, 'Q1', 0),
+(195, 'Araling Panlipunan', 23, 29, NULL, 'Q1', 0),
+(196, 'MAPEH', 23, 29, NULL, 'Q1', 0),
+(197, 'Edukasyon sa Pagpapakatao', 23, 29, NULL, 'Q1', 0),
+(198, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 23, 29, NULL, 'Q1', 0),
+(199, 'English', 23, 29, NULL, 'Q1', 0),
+(200, 'Filipino', 23, 29, NULL, 'Q1', 0),
+(201, 'Mathematics', 23, 29, NULL, 'Q1', 0),
+(202, 'Science', 23, 29, NULL, 'Q1', 0),
+(203, 'Music', 1, 29, 167, 'Q1', 0),
+(204, 'Arts', 1, 29, 167, 'Q1', 0),
+(205, 'Physical Education', 1, 29, 167, 'Q1', 0),
+(206, 'Health', 1, 29, 167, 'Q1', 0),
+(207, 'Arts', 2, 29, 174, 'Q1', 0),
+(208, 'Music', 2, 29, 174, 'Q1', 0),
+(209, 'Physical Education', 2, 29, 174, 'Q1', 0),
+(210, 'Health', 2, 29, 174, 'Q1', 0),
+(211, 'Arts', 3, 29, 177, 'Q1', 0),
+(212, 'Physical Education', 3, 29, 177, 'Q1', 0),
+(213, 'Music', 3, 29, 177, 'Q1', 0),
+(214, 'Health', 3, 29, 177, 'Q1', 0),
+(215, 'Music', 4, 29, 184, 'Q1', 0),
+(216, 'Arts', 4, 29, 184, 'Q1', 0),
+(217, 'Physical Education', 4, 29, 184, 'Q1', 0),
+(218, 'Health', 4, 29, 184, 'Q1', 0),
+(219, 'Arts', 5, 29, 188, 'Q1', 0),
+(220, 'Health', 5, 29, 188, 'Q1', 0),
+(221, 'Music', 5, 29, 188, 'Q1', 0),
+(222, 'Physical Education', 5, 29, 188, 'Q1', 0),
+(223, 'Arts', 23, 29, 196, 'Q1', 0),
+(224, 'Health', 23, 29, 196, 'Q1', 0),
+(225, 'Music', 23, 29, 196, 'Q1', 0),
+(226, 'Physical Education', 23, 29, 196, 'Q1', 0),
+(227, 'Filipino', 2, 28, NULL, 'Q1', 0),
+(228, 'Filipino', 3, 28, NULL, 'Q1', 0),
+(229, 'Filipino', 4, 28, NULL, 'Q1', 0),
+(230, 'Mathematics', 3, 28, NULL, 'Q1', 0),
+(231, 'Mathematics', 5, 28, NULL, 'Q1', 0),
+(232, 'Mathematics', 4, 28, NULL, 'Q1', 0),
+(233, 'Mother Tongue', 1, 28, NULL, 'Q1', 0),
+(234, 'Filipino', 1, 28, NULL, 'Q2', 0),
+(235, 'English', 1, 28, NULL, 'Q3', 0),
+(236, 'Mathematics', 1, 28, NULL, 'Q1', 0),
+(237, 'MAPEH', 1, 28, NULL, 'Q1', 0),
+(238, 'Edukasyon sa Pagpapakatao', 1, 28, NULL, 'Q1', 0),
+(239, 'Science', 3, 28, NULL, 'Q1', 0),
+(240, 'Science', 4, 28, NULL, 'Q1', 0),
+(241, 'Science', 5, 28, NULL, 'Q1', 0),
+(242, 'English', 23, 28, NULL, 'Q1', 0),
+(243, 'Mother Tongue', 2, 28, NULL, 'Q1', 0),
+(244, 'Mother Tongue', 3, 28, NULL, 'Q1', 0),
+(245, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 23, 28, NULL, 'Q1', 0),
+(246, 'English', 2, 28, NULL, 'Q1', 0),
+(247, 'Araling Panlipunan', 2, 28, NULL, 'Q1', 0),
+(248, 'MAPEH', 2, 28, NULL, 'Q1', 0),
+(249, 'Edukasyon sa Pagpapakatao', 2, 28, NULL, 'Q1', 0),
+(250, 'Mathematics', 2, 28, NULL, 'Q1', 0),
+(251, 'English', 3, 28, NULL, 'Q1', 0),
+(252, 'Araling Panlipunan', 3, 28, NULL, 'Q1', 0),
+(253, 'MAPEH', 3, 28, NULL, 'Q1', 0),
+(254, 'Edukasyon sa Pagpapakatao', 3, 28, NULL, 'Q1', 0),
+(255, 'English', 4, 28, NULL, 'Q1', 0),
+(256, 'Araling Panlipunan', 4, 28, NULL, 'Q1', 0),
+(257, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 4, 28, NULL, 'Q1', 0),
+(258, 'Edukasyon sa Pagpapakatao', 4, 28, NULL, 'Q1', 0),
+(259, 'MAPEH', 4, 28, NULL, 'Q1', 0),
+(260, 'Filipino', 5, 28, NULL, 'Q1', 0),
+(261, 'English', 5, 28, NULL, 'Q1', 0),
+(262, 'Araling Panlipunan', 5, 28, NULL, 'Q1', 0),
+(263, 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 5, 28, NULL, 'Q1', 0),
+(264, 'Edukasyon sa Pagpapakatao', 5, 28, NULL, 'Q1', 0),
+(265, 'MAPEH', 5, 28, NULL, 'Q1', 0),
+(266, 'Filipino', 23, 28, NULL, 'Q1', 0),
+(267, 'Science', 23, 28, NULL, 'Q1', 0),
+(268, 'Mathematics', 23, 28, NULL, 'Q1', 0),
+(269, 'Araling Panlipunan', 23, 28, NULL, 'Q1', 0),
+(270, 'Edukasyon sa Pagpapakatao', 23, 28, NULL, 'Q1', 0),
+(271, 'MAPEH', 23, 28, NULL, 'Q1', 0),
+(272, 'Araling Panlipunan', 1, 28, NULL, 'Q1', 0),
+(273, 'Music', 1, 28, 237, 'Q1', 1),
+(274, 'Arts', 1, 28, 237, 'Q1', 2),
+(275, 'Physical Education', 1, 28, 237, 'Q1', 3),
+(276, 'Health', 1, 28, 237, 'Q1', 4),
+(277, 'Music', 2, 28, 248, 'Q1', 0),
+(278, 'Arts', 2, 28, 248, 'Q1', 0),
+(279, 'Physical Education', 2, 28, 248, 'Q1', 0),
+(280, 'Health', 2, 28, 248, 'Q1', 0),
+(281, 'Music', 3, 28, 253, 'Q1', 0),
+(282, 'Arts', 3, 28, 253, 'Q1', 0),
+(283, 'Physical Education', 3, 28, 253, 'Q1', 0),
+(284, 'Health', 3, 28, 253, 'Q1', 0),
+(285, 'Music', 4, 28, 259, 'Q1', 0),
+(286, 'Arts', 4, 28, 259, 'Q1', 0),
+(287, 'Physical Education', 4, 28, 259, 'Q1', 0),
+(288, 'Health', 4, 28, 259, 'Q1', 0),
+(289, 'Music', 5, 28, 265, 'Q1', 0),
+(290, 'Arts', 5, 28, 265, 'Q1', 0),
+(291, 'Physical Education', 5, 28, 265, 'Q1', 0),
+(292, 'Health', 5, 28, 265, 'Q1', 0),
+(293, 'Music', 23, 28, 271, 'Q1', 0),
+(294, 'Arts', 23, 28, 271, 'Q1', 0),
+(295, 'Physical Education', 23, 28, 271, 'Q1', 0),
+(296, 'Health', 23, 28, 271, 'Q1', 0),
+(297, 'Araling Panlipunan', 1, 13, NULL, 'Q1', 0);
 
 -- --------------------------------------------------------
 
@@ -2279,7 +2463,7 @@ CREATE TABLE `teachers` (
 INSERT INTO `teachers` (`teacher_id`, `first_name`, `middle_name`, `last_name`, `employee_no`, `email`, `password`, `gender`, `birthdate`, `age`, `contact_no`, `house_no_street`, `barangay`, `municipality`, `province`, `position`, `image`, `user_type`, `user_status`) VALUES
 (3, 'Analyn', 'Tapia', 'Pernecita', '4136941', 'teacher1@gmail.com', '$2y$10$IZHC1qrVhJp6mvHhEOW9s.4xadOcNjoM.36vE98dTfn.Tfa.wnwx6', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5df87677.png', 't', 'a'),
 (6, 'Ma. Sheryll', 'Reconday', 'Palacio', '4123656', 'teacher4@gmail.com', '$2y$10$f7pbBb9UWXD5WhA1s42b7Omvml28uOo1q2mfWElqeh.p4u0nMFFf.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5c38423e.png', 't', 'a'),
-(18, 'Eduardo', 'Orilla', 'Realingo', '4512455', 'admin@gmail.com', '$2y$10$6h/.XaHT7JIQotPBzWXPQOsOpEgpPRtSHES7sFpj3tXlYhdkr3Cdu', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'Zone III (Poblacion)', 'Libon', 'Albay', 'Principal 1', '68f67374b4f99.png', 'a', 'a'),
+(18, 'Eduardo', 'Orilla', 'Realingo', '4512455', 'admin@gmail.com', '$2y$10$6h/.XaHT7JIQotPBzWXPQOsOpEgpPRtSHES7sFpj3tXlYhdkr3Cdu', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'Albay', 'Principal 1', '690a37a8c7abe.png', 'a', 'a'),
 (20, 'Aristea', 'Satuito', 'Baliton', '4130770', 'baliton@gmail.com', '$2y$10$LqG4GLOQMzuZJQHUJm6.ZuruhX9wHvhqy4ScPLzHO9yEoumMmJs12', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d5d2a8095.png', 't', 'a'),
 (21, 'Elvira', 'Saribong', 'Se', '4512454', 'teacher3@gmail.com', '$2y$10$PJJv4vo06viUhlSEEEYeiOjlAimmFcSXqrsl4rEK7wp1lAb3K8JXm', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d6428c01a.png', 't', 'a'),
 (23, 'Mary Jane', 'Nidea', 'Bautista', '4536529', 'bautista@gmail.com', '$2y$10$5qB/zrQ1ELbiDQEhE7EjJ.2/T4srbpm3LV6BgSXG/XShz1boFWRRe', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'Zone V (Poblacion)', 'Libon', 'Albay', 'Teacher 3', '68d1d5b12d994.png', 't', 'a'),
@@ -2455,19 +2639,19 @@ ALTER TABLE `teacher_positions`
 -- AUTO_INCREMENT for table `event_calendar`
 --
 ALTER TABLE `event_calendar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8582;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8626;
 
 --
 -- AUTO_INCREMENT for table `grade_levels`
 --
 ALTER TABLE `grade_levels`
-  MODIFY `grade_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `grade_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `ph_addresses`
@@ -2497,19 +2681,19 @@ ALTER TABLE `school_years`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `section_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `section_name`
 --
 ALTER TABLE `section_name`
-  MODIFY `section_name_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `section_name_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
 
 --
 -- AUTO_INCREMENT for table `teachers`

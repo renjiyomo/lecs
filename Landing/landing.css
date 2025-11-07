@@ -82,3 +82,30 @@ body {
 background: linear-gradient(135deg, #4a91e2c5, #3579bdbb);
 color: white;
 }
+
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #f1f2f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loading-logo {
+  width: 120px; 
+  height: auto;
+  animation: fadeInOut 1.8s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+}

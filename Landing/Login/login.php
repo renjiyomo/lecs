@@ -178,8 +178,26 @@ if (file_exists($flagPath)) {
     </div>
   </div>
 
+<div id="loading-screen">
+  <img src="image/lecs-logo no bg.png" alt="Loading Logo" class="loading-logo">
+</div>
+
+<script>
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loading-screen");
+    setTimeout(() => loader.classList.add("fade-out"), 500); 
+  });
+</script>
+
+<script>
+  (function() {
+    const savedMode = localStorage.getItem('theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.classList.add(savedMode);
+  })();
+</script>
+
   <script>
-    // Light/Dark toggle
     const darkBtn = document.getElementById("darkModeBtn");
     const lightBtn = document.getElementById("lightModeBtn");
 

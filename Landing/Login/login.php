@@ -1,11 +1,10 @@
 <?php
 session_start();
-include 'lecs_db.php'; // DB connection: should set $conn (mysqli)
+include 'lecs_db.php';
 
 $error = "";
 $email_prefill = "";
 
-// If already logged in, send them where they belong
 if (isset($_SESSION['teacher_id'])) {
     if (!empty($_SESSION['user_type']) && $_SESSION['user_type'] === 'a') {
         header("Location: /lecs/Landing/Login/Page/adminDashboard.php"); exit;
@@ -22,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email === '' || $password === '') {
         $error = "Please fill in both fields.";
     } else {
-        // Get account
         $stmt = $conn->prepare("SELECT teacher_id, CONCAT(first_name, ' ', COALESCE(middle_name, ''), ' ', last_name) AS full_name, email, password, user_type, user_status FROM teachers WHERE email = ? LIMIT 1");
         if ($stmt) {
             $stmt->bind_param("s", $email);
@@ -30,20 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $res = $stmt->get_result();
 
             if ($row = $res->fetch_assoc()) {
-                // Check account status
                 if ($row['user_status'] !== 'a') {
                     $error = "Your account is not active. Please contact the administrator.";
                 } else {
                     $storedHash = $row['password'] ?? '';
                     $hashLen = strlen($storedHash);
 
-                    // Detect common pitfall: truncated bcrypt hash (needs >= 60 chars)
                     if ($hashLen < 60) {
                         $error = "Your password can’t be verified because it was saved with a truncated hash (stored length: {$hashLen}). 
 Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then reset this account’s password.";
                     } else {
                         if (password_verify($password, $storedHash)) {
-                            // Optional: upgrade hash if algorithm/options changed
                             if (password_needs_rehash($storedHash, PASSWORD_DEFAULT)) {
                                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                                 $upd = $conn->prepare("UPDATE teachers SET password = ? WHERE teacher_id = ?");
@@ -54,7 +49,6 @@ Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then res
                                 }
                             }
 
-                            // Successful login
                             session_regenerate_id(true);
                             $_SESSION['teacher_id'] = $row['teacher_id'];
                             $_SESSION['full_name']  = $row['full_name'];
@@ -153,7 +147,6 @@ if (file_exists($flagPath)) {
     </div>
   </div>
 
-  <!-- Help Modal -->
   <div id="helpModal" class="modal">
     <div class="modal-content">
       <h2>Account Help</h2>
@@ -166,7 +159,6 @@ if (file_exists($flagPath)) {
     </div>
   </div>
 
-  <!-- Forgot Modal -->
   <div id="forgotModal" class="modal">
     <div class="modal-content">
       <h2>Forgot Password</h2>
@@ -212,14 +204,12 @@ if (file_exists($flagPath)) {
     darkBtn.onclick = () => setMode("dark");
     lightBtn.onclick = () => setMode("light");
 
-    // Apply the saved mode when the page loads
     document.addEventListener('DOMContentLoaded', () => {
         const savedMode = localStorage.getItem('theme') || 
                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         setMode(savedMode);
     });
 
-    // Modals
     const helpBtn = document.getElementById("helpBtn");
     const forgotBtn = document.getElementById("forgotBtn");
     const helpModal = document.getElementById("helpModal");
@@ -241,7 +231,6 @@ if (file_exists($flagPath)) {
       if (e.target === forgotModal) forgotModal.style.display = "none";
     };
 
-    // Show/Hide password
     const togglePass = document.getElementById("togglePass");
     const pwdInput = document.getElementById("password");
     if (togglePass && pwdInput) {

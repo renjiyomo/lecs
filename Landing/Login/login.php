@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $res = $stmt->get_result();
-          // user status
+          // user status dito
             if ($row = $res->fetch_assoc()) {
                 if ($row['user_status'] !== 'a') {
                     $error = "Your account is not active. Please contact the administrator.";

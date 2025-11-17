@@ -68,7 +68,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
     <select name="sy_filter" onchange="this.form.submit()">
       <option value="">All School Years</option>
       <?php
-      $years = $conn->query("SELECT * FROM school_years ORDER BY school_year ASC");
+      $years = $conn->query("SELECT * FROM school_years ORDER BY school_year DESC");
       while ($y = $years->fetch_assoc()) {
           $selected = (isset($_GET['sy_filter']) && $_GET['sy_filter'] == $y['sy_id']) ? 'selected' : '';
           echo "<option value='{$y['sy_id']}' $selected>{$y['school_year']}</option>";
@@ -179,7 +179,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
       <select name="section_name" required>
         <option value="">Select Section Name</option>
         <?php
-        $sections = $conn->query("SELECT section_name FROM section_name ORDER BY section_name ASC");
+        $sections = $conn->query("SELECT section_name FROM section_name ORDER BY section_name DESC");
         while ($s = $sections->fetch_assoc()) {
             echo "<option value='" . htmlspecialchars($s['section_name']) . "'>" . htmlspecialchars($s['section_name']) . "</option>";
         }
@@ -199,7 +199,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
       <select name="sy_id" required>
         <option value="">Select School Year</option>
         <?php
-        $years = $conn->query("SELECT * FROM school_years ORDER BY school_year ASC");
+        $years = $conn->query("SELECT * FROM school_years ORDER BY school_year DESC");
         while ($y = $years->fetch_assoc()) {
             echo "<option value='{$y['sy_id']}'>" . htmlspecialchars($y['school_year']) . "</option>";
         }
@@ -234,7 +234,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
       <select name="section_name" id="editSectionName" required>
         <option value="">Select Section Name</option>
         <?php
-        $sections = $conn->query("SELECT section_name FROM section_name ORDER BY section_name ASC");
+        $sections = $conn->query("SELECT section_name FROM section_name ORDER BY section_name DESC");
         while ($s = $sections->fetch_assoc()) {
             echo "<option value='" . htmlspecialchars($s['section_name']) . "'>" . htmlspecialchars($s['section_name']) . "</option>";
         }
@@ -254,7 +254,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
       <select name="sy_id" id="editSY" required>
         <option value="">Select School Year</option>
         <?php
-        $years = $conn->query("SELECT * FROM school_years ORDER BY school_year ASC");
+        $years = $conn->query("SELECT * FROM school_years ORDER BY school_year DESC");
         while ($y = $years->fetch_assoc()) {
             echo "<option value='{$y['sy_id']}'>" . htmlspecialchars($y['school_year']) . "</option>";
         }

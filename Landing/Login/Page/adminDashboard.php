@@ -201,20 +201,15 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         <div class="charts">
             <div class="chart-container enrolled-chart">
                 <h3>Enrolled Pupils Per Year</h3>
-                <div class="download-container">
-                    <select class="download-select">
-                        <option value="">Download...</option>
-                        <option value="png">PNG</option>
-                        <option value="jpeg">JPG</option>
-                        <option value="svg">SVG</option>
-                    </select>
-                </div>
-                <canvas id="enrollmentChart"></canvas>
-            </div>
-            <div class="chart-container gender-chart">
                 <div class="filter-container">
-                    <select id="genderYearFilter">
-                        <option value="All">All</option>
+                    <select id="enrollmentFromYearFilter">
+                        <option value="">From</option>
+                        <?php foreach ($allYears as $year): ?>
+                            <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select id="enrollmentToYearFilter">
+                        <option value="">To</option>
                         <?php foreach ($allYears as $year): ?>
                             <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
                         <?php endforeach; ?>
@@ -228,7 +223,32 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <option value="svg">SVG</option>
                     </select>
                 </div>
+                <canvas id="enrollmentChart"></canvas>
+            </div>
+            <div class="chart-container gender-chart">
                 <h3>Sex Distribution</h3>
+                <div class="filter-container">
+                    <select id="genderFromYearFilter">
+                        <option value="">From</option>
+                        <?php foreach ($allYears as $year): ?>
+                            <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select id="genderToYearFilter">
+                        <option value="">To</option>
+                        <?php foreach ($allYears as $year): ?>
+                            <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="download-container">
+                    <select class="download-select">
+                        <option value="">Download...</option>
+                        <option value="png">PNG</option>
+                        <option value="jpeg">JPG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                </div>
                 <div class="small-chart">
                     <canvas id="genderChart"></canvas>
                 </div>
@@ -241,9 +261,16 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
 
         <div class="charts" style="margin-top:18px;">
             <div class="chart-container transferred-chart">
+                <h3>Transferred Pupils Per Year</h3>
                 <div class="filter-container">
-                    <select id="transferYearFilter">
-                        <option value="All">All</option>
+                    <select id="transferFromYearFilter">
+                        <option value="">From</option>
+                        <?php foreach ($allYears as $year): ?>
+                            <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select id="transferToYearFilter">
+                        <option value="">To</option>
                         <?php foreach ($allYears as $year): ?>
                             <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
                         <?php endforeach; ?>
@@ -257,14 +284,20 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <option value="svg">SVG</option>
                     </select>
                 </div>
-                <h3>Transferred Pupils Per Year</h3>
                 <canvas id="transferChart"></canvas>
             </div>
             
             <div class="chart-container dropped-chart">
+                <h3>Dropout Rate Per Year</h3>
                 <div class="filter-container">
-                    <select id="droppedYearFilter">
-                        <option value="All">All</option>
+                    <select id="droppedFromYearFilter">
+                        <option value="">From</option>
+                        <?php foreach ($allYears as $year): ?>
+                            <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <select id="droppedToYearFilter">
+                        <option value="">To</option>
                         <?php foreach ($allYears as $year): ?>
                             <option value="<?php echo htmlspecialchars($year); ?>"><?php echo htmlspecialchars($year); ?></option>
                         <?php endforeach; ?>
@@ -278,7 +311,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                         <option value="svg">SVG</option>
                     </select>
                 </div>
-                <h3>Dropout Rate Per Year</h3>
                 <canvas id="droppedChart"></canvas>
             </div>
         </div>
@@ -507,58 +539,111 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     const observer = new MutationObserver(updateChartsTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
-    document.getElementById('genderYearFilter').addEventListener('change', function() {
-        const selected = this.value;
-        let male = 0, female = 0;
-
-        if (selected === 'All') {
-            male = Number(allGenders.male) || 0;
-            female = Number(allGenders.female) || 0;
-        } else {
-            const data = genderPerYear[selected] || { male: 0, female: 0 };
-            male = Number(data.male) || 0;
-            female = Number(data.female) || 0;
+    function getFilteredYears(fromId, toId) {
+        const fromYear = document.getElementById(fromId).value;
+        const toYear = document.getElementById(toId).value;
+        let filteredYears = <?php echo json_encode($allYears); ?>;
+        if (fromYear && toYear) {
+            const fromIndex = filteredYears.indexOf(fromYear);
+            const toIndex = filteredYears.indexOf(toYear);
+            if (fromIndex !== -1 && toIndex !== -1 && fromIndex <= toIndex) {
+                filteredYears = filteredYears.slice(fromIndex, toIndex + 1);
+            }
+        } else if (fromYear) {
+            const fromIndex = filteredYears.indexOf(fromYear);
+            if (fromIndex !== -1) {
+                filteredYears = filteredYears.slice(fromIndex);
+            }
+        } else if (toYear) {
+            const toIndex = filteredYears.indexOf(toYear);
+            if (toIndex !== -1) {
+                filteredYears = filteredYears.slice(0, toIndex + 1);
+            }
         }
+        return filteredYears;
+    }
 
+    function updateEnrollmentChart() {
+        const filteredYears = getFilteredYears('enrollmentFromYearFilter', 'enrollmentToYearFilter');
+        const allYearsArray = <?php echo json_encode($allYears); ?>;
+        const allData = <?php echo json_encode($studentsByYear); ?>;
+        const filteredData = [];
+        filteredYears.forEach(year => {
+            const index = allYearsArray.indexOf(year);
+            filteredData.push(allData[index] || 0);
+        });
+        enrollmentChart.data.labels = filteredYears;
+        enrollmentChart.data.datasets[0].data = filteredData;
+        enrollmentChart.update();
+    }
+
+    function updateGenderChart() {
+        const filteredYears = getFilteredYears('genderFromYearFilter', 'genderToYearFilter');
+        let male = 0, female = 0;
+        filteredYears.forEach(year => {
+            const data = genderPerYear[year] || { male: 0, female: 0 };
+            male += Number(data.male) || 0;
+            female += Number(data.female) || 0;
+        });
         genderChart.data.datasets[0].data = [male, female];
         genderChart.update();
+        document.querySelector('.female-text').textContent = `Female: ${female}`;
+        document.querySelector('.male-text').textContent = `Male: ${male}`;
+    }
 
-        const femaleTextEl = document.querySelector('.female-text');
-        const maleTextEl = document.querySelector('.male-text');
-        const totalEl = document.querySelector('.gender-total');
-
-        if (femaleTextEl) femaleTextEl.textContent = `Female: ${female}`;
-        if (maleTextEl) maleTextEl.textContent = `Male: ${male}`;
-        if (totalEl) totalEl.textContent = `Total: ${male + female}`;
-    });
-
-    document.getElementById('transferYearFilter').addEventListener('change', function() {
-        const selected = this.value;
-        if (selected === 'All') {
-            transferChart.data.labels = <?php echo json_encode($allYears); ?>;
-            transferChart.data.datasets[0].data = <?php echo json_encode($transferInByYear); ?>;
-            transferChart.data.datasets[1].data = <?php echo json_encode($transferOutByYear); ?>;
-        } else {
-            transferChart.data.labels = [selected];
-            transferChart.data.datasets[0].data = [transferPerYear[selected].in];
-            transferChart.data.datasets[1].data = [transferPerYear[selected].out];
-        }
+    function updateTransferChart() {
+        const filteredYears = getFilteredYears('transferFromYearFilter', 'transferToYearFilter');
+        const allYearsArray = <?php echo json_encode($allYears); ?>;
+        const allInData = <?php echo json_encode($transferInByYear); ?>;
+        const allOutData = <?php echo json_encode($transferOutByYear); ?>;
+        const filteredIn = [];
+        const filteredOut = [];
+        filteredYears.forEach(year => {
+            const index = allYearsArray.indexOf(year);
+            filteredIn.push(allInData[index] || 0);
+            filteredOut.push(allOutData[index] || 0);
+        });
+        transferChart.data.labels = filteredYears;
+        transferChart.data.datasets[0].data = filteredIn;
+        transferChart.data.datasets[1].data = filteredOut;
         transferChart.update();
-    });
+    }
 
-    document.getElementById('droppedYearFilter').addEventListener('change', function() {
-        const selected = this.value;
-        if (selected === 'All') {
-            droppedChart.data.labels = <?php echo json_encode($allYears); ?>;
-            droppedChart.data.datasets[0].data = <?php echo json_encode($dropoutRatesByYear); ?>;
-        } else {
-            droppedChart.data.labels = [selected];
-            droppedChart.data.datasets[0].data = [dropoutRatesPerYear[selected] || 0];
-        }
+    function updateDroppedChart() {
+        const filteredYears = getFilteredYears('droppedFromYearFilter', 'droppedToYearFilter');
+        const allYearsArray = <?php echo json_encode($allYears); ?>;
+        const allData = <?php echo json_encode($dropoutRatesByYear); ?>;
+        const filteredData = [];
+        filteredYears.forEach(year => {
+            const index = allYearsArray.indexOf(year);
+            filteredData.push(allData[index] || 0);
+        });
+        droppedChart.data.labels = filteredYears;
+        droppedChart.data.datasets[0].data = filteredData;
         droppedChart.update();
-    });
+    }
 
-    document.getElementById('genderYearFilter').dispatchEvent(new Event('change'));
+    // Enrollment listeners
+    document.getElementById('enrollmentFromYearFilter').addEventListener('change', updateEnrollmentChart);
+    document.getElementById('enrollmentToYearFilter').addEventListener('change', updateEnrollmentChart);
+
+    // Gender listeners
+    document.getElementById('genderFromYearFilter').addEventListener('change', updateGenderChart);
+    document.getElementById('genderToYearFilter').addEventListener('change', updateGenderChart);
+
+    // Transfer listeners
+    document.getElementById('transferFromYearFilter').addEventListener('change', updateTransferChart);
+    document.getElementById('transferToYearFilter').addEventListener('change', updateTransferChart);
+
+    // Dropped listeners
+    document.getElementById('droppedFromYearFilter').addEventListener('change', updateDroppedChart);
+    document.getElementById('droppedToYearFilter').addEventListener('change', updateDroppedChart);
+
+    // Initial updates
+    updateEnrollmentChart();
+    updateGenderChart();
+    updateTransferChart();
+    updateDroppedChart();
 
     // Download functionality
     document.querySelectorAll('.download-select').forEach(select => {

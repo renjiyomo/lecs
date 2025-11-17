@@ -340,7 +340,7 @@ if (isset($_POST['update'])) {
                         <select name="sy_id" id="sy_id" required>
                             <option value="">Select School Year</option>
                             <?php
-                            $years = $conn->query("SELECT sy_id, school_year FROM school_years ORDER BY sy_id DESC");
+                            $years = $conn->query("SELECT sy_id, school_year FROM school_years ORDER BY school_year DESC");
                             while ($sy = $years->fetch_assoc()) {
                                 $sel = ($formData['sy_id']==$sy['sy_id'])?'selected':''; 
                                 echo "<option value='{$sy['sy_id']}' $sel>{$sy['school_year']}</option>";

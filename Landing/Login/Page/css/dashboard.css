@@ -111,6 +111,11 @@ p {
     flex-wrap: wrap;
 }
 
+.charts h3{
+    margin-top: 30px;
+}
+
+
 .chart-container {
     padding: 20px;
     flex: 1;

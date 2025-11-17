@@ -47,7 +47,7 @@ $top_subjects = [];
 $components = [];
 $sub_res = $conn->query("SELECT * FROM subjects 
                          WHERE grade_level_id = {$selected_pupil['grade_level_id']} 
-                         AND sy_id = $sy_id ORDER BY subject_name ASC");
+                         AND sy_id = $sy_id ORDER BY display_order, subject_name ASC");
 while ($sub = $sub_res->fetch_assoc()) {
     if ($sub['parent_subject_id']) {
         $components[$sub['parent_subject_id']][] = $sub;
@@ -122,12 +122,13 @@ while ($g = $g_res->fetch_assoc()) {
                 $all_grades_complete = true;
                 $required_subjects = 0;
                 $quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+                $required_quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
 
                 foreach ($top_subjects as $sub): 
                     $sid = $sub['subject_id'];
                     $sub_name = strtolower($sub['subject_name']); 
                     $has_comp = isset($components[$sid]);
-
+                    $start_quarter = $sub['start_quarter'] ?? 'Q1';
                     // Skip based on grade level rules
                     if (($grade_level == 1 || $grade_level == 2) && $sub_name == "science") continue;
                     if (($grade_level >= 4 && $grade_level <= 6) && $sub_name == "mother tongue") continue;
@@ -138,73 +139,109 @@ while ($g = $g_res->fetch_assoc()) {
                     $final = '';
                     $rem = '';
                     $subject_grades_complete = true;
+                    $subject_required_quarters = array_slice($required_quarters, array_search($start_quarter, $required_quarters));
+
+                    if ($has_comp && $sub_name === 'mapeh') {
+                        $mapeh_order = [
+                            'Music' => 1,
+                            'Arts' => 2,
+                            'Physical Education' => 3,
+                            'Health' => 4
+                        ];
+                        usort($components[$sid], function($a, $b) use ($mapeh_order) {
+                            $orderA = $mapeh_order[$a['subject_name']] ?? 99;
+                            $orderB = $mapeh_order[$b['subject_name']] ?? 99;
+                            return $orderA <=> $orderB;
+                        });
+                    }
 
                     if ($has_comp) {
                         $q_sums = ['Q1' => 0, 'Q2' => 0, 'Q3' => 0, 'Q4' => 0];
                         $q_counts = ['Q1' => 0, 'Q2' => 0, 'Q3' => 0, 'Q4' => 0];
+                        $expected_counts = ['Q1' => 0, 'Q2' => 0, 'Q3' => 0, 'Q4' => 0];
                         foreach ($components[$sid] as $comp) {
-                            foreach ($quarters as $q) {
-                                if (isset($grades[$comp['subject_id']][$q])) {
-                                    $q_sums[$q] += $grades[$comp['subject_id']][$q];
-                                    $q_counts[$q]++;
+                            $comp_start_quarter = $comp['start_quarter'] ?? 'Q1';
+                            $comp_required_quarters = array_slice($required_quarters, array_search($comp_start_quarter, $required_quarters));
+                            foreach ($required_quarters as $q) {
+                                if (in_array($q, $comp_required_quarters)) {
+                                    $expected_counts[$q]++;
+                                    if (isset($grades[$comp['subject_id']][$q])) {
+                                        $q_sums[$q] += $grades[$comp['subject_id']][$q];
+                                        $q_counts[$q]++;
+                                    } else {
+                                        $all_grades_complete = false;
+                                    }
+                                } else {
+                                    if (isset($grades[$comp['subject_id']][$q])) {
+                                        $all_grades_complete = false;
+                                    }
                                 }
                             }
                         }
-                        foreach ($quarters as $q) {
-                            if ($q_counts[$q] == count($components[$sid])) {
+                        $final_sum = 0;
+                        $final_count = 0;
+                        foreach ($subject_required_quarters as $q) {
+                            $expected = $expected_counts[$q];
+                            if ($expected > 0 && $q_counts[$q] == $expected) {
                                 $q_grades[$q] = round($q_sums[$q] / $q_counts[$q]);
+                                $final_sum += $q_grades[$q];
+                                $final_count++;
                             } else {
                                 $q_grades[$q] = '';
                                 $subject_grades_complete = false;
                                 $all_grades_complete = false;
                             }
                         }
-                        if ($subject_grades_complete) {
-                            $valid_grades = array_filter($q_grades, function($grade) { return $grade !== ''; });
-                            if (count($valid_grades) == count($quarters)) {
-                                $final = round(array_sum($valid_grades) / count($valid_grades));
-                                $rem = $final >= 75 ? 'Passed' : 'Failed';
-                                $general_finals[] = $final;
-                            }
-                        }
+                        if ($final_count > 0) $final = round($final_sum / $final_count);
                     } else {
-                        foreach ($quarters as $q) {
-                            $q_grades[$q] = $grades[$sid][$q] ?? '';
+                        foreach ($subject_required_quarters as $q) {
+                            $q_grades[$q] = isset($grades[$sid][$q]) ? $grades[$sid][$q] : '';
                             if ($q_grades[$q] === '') {
                                 $subject_grades_complete = false;
                                 $all_grades_complete = false;
                             }
                         }
-                        $valid_grades = array_filter($q_grades, function($grade) { return $grade !== ''; });
-                        if (count($valid_grades) == count($quarters)) {
-                            $final = round(array_sum($valid_grades) / count($valid_grades));
-                            $rem = $final >= 75 ? 'Passed' : 'Failed';
-                            $general_finals[] = $final;
+                        foreach ($required_quarters as $q) {
+                            if (!in_array($q, $subject_required_quarters) && isset($grades[$sid][$q])) {
+                                $all_grades_complete = false;
+                            }
                         }
+                        $valid_grades = array_filter($q_grades);
+                        if (count($valid_grades) == count($subject_required_quarters)) {
+                            $final = round(array_sum($valid_grades) / count($subject_required_quarters));
+                        }
+                    }
+                    if ($subject_grades_complete && $final !== '') {
+                        $rem = $final >= 75 ? 'Passed' : 'Failed';
+                        $general_finals[] = $final;
                     }
                 ?>
                     <tr>
                         <td><?= htmlspecialchars($sub['subject_name']) ?></td>
                         <?php foreach ($quarters as $q): ?>
                             <td>
-                                <?php if ($q_grades[$q] !== ''): ?>
-                                    <span class="grade-box"><?= intval($q_grades[$q]) ?></span>
+                                <?php if (in_array($q, $subject_required_quarters)): ?>
+                                    <?php if ($q_grades[$q] !== ''): ?>
+                                        <span class="grade-box"><?= intval($q_grades[$q]) ?></span>
+                                    <?php else: ?>
+                                        <span class="grade-box empty"></span>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <span class="grade-box empty"></span>
+                                    <span class="grade-box not-applicable">N/A</span>
                                 <?php endif; ?>
                             </td>
                         <?php endforeach; ?>
                         <td>
-                            <?php if ($subject_grades_complete && $final !== ''): ?>
+                            <?php if ($final !== ''): ?>
                                 <span class="grade-box"><?= intval($final) ?></span>
                             <?php else: ?>
                                 <span class="grade-box empty"></span>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <?php if ($subject_grades_complete && $rem == "Passed"): ?>
+                            <?php if ($rem == "Passed"): ?>
                                 <span class="promoted">Passed</span>
-                            <?php elseif ($subject_grades_complete && $rem == "Failed"): ?>
+                            <?php elseif ($rem == "Failed"): ?>
                                 <span class="retained">Failed</span>
                             <?php else: ?>
                                 <span class="none">---</span>
@@ -214,39 +251,64 @@ while ($g = $g_res->fetch_assoc()) {
                     <?php if ($has_comp): ?>
                         <?php foreach ($components[$sid] as $comp): 
                             $cid = $comp['subject_id'];
+                            $comp_start_quarter = $comp['start_quarter'] ?? 'Q1';
+                            $comp_required_quarters = array_slice($required_quarters, array_search($comp_start_quarter, $required_quarters));
                             $cq_grades = [
                                 'Q1' => $grades[$cid]['Q1'] ?? '',
                                 'Q2' => $grades[$cid]['Q2'] ?? '',
                                 'Q3' => $grades[$cid]['Q3'] ?? '',
                                 'Q4' => $grades[$cid]['Q4'] ?? ''
                             ];
-                            $cgs = array_filter($cq_grades);
-                            $comp_grades_complete = count($cgs) == count($quarters);
-                            $cfinal = $comp_grades_complete ? round(array_sum($cgs) / count($cgs)) : '';
-                            $crem = $comp_grades_complete ? ($cfinal >= 75 ? 'Passed' : 'Failed') : '';
+                            $comp_grades_complete = true;
+                            foreach ($comp_required_quarters as $q) {
+                                if ($cq_grades[$q] === '') {
+                                    $comp_grades_complete = false;
+                                }
+                            }
+                            foreach ($required_quarters as $q) {
+                                if (!in_array($q, $comp_required_quarters) && $cq_grades[$q] !== '') {
+                                    $comp_grades_complete = false;
+                                }
+                            }
+                            $cgs = [];
+                            foreach ($comp_required_quarters as $q) {
+                                if ($cq_grades[$q] !== '') {
+                                    $cgs[] = intval($cq_grades[$q]);
+                                }
+                            }
+                            $cfinal = '';
+                            $crem = '';
+                            if (count($cgs) == count($comp_required_quarters)) {
+                                $cfinal = round(array_sum($cgs) / count($comp_required_quarters));
+                                $crem = $cfinal >= 75 ? 'Passed' : 'Failed';
+                            }
                         ?>
                             <tr>
                                 <td style="padding-left: 20px;"><?= htmlspecialchars($comp['subject_name']) ?></td>
-                                <?php foreach (['Q1', 'Q2', 'Q3', 'Q4'] as $q): ?>
+                                <?php foreach ($quarters as $q): ?>
                                     <td>
-                                        <?php if ($cq_grades[$q] !== ''): ?>
-                                            <span class="grade-box"><?= intval($cq_grades[$q]) ?></span>
+                                        <?php if (in_array($q, $comp_required_quarters)): ?>
+                                            <?php if ($cq_grades[$q] !== ''): ?>
+                                                <span class="grade-box"><?= intval($cq_grades[$q]) ?></span>
+                                            <?php else: ?>
+                                                <span class="grade-box empty"></span>
+                                            <?php endif; ?>
                                         <?php else: ?>
-                                            <span class="grade-box empty"></span>
+                                            <span class="grade-box not-applicable">N/A</span>
                                         <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
                                 <td>
-                                    <?php if ($comp_grades_complete && $cfinal !== ''): ?>
+                                    <?php if ($cfinal !== ''): ?>
                                         <span class="grade-box"><?= intval($cfinal) ?></span>
                                     <?php else: ?>
                                         <span class="grade-box empty"></span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php if ($comp_grades_complete && $crem == "Passed"): ?>
+                                    <?php if ($crem == "Passed"): ?>
                                         <span class="promoted">Passed</span>
-                                    <?php elseif ($comp_grades_complete && $crem == "Failed"): ?>
+                                    <?php elseif ($crem == "Failed"): ?>
                                         <span class="retained">Failed</span>
                                     <?php else: ?>
                                         <span class="none">---</span>

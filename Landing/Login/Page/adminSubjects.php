@@ -10,13 +10,17 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 
 $teacher_id = intval($_SESSION['teacher_id']);
 
-$sy_res = $conn->query("SELECT * FROM school_years ORDER BY sy_id DESC");
+$sy_res = $conn->query("SELECT * FROM school_years ORDER BY start_date DESC");
 $school_years = $sy_res->fetch_all(MYSQLI_ASSOC);
 
-$empty_res = $conn->query("SELECT sy_id, school_year FROM school_years WHERE sy_id NOT IN (SELECT DISTINCT sy_id FROM subjects) ORDER BY sy_id DESC");
+$empty_res = $conn->query("SELECT sy_id, school_year FROM school_years WHERE sy_id NOT IN (SELECT DISTINCT sy_id FROM subjects) ORDER BY start_date DESC");
 $empty_sys = $empty_res->fetch_all(MYSQLI_ASSOC);
 
-$current_sy = $_GET['sy_id'] ?? '';
+if (!isset($_GET['sy_id']) && !empty($school_years)) {
+    $current_sy = $school_years[0]['sy_id'];
+} else {
+    $current_sy = $_GET['sy_id'] ?? '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,7 +120,7 @@ $current_sy = $_GET['sy_id'] ?? '';
           $where = "WHERE s.subject_name LIKE ? OR g.level_name LIKE ? OR sy.school_year LIKE ? OR p.subject_name LIKE ?";
           $params = array_merge($params, [$search, $search, $search, $search]);
         }
-        if ($current_sy) {
+        if ($current_sy !== '') {
           $where .= ($where ? " AND " : "WHERE ") . "s.sy_id = ?";
           $params[] = $current_sy;
         }
@@ -132,7 +136,7 @@ $current_sy = $_GET['sy_id'] ?? '';
                 JOIN school_years sy ON s.sy_id = sy.sy_id
                 LEFT JOIN subjects p ON s.parent_subject_id = p.subject_id
                 $where
-                ORDER BY sy.school_year DESC, g.level_name ASC, s.subject_name ASC";
+                ORDER BY sy.start_date DESC, g.level_name ASC, s.subject_name ASC";
 
         $stmt = $conn->prepare($sql);
         if (!empty($params)) {

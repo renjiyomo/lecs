@@ -35,8 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $hashLen = strlen($storedHash);
 
                     if ($hashLen < 60) {
-                        $error = "Your password can’t be verified because it was saved with a truncated hash (stored length: {$hashLen}). 
-Please run: ALTER TABLE teachers MODIFY password VARCHAR(255) NOT NULL; then reset this account’s password.";
+                        $error = "Password verification issue—contact admin.";
                     } else {
                         if (password_verify($password, $storedHash)) {
                             if (password_needs_rehash($storedHash, PASSWORD_DEFAULT)) {

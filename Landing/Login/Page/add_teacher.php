@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
         $preview_image = $upload_path;
     }
 
-    // Get position name from positions table
+    // Get position name
     $position_name = '';
     if ($position_id) {
         $stmt = $conn->prepare("SELECT position_name FROM positions WHERE position_id = ?");
@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
             $end_sql = ($end_date !== 'N/A') ? $end_date : null;
 
             if ($is_principal) {
-                // Auto-end previous principal if exists
+                // Auto-end principal if may bagong principal added
                 $res = $conn->query("SELECT tp.id FROM teacher_positions tp 
                                      JOIN positions p ON tp.position_id = p.position_id 
                                      WHERE p.position_name LIKE 'Principal%' AND tp.end_date IS NULL");

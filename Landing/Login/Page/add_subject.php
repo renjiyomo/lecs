@@ -1,5 +1,6 @@
 <?php
 include 'lecs_db.php';
+session_start(); // Start session to get user ID
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject_name_select = $_POST['subject_name_select'];
@@ -8,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $grade_level_id = (int)$_POST['grade_level_id'];
     $parent_subject_id = !empty($_POST['parent_subject_id']) ? (int)$_POST['parent_subject_id'] : NULL;
     $start_quarter = $_POST['start_quarter'];
+    $created_by = $_SESSION['teacher_id']; // logged-in user
 
     if (empty($subject_name) || empty($sy_id) || empty($grade_level_id) || empty($start_quarter)) {
         header("Location: adminSubjects.php?error=Please fill all required fields");
@@ -21,19 +23,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
+    $stmt->close();
 
     if ($row['count'] > 0) {
         header("Location: adminSubjects.php?error=Subject already exists for this school year and grade level");
-        $stmt->close();
         $conn->close();
         exit;
     }
-    $stmt->close();
 
-    // Insert the new subject
-    $sql = "INSERT INTO subjects (subject_name, grade_level_id, sy_id, parent_subject_id, start_quarter, display_order) VALUES (?, ?, ?, ?, ?, 0)";
+    // Insert the new subject with created_by
+    $sql = "INSERT INTO subjects (subject_name, grade_level_id, sy_id, parent_subject_id, start_quarter, display_order, created_by) 
+            VALUES (?, ?, ?, ?, ?, 0, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siiis", $subject_name, $grade_level_id, $sy_id, $parent_subject_id, $start_quarter);
+    $stmt->bind_param("siiisi", $subject_name, $grade_level_id, $sy_id, $parent_subject_id, $start_quarter, $created_by);
 
     if ($stmt->execute()) {
         header("Location: adminSubjects.php?success=added");

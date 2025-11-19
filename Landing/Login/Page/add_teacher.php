@@ -58,6 +58,7 @@ if (isset($_POST['submit'])) {
     $province = trim($_POST['province']) ?: 'N/A';
     $start_date = trim($_POST['start_date'] ?? '');
     $end_date = trim($_POST['end_date'] ?? '') ?: 'N/A';
+    $creator_id = $_SESSION['teacher_id'];
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -119,12 +120,12 @@ if (isset($_POST['submit'])) {
             unset($_SESSION['preview_image']);
         }
 
-        $stmt = $conn->prepare("INSERT INTO teachers 
-            (first_name, middle_name, last_name, employee_no, email, password, contact_no, position, image, user_type, gender, birthdate, age, house_no_street, barangay, municipality, province) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssssssssss", $first_name, $middle_name, $last_name, $employee_no, $email, $hashed_password, $contact_no, 
-            $position_name, $final_image, $user_type, $gender, $birthdate, $age, $house_no_street, $barangay, 
-            $municipality, $province);
+        $stmt = $conn->prepare("INSERT INTO teachers (first_name, middle_name, last_name, employee_no, email, password, contact_no, position, image, user_type, gender, birthdate, age, house_no_street, barangay, municipality, province, created_by, updated_by)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssssssssssssiii",
+            $first_name, $middle_name, $last_name, $employee_no, $email, $hashed_password, $contact_no,
+            $position_name, $final_image, $user_type, $gender, $birthdate, $age,
+            $house_no_street, $barangay, $municipality, $province, $creator_id, $creator_id);
         $stmt->execute();
         $teacher_id = $conn->insert_id;
         $stmt->close();

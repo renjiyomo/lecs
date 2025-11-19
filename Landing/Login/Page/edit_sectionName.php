@@ -11,6 +11,7 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $section_name_id = (int)$_POST['section_name_id'];
     $section_name = trim($conn->real_escape_string($_POST['section_name']));
+    $updated_by = $_SESSION['teacher_id'];
 
     // Validate required fields
     if (empty($section_name_id) || empty($section_name)) {
@@ -33,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Update section name
-    $stmt = $conn->prepare("UPDATE section_name SET section_name = ? WHERE section_name_id = ?");
-    $stmt->bind_param("si", $section_name, $section_name_id);
+    $stmt = $conn->prepare("UPDATE section_name SET section_name = ?, updated_by = ? WHERE section_name_id = ?");
+    $stmt->bind_param("sii", $section_name, $updated_by, $section_name_id);
 
     if ($stmt->execute()) {
         header("Location: adminSectionName.php?success=updated");

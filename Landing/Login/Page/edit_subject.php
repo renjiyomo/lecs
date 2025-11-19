@@ -1,5 +1,6 @@
 <?php
 include 'lecs_db.php';
+session_start(); // Start session to get user ID
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject_id = (int)$_POST['subject_id'];
@@ -9,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $grade_level_id = (int)$_POST['grade_level_id'];
     $parent_subject_id = !empty($_POST['parent_subject_id']) ? (int)$_POST['parent_subject_id'] : NULL;
     $start_quarter = $_POST['start_quarter'];
+    $updated_by = $_SESSION['teacher_id']; // logged-in user
 
     if (empty($subject_id) || empty($subject_name) || empty($sy_id) || empty($grade_level_id) || empty($start_quarter)) {
         header("Location: adminSubjects.php?error=Please fill all required fields");
@@ -22,19 +24,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
+    $stmt->close();
 
     if ($row['count'] > 0) {
         header("Location: adminSubjects.php?error=Subject already exists for this school year and grade level");
-        $stmt->close();
         $conn->close();
         exit;
     }
-    $stmt->close();
 
-    // Update the subject
-    $sql = "UPDATE subjects SET subject_name = ?, grade_level_id = ?, sy_id = ?, parent_subject_id = ?, start_quarter = ? WHERE subject_id = ?";
+    // Update the subject with updated_by (updated_at is automatic if table is set up)
+    $sql = "UPDATE subjects SET subject_name = ?, grade_level_id = ?, sy_id = ?, parent_subject_id = ?, start_quarter = ?, updated_by = ? WHERE subject_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siiisi", $subject_name, $grade_level_id, $sy_id, $parent_subject_id, $start_quarter, $subject_id);
+    $stmt->bind_param("siiisii", $subject_name, $grade_level_id, $sy_id, $parent_subject_id, $start_quarter, $updated_by, $subject_id);
 
     if ($stmt->execute()) {
         header("Location: adminSubjects.php?success=updated");

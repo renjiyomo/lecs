@@ -113,6 +113,7 @@ if (isset($_POST['submit'])) {
     $province = trim($_POST['province']) ?: 'N/A';
     $start_date = trim($_POST['start_date'] ?? '');
     $end_date = trim($_POST['end_date'] ?? '') ?: 'N/A';
+    $updated_by = $_SESSION['teacher_id']; 
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -181,10 +182,15 @@ if (isset($_POST['submit'])) {
             first_name = ?, middle_name = ?, last_name = ?, employee_no = ?, email = ?, 
             contact_no = ?, position = ?, password = ?, image = ?, user_type = ?, 
             gender = ?, birthdate = ?, age = ?, house_no_street = ?, barangay = ?, 
-            municipality = ?, province = ? WHERE teacher_id = ?");
-        $stmt->bind_param("sssssssssssssssssi", $first_name, $middle_name, $last_name, 
-            $employee_no, $email, $contact_no, $position_name, $password, $final_image, $user_type, 
-            $gender, $birthdate, $age, $house_no_street, $barangay, $municipality, $province, $teacher_id);
+            municipality = ?, province = ?, updated_by = ?
+            WHERE teacher_id = ?");
+
+        $stmt->bind_param("ssssssssssssssssssi", 
+            $first_name, $middle_name, $last_name, $employee_no, $email, 
+            $contact_no, $position_name, $password, $final_image, $user_type, 
+            $gender, $birthdate, $age, $house_no_street, $barangay, 
+            $municipality, $province, $updated_by, $teacher_id
+        );
         $stmt->execute();
         $stmt->close();
 

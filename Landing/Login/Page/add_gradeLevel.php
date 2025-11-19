@@ -1,8 +1,10 @@
 <?php
 include 'lecs_db.php';
+session_start(); // Make sure session is started to get user ID
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $level_name = trim($_POST['level_name']);
+    $created_by = $_SESSION['teacher_id']; 
 
     if (!empty($level_name)) {
         // Check for duplicate grade level (case-insensitive)
@@ -17,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
-        // Insert new grade level
-        $stmt = $conn->prepare("INSERT INTO grade_levels (level_name) VALUES (?)");
-        $stmt->bind_param("s", $level_name);
+        // Insert new grade level with created_by
+        $stmt = $conn->prepare("INSERT INTO grade_levels (level_name, created_by) VALUES (?, ?)");
+        $stmt->bind_param("si", $level_name, $created_by);
 
         if ($stmt->execute()) {
             header("Location: adminGradeLevel.php?success=added");
@@ -28,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: adminGradeLevel.php?error=" . urlencode($conn->error));
             exit;
         }
+
         $stmt->close();
     } else {
         header("Location: adminGradeLevel.php?error=" . urlencode("Grade level name cannot be empty"));

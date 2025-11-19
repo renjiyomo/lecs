@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $grade_level_id = (int)$_POST['grade_level_id'];
     $sy_id = (int)$_POST['sy_id'];
     $teacher_id = !empty($_POST['teacher_id']) ? (int)$_POST['teacher_id'] : null;
+    $updated_by = $_SESSION['teacher_id'];
 
     // Validate required fields
     if (empty($section_id) || empty($section_name) || empty($grade_level_id) || empty($sy_id)) {
@@ -53,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Update the section
-    $sql = "UPDATE sections SET section_name = ?, grade_level_id = ?, sy_id = ?, teacher_id = ? WHERE section_id = ?";
+    $sql = "UPDATE sections SET section_name = ?, grade_level_id = ?, sy_id = ?, teacher_id = ?, updated_by = ? WHERE section_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siiii", $section_name, $grade_level_id, $sy_id, $teacher_id, $section_id);
+    $stmt->bind_param("siiiii", $section_name, $grade_level_id, $sy_id, $teacher_id, $updated_by, $section_id);
     
     if ($stmt->execute()) {
         header("Location: adminSections.php?success=updated");

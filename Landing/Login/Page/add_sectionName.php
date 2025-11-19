@@ -10,6 +10,7 @@ if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $section_name = trim($conn->real_escape_string($_POST['section_name']));
+    $created_by = $_SESSION['teacher_id'];
 
     if (empty($section_name)) {
         header("Location: adminSectionName.php?error=" . urlencode("Section name cannot be empty"));
@@ -31,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Insert new section name
-    $stmt = $conn->prepare("INSERT INTO section_name (section_name) VALUES (?)");
-    $stmt->bind_param("s", $section_name);
+    $stmt = $conn->prepare("INSERT INTO section_name (section_name, created_by) VALUES (?, ?)");
+    $stmt->bind_param("si", $section_name, $created_by);
 
     if ($stmt->execute()) {
         header("Location: adminSectionName.php?success=added");

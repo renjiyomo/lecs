@@ -54,19 +54,7 @@ function format_position($pos) {
 }
 
 $orgData = [];
-$currentDate = '2025-11-19';
-$latestYear = '';
-
-foreach ($schoolYears as $sy) {
-    if ($currentDate >= $sy['start_date'] && $currentDate <= $sy['end_date']) {
-        $latestYear = $sy['school_year'];
-        break;
-    }
-}
-
-if (!$latestYear && !empty($schoolYears)) {
-    $latestYear = $schoolYears[0]['school_year'];
-}
+$latestYear = !empty($schoolYears) ? $schoolYears[0]['school_year'] : '';
 
 foreach ($schoolYears as $syRow) {
     $year = $syRow['school_year'];

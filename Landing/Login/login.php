@@ -152,7 +152,7 @@ if (file_exists($flagPath)) {
       <p>
         You can get your account by requesting it from the 
         <b>school head</b> or <b>designated school system administrator</b> 
-        or by emailing <b>email@example.com</b>.
+        or by emailing <b>111762@deped.gov.ph</b>.
       </p>
       <button class="closeBtn">Close</button>
     </div>
@@ -162,7 +162,7 @@ if (file_exists($flagPath)) {
     <div class="modal-content">
       <h2>Forgot Password</h2>
       <p>
-        Please contact your <b>school system administrator</b> or email <b>email@example.com</b>
+        Please contact your <b>school system administrator</b> or email <b>111762@deped.gov.ph</b>
         to reset your password.
       </p>
       <button class="closeBtn">Close</button>

@@ -54,7 +54,7 @@ function format_position($pos) {
 }
 
 $orgData = [];
-$currentDate = '2025-10-27';
+$currentDate = '2025-11-19';
 $latestYear = '';
 
 foreach ($schoolYears as $sy) {
@@ -101,8 +101,22 @@ foreach ($schoolYears as $syRow) {
         $principals[] = $row;
     }
 
+    // Fetch all grade levels
+    $gradeLevelsQuery = "
+        SELECT grade_level_id, level_name
+        FROM grade_levels
+        ORDER BY CASE 
+            WHEN level_name = 'Kinder' THEN 0 
+            ELSE CAST(level_name AS UNSIGNED) 
+        END
+    ";
+
     $gradesTeachers = [];
-    for ($gl = 1; $gl <= 6; $gl++) {
+    $gradeLevelsResult = $conn->query($gradeLevelsQuery);
+    while ($glRow = $gradeLevelsResult->fetch_assoc()) {
+        $glId = $glRow['grade_level_id'];
+        $glName = $glRow['level_name'];
+
         $teachersQuery = "
             SELECT CONCAT(
                 t.first_name, ' ',
@@ -111,33 +125,37 @@ foreach ($schoolYears as $syRow) {
                     ELSE ''
                 END,
                 t.last_name
-            ) AS full_name, t.image, t.position, s.section_name
+            ) AS full_name, t.image, pos.position_name AS position, s.section_name
             FROM sections s
             JOIN grade_levels gl ON s.grade_level_id = gl.grade_level_id
             JOIN teachers t ON s.teacher_id = t.teacher_id
-            WHERE gl.level_name = '$gl'
+            JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
+            JOIN positions pos ON tp.position_id = pos.position_id
+            WHERE s.grade_level_id = $glId
             AND s.sy_id = $syId
+            AND tp.start_date <= '$end'
+            AND (tp.end_date >= '$start' OR tp.end_date IS NULL)
             ORDER BY t.first_name
         ";
-        $result = $conn->query($teachersQuery);
+        $teachersResult = $conn->query($teachersQuery);
         $teachers = [];
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $teachersResult->fetch_assoc()) {
             $row['position'] = format_position($row['position']);
             $teachers[] = $row;
         }
-        $gradesTeachers[$gl] = $teachers;
+        $gradesTeachers[] = ['id' => $glId, 'name' => $glName, 'teachers' => $teachers];
     }
 
     $ntQuery = "
-        SELECT CONCAT(t.first_name, ' ', CASE WHEN t.middle_name IS NOT NULL AND t.middle_name != ''THEN CONCAT(LEFT(t.middle_name, 1), '. ') ELSE '' END, t.last_name) AS full_name, t.image, t.position
+        SELECT DISTINCT CONCAT(t.first_name, ' ', CASE WHEN t.middle_name IS NOT NULL AND t.middle_name != '' THEN CONCAT(LEFT(t.middle_name, 1), '. ') ELSE '' END, t.last_name) AS full_name, 
+        t.image, pos.position_name AS position
         FROM teachers t
+        JOIN teacher_positions tp ON t.teacher_id = tp.teacher_id
+        JOIN positions pos ON tp.position_id = pos.position_id
         WHERE (t.user_type = 'a' OR t.user_type = 'n')
-        AND t.teacher_id NOT IN (
-            SELECT DISTINCT tp.teacher_id
-            FROM teacher_positions tp
-            JOIN positions pos ON tp.position_id = pos.position_id
-            WHERE pos.position_name LIKE 'Principal%'
-        )
+        AND pos.position_name NOT LIKE 'Principal%'
+        AND tp.start_date <= '$end'
+        AND (tp.end_date >= '$start' OR tp.end_date IS NULL)
     ";
     $ntResult = $conn->query($ntQuery);
     $nonTeaching = [];
@@ -165,6 +183,7 @@ foreach ($schoolYears as $syRow) {
     <link rel="stylesheet" href="css/organizationalChart.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <?php include 'theme-script.php'; ?>
+    <script src="js/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -174,6 +193,7 @@ foreach ($schoolYears as $syRow) {
         <h1>Organizational Chart</h1>
         <div class="chart-container org-chart">
             <div class="filter-container">
+                <button class="download-button" id="downloadOrgChart">Download as Image</button>
                 <select id="orgYearFilter">
                     <?php foreach ($schoolYears as $sy): ?>
                         <option value="<?= $sy['school_year']; ?>" <?= $sy['school_year'] === $latestYear ? 'selected' : ''; ?>><?= $sy['school_year']; ?></option>
@@ -214,10 +234,12 @@ foreach ($schoolYears as $syRow) {
         html += '<div class="org-teaching">';
         html += '<h4 class="org-teaching-title">Teaching Personnel</h4>';
         html += '<div class="org-grades">';
-        for (let g = 1; g <= 6; g++) {
+        let grades = data.grades || [];
+        for (let grade of grades) {
             html += '<div class="org-grade">';
-            html += '<h4 class="org-grade-title">Grade ' + g + ' Teachers</h4>';
-            let ts = data.grades[g] || [];
+            let title = isNaN(parseInt(grade.name)) ? grade.name + ' Teachers' : 'Grade ' + grade.name + ' Teachers';
+            html += '<h4 class="org-grade-title">' + title + '</h4>';
+            let ts = grade.teachers || [];
             for (let t of ts) {
                 html += '<div class="org-card">';
                 html += '<img src="Uploads/teachers/' + t.image + '" alt="' + t.full_name + '">';
@@ -258,6 +280,17 @@ foreach ($schoolYears as $syRow) {
             const event = new Event('change');
             orgYearFilter.dispatchEvent(event);
         }
+    });
+
+    document.getElementById('downloadOrgChart').addEventListener('click', function() {
+        const content = document.getElementById('orgChartContent');
+        const selectedYear = document.getElementById('orgYearFilter').value.replace(/-/g, '_');
+        html2canvas(content, {scale: 2}).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `OrgChart_${selectedYear}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
     });
 </script>
 </body>

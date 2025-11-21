@@ -75,7 +75,11 @@ h1 {
 .filter-container {
     position: absolute;
     top: 10px;
+    left: 10px;
     right: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 select {
@@ -84,13 +88,22 @@ select {
     font-size: 14px;
 }
 
-:root.light select {
+button {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+:root.light select,
+:root.light .download-button {
     background-color: var(--card-bg-light);
     color: var(--text-light);
     border: 1px solid #ccc;
 }
 
-:root.dark select {
+:root.dark select,
+:root.dark .download-button {
     background-color: var(--card-bg-dark);
     color: var(--text-dark);
     border: 1px solid #555;
@@ -111,10 +124,12 @@ select {
     padding: 20px;
     border-radius: 10px;
     color: var(--text-light);
+    background-color: var(--card-bg-light);
 }
 
 :root.dark .org-chart-container {
     color: var(--text-dark);
+    background-color: var(--card-bg-dark);
 }
 
 .org-principals,
@@ -146,7 +161,7 @@ select {
 .org-grade-title {
     background-color: var(--org-card-bg-dark);
     color: #fff;
-    padding: 6px;
+    padding: 5px;
     border-radius: 5px;
     margin-bottom: 15px;
     font-size: 14px;
@@ -157,7 +172,7 @@ select {
 }
 
 .org-card {
-    width: 140px;
+    width: 115px;
     padding: 10px;
     background-color: var(--org-card-bg-light);
     border-radius: 10px;
@@ -173,12 +188,6 @@ select {
     border: 1px solid var(--background-dark);
 }
 
-.org-card img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
 
 .org-name {
     color: var(--text-light);
@@ -198,7 +207,7 @@ select {
 
 .org-position,
 .org-section {
-    color: #718096;
+    color: #333538;
     font-size: 10px;
     margin: 0;
 }
@@ -226,8 +235,8 @@ select {
 }
 
 #orgChartContent img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     margin-bottom: 5px;
 }

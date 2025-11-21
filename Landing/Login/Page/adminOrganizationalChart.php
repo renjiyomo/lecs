@@ -222,7 +222,7 @@ foreach ($schoolYears as $syRow) {
         if (data.principals && data.principals.length > 0) {
             html += '<div class="org-principal-cards">';
             for (let p of data.principals) {
-                html += '<div class="org-card">';
+                html += '<div class="org-card" style="width:140px;">';
                 html += '<img src="Uploads/teachers/' + p.image + '" alt="' + p.full_name + '">';
                 html += '<p class="org-name">' + p.full_name + '</p>';
                 html += '<p class="org-position">' + p.position_name + '</p>';
@@ -235,15 +235,18 @@ foreach ($schoolYears as $syRow) {
         html += '<h4 class="org-teaching-title">Teaching Personnel</h4>';
         html += '<div class="org-grades">';
         let grades = data.grades || [];
+        let num_grades = grades.length;
+        let grade_card_width = (num_grades <= 6) ? 140 : (num_grades === 7) ? 115 : 95;
+        let is_eight_grades = num_grades === 8;
         for (let grade of grades) {
             html += '<div class="org-grade">';
             let title = isNaN(parseInt(grade.name)) ? grade.name + ' Teachers' : 'Grade ' + grade.name + ' Teachers';
-            html += '<h4 class="org-grade-title">' + title + '</h4>';
+            html += '<h4 class="org-grade-title"' + (is_eight_grades ? ' style="font-size:13px;"' : '') + '>' + title + '</h4>';
             let ts = grade.teachers || [];
             for (let t of ts) {
-                html += '<div class="org-card">';
+                html += '<div class="org-card" style="width:' + grade_card_width + 'px;">';
                 html += '<img src="Uploads/teachers/' + t.image + '" alt="' + t.full_name + '">';
-                html += '<p class="org-name">' + t.full_name + '</p>';
+                html += '<p class="org-name"' + (is_eight_grades ? ' style="font-size:8px;"' : '') + '>' + t.full_name + '</p>';
                 html += '<p class="org-position">' + t.position + '</p>';
                 html += '<p class="org-section">' + (t.section_name || 'No section') + '</p>';
                 html += '</div>';
@@ -258,8 +261,10 @@ foreach ($schoolYears as $syRow) {
         html += '<div class="org-non-teaching">';
         html += '<h4 class="org-non-teaching-title">Non-Teaching Personnel</h4>';
         html += '<div class="org-non-teaching-cards">';
+        let num_nt = data.non_teaching.length;
+        let nt_card_width = (num_nt <= 6) ? 140 : (num_nt === 7) ? 115 : 95;
         for (let nt of data.non_teaching) {
-            html += '<div class="org-card">';
+            html += '<div class="org-card" style="width:' + nt_card_width + 'px;">';
             html += '<img src="Uploads/teachers/' + nt.image + '" alt="' + nt.full_name + '">';
             html += '<p class="org-name">' + nt.full_name + '</p>';
             html += '<p class="org-position">' + nt.position + '</p>';

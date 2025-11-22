@@ -250,7 +250,7 @@ foreach ($schoolYears as $syRow) {
         html += '<h4 class="org-non-teaching-title">Non-Teaching Personnel</h4>';
         html += '<div class="org-non-teaching-cards">';
         let num_nt = data.non_teaching.length;
-        let nt_card_width = (num_nt <= 6) ? 140 : (num_nt === 7) ? 115 : 95;
+        let nt_card_width = (num_nt <= 5) ? 140 : (num_nt === 6) ? 125 : 105;
         for (let nt of data.non_teaching) {
             html += '<div class="org-card" style="width:' + nt_card_width + 'px;">';
             html += '<img src="Uploads/teachers/' + nt.image + '" alt="' + nt.full_name + '">';

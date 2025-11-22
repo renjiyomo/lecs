@@ -18,7 +18,7 @@ $teacherName = implode(' ', array_filter([$teacher['first_name'], $teacher['midd
 
 $studentCount = (int)$conn->query("SELECT COUNT(*) AS total FROM pupils")->fetch_assoc()['total'];
 $teacherCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type = 't'")->fetch_assoc()['total'];
-$nonTeachingCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type = 'a'")->fetch_assoc()['total'];
+$nonTeachingCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type IN ('a', 'n')")->fetch_assoc()['total'];
 
 $allYearsQuery = $conn->query("
     SELECT school_year, start_date, end_date

@@ -151,6 +151,7 @@ foreach ($pupils as $pupil) {
     
     // Initialize grades
     $grades = [
+        'Mother Tongue' => ['q1' => '', 'q2' => '', 'q3' => '', 'q4' => '', 'final' => '', 'remarks' => ''],
         'Filipino' => ['q1' => '', 'q2' => '', 'q3' => '', 'q4' => '', 'final' => '', 'remarks' => ''],
         'English' => ['q1' => '', 'q2' => '', 'q3' => '', 'q4' => '', 'final' => '', 'remarks' => ''],
         'Mathematics' => ['q1' => '', 'q2' => '', 'q3' => '', 'q4' => '', 'final' => '', 'remarks' => ''],
@@ -222,6 +223,7 @@ foreach ($pupils as $pupil) {
         } else {
             // Handle individual subjects and MAPEH components
             $map = [
+                'Mother Tongue' => 'Mother Tongue',
                 'Filipino' => 'Filipino',
                 'English' => 'English',
                 'Mathematics' => 'Mathematics',
@@ -255,16 +257,22 @@ foreach ($pupils as $pupil) {
         }
     }
     
-    // Calculate general average only if all learning areas have final grades
-    $core_subjects = [
-        'Filipino', 'English', 'Mathematics', 'Science', 'Araling Panlipunan',
-        'Edukasyon sa Pagpapakatao', 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 'MAPEH'
-    ];
+    // Define core subjects dynamically based on grade level (per DEPED K-12)
+    if ($grade_level_id == 1 || $grade_level_id == 2) {
+        $core_subjects = ['Mother Tongue', 'Filipino', 'English', 'Mathematics', 'Araling Panlipunan', 'Edukasyon sa Pagpapakatao', 'MAPEH'];
+    } elseif ($grade_level_id == 3) {
+        $core_subjects = ['Mother Tongue', 'Filipino', 'English', 'Mathematics', 'Science', 'Araling Panlipunan', 'Edukasyon sa Pagpapakatao', 'MAPEH'];
+    } else { // Grades 4-6
+        $core_subjects = ['Filipino', 'English', 'Mathematics', 'Science', 'Araling Panlipunan', 'Edukasyon sa Pagpapakatao', 'Edukasyong Pantahanan at Pangkabuhayan / TLE', 'MAPEH'];
+    }
+
+    // Calculate general average only if all applicable learning areas have final grades
     $final_grades = [];
     $all_subjects_complete = true;
     foreach ($core_subjects as $subject) {
-        if ($grades[$subject]['final'] === '') {
+        if (!isset($grades[$subject]) || $grades[$subject]['final'] === '') {
             $all_subjects_complete = false;
+            break; // Early exit if any required core is missing/empty
         } else {
             $final_grades[] = $grades[$subject]['final'];
         }
@@ -308,6 +316,14 @@ foreach ($pupils as $pupil) {
     // Set grades with font size 11
     $fontSize = 11 * 2; // Word uses half-points
     $fontXml = '<w:r><w:rPr><w:sz w:val="' . $fontSize . '"/></w:rPr><w:t>%s</w:t></w:r>';
+    
+    // Mother Tongue (assuming template has mt1, mt2, etc.)
+    $templateProcessor->setValue('mt1', sprintf($fontXml, $grades['Mother Tongue']['q1']));
+    $templateProcessor->setValue('mt2', sprintf($fontXml, $grades['Mother Tongue']['q2']));
+    $templateProcessor->setValue('mt3', sprintf($fontXml, $grades['Mother Tongue']['q3']));
+    $templateProcessor->setValue('mt4', sprintf($fontXml, $grades['Mother Tongue']['q4']));
+    $templateProcessor->setValue('mt_final_rating', sprintf($fontXml, $grades['Mother Tongue']['final']));
+    $templateProcessor->setValue('mt_remarks', sprintf($fontXml, $grades['Mother Tongue']['remarks']));
     
     $templateProcessor->setValue('f1', sprintf($fontXml, $grades['Filipino']['q1']));
     $templateProcessor->setValue('f2', sprintf($fontXml, $grades['Filipino']['q2']));

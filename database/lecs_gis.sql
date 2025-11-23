@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2025 at 04:22 PM
+-- Generation Time: Nov 23, 2025 at 10:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,15 +45,11 @@ CREATE TABLE `event_calendar` (
 --
 
 INSERT INTO `event_calendar` (`id`, `title`, `date`, `end_date`, `start_time`, `event_details`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-(14, 'Back to School', '2025-08-11', '2025-08-12', '02:00:00', 'Back to Eskwela', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(25, 'Kristine\'s bday!', '2025-09-26', '2025-09-26', '00:00:00', 'Kristine\'s birthday!!!!', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(26, 'system proposals', '2025-08-26', '2025-08-27', '14:20:00', 'testing', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(28, 'sample1', '2025-08-19', '2025-08-19', '14:25:00', 'sample', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(33, 'INTRAMS', '2025-09-24', '2025-09-25', '08:00:00', 'BUP Intramurals', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(35, 'Check System', '2025-09-23', '2025-09-23', '10:00:00', 'Check System', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(36, 'Evaluation', '2025-09-23', '2025-09-24', '13:00:00', 'Evaluate System ', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(37, 'Double Check', '2025-09-22', '2025-09-22', '10:00:00', 'Double Check the System', '2025-11-19 19:35:41', '2025-11-19 19:35:41', NULL, NULL),
-(44, 'test', '2025-11-20', '2025-11-22', '19:40:00', 'test', '2025-11-19 19:40:36', '2025-11-19 19:40:47', 18, 18);
+(14, 'Back to School', '2025-08-11', '2025-08-12', '02:00:00', 'Back to Eskwela', '2025-11-19 19:35:41', '2025-11-20 11:08:28', 18, 18),
+(26, 'system proposals', '2025-08-26', '2025-08-27', '14:20:00', 'testing', '2025-11-19 19:35:41', '2025-11-20 11:08:32', 18, 18),
+(28, 'sample1', '2025-08-19', '2025-08-19', '14:25:00', 'sample', '2025-11-19 19:35:41', '2025-11-20 11:08:33', 18, 18),
+(49, 'Release of Report Card', '2025-11-03', '2025-11-03', '13:00:00', 'Release of Report Card for Quarter 1', '2025-11-20 20:55:09', '2025-11-20 20:55:09', 18, NULL),
+(50, 'Return of Card', '2025-11-04', '2025-11-07', '08:00:00', 'Return of Report Card', '2025-11-20 20:55:48', '2025-11-20 20:55:48', 18, NULL);
 
 -- --------------------------------------------------------
 
@@ -973,43 +969,43 @@ INSERT INTO `grades` (`grade_id`, `pupil_id`, `subject_id`, `quarter`, `grade`, 
 (8667, 952, 32, 'Q2', 82, 13),
 (8668, 952, 32, 'Q3', 85, 13),
 (8669, 952, 32, 'Q4', 85, 13),
-(8670, 1308, 297, 'Q1', 90, 13),
-(8671, 1308, 297, 'Q2', 90, 13),
-(8672, 1308, 297, 'Q3', 90, 13),
-(8673, 1308, 297, 'Q4', 90, 13),
-(8674, 1308, 20, 'Q1', 90, 13),
-(8675, 1308, 20, 'Q2', 90, 13),
-(8676, 1308, 20, 'Q3', 90, 13),
-(8677, 1308, 20, 'Q4', 90, 13),
-(8678, 1308, 16, 'Q3', 90, 13),
-(8679, 1308, 16, 'Q4', 90, 13),
-(8680, 1308, 15, 'Q2', 90, 13),
-(8681, 1308, 15, 'Q3', 90, 13),
-(8682, 1308, 15, 'Q4', 90, 13),
-(8683, 1308, 21, 'Q1', 90, 13),
-(8684, 1308, 21, 'Q2', 90, 13),
-(8685, 1308, 21, 'Q3', 90, 13),
-(8686, 1308, 21, 'Q4', 90, 13),
-(8687, 1308, 22, 'Q1', 90, 13),
-(8688, 1308, 22, 'Q2', 90, 13),
-(8689, 1308, 22, 'Q3', 90, 13),
-(8690, 1308, 22, 'Q4', 90, 13),
-(8691, 1308, 23, 'Q1', 90, 13),
-(8692, 1308, 23, 'Q2', 90, 13),
-(8693, 1308, 23, 'Q3', 90, 13),
-(8694, 1308, 23, 'Q4', 90, 13),
-(8695, 1308, 24, 'Q1', 90, 13),
-(8696, 1308, 24, 'Q2', 90, 13),
-(8697, 1308, 24, 'Q3', 90, 13),
-(8698, 1308, 24, 'Q4', 90, 13),
-(8699, 1308, 17, 'Q1', 90, 13),
-(8700, 1308, 17, 'Q2', 90, 13),
-(8701, 1308, 17, 'Q3', 90, 13),
-(8702, 1308, 17, 'Q4', 90, 13),
-(8703, 1308, 14, 'Q3', 90, 13),
-(8704, 1308, 14, 'Q4', 90, 13),
-(8738, 1308, 14, 'Q2', 90, 13),
-(8774, 1308, 14, 'Q1', 90, 13);
+(8778, 1309, 297, 'Q1', 90, 13),
+(8779, 1309, 297, 'Q2', 88, 13),
+(8780, 1309, 297, 'Q3', 88, 13),
+(8781, 1309, 297, 'Q4', 90, 13),
+(8782, 1309, 20, 'Q1', 90, 13),
+(8783, 1309, 20, 'Q2', 90, 13),
+(8784, 1309, 20, 'Q3', 90, 13),
+(8785, 1309, 20, 'Q4', 90, 13),
+(8786, 1309, 16, 'Q3', 86, 13),
+(8787, 1309, 16, 'Q4', 88, 13),
+(8788, 1309, 15, 'Q2', 87, 13),
+(8789, 1309, 15, 'Q3', 88, 13),
+(8790, 1309, 15, 'Q4', 88, 13),
+(8791, 1309, 21, 'Q1', 90, 13),
+(8792, 1309, 21, 'Q2', 88, 13),
+(8793, 1309, 21, 'Q3', 88, 13),
+(8794, 1309, 21, 'Q4', 89, 13),
+(8795, 1309, 22, 'Q1', 90, 13),
+(8796, 1309, 22, 'Q2', 88, 13),
+(8797, 1309, 22, 'Q3', 88, 13),
+(8798, 1309, 22, 'Q4', 90, 13),
+(8799, 1309, 23, 'Q1', 90, 13),
+(8800, 1309, 23, 'Q2', 88, 13),
+(8801, 1309, 23, 'Q3', 88, 13),
+(8802, 1309, 23, 'Q4', 90, 13),
+(8803, 1309, 24, 'Q1', 95, 13),
+(8804, 1309, 24, 'Q2', 88, 13),
+(8805, 1309, 24, 'Q3', 88, 13),
+(8806, 1309, 24, 'Q4', 90, 13),
+(8807, 1309, 17, 'Q1', 95, 13),
+(8808, 1309, 17, 'Q2', 86, 13),
+(8809, 1309, 17, 'Q3', 88, 13),
+(8810, 1309, 17, 'Q4', 89, 13),
+(8811, 1309, 14, 'Q1', 95, 13),
+(8812, 1309, 14, 'Q2', 87, 13),
+(8813, 1309, 14, 'Q3', 88, 13),
+(8814, 1309, 14, 'Q4', 90, 13);
 
 -- --------------------------------------------------------
 
@@ -2653,7 +2649,34 @@ INSERT INTO `pupils` (`pupil_id`, `teacher_id`, `lrn`, `last_name`, `first_name`
 (1239, 23, '111762190095', 'SEVILLA', 'KYLIE', 'ROARING', 'Female', '2014-01-15', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SEVILLA, REY MAPE', 'ROARING,EDEN,RIPARIP,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
 (1240, 23, '111762190096', 'SIENES', 'MIRA JANE', 'MONTA', 'Female', '2014-04-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SIENES, ROCKY RINGO ALTAJARA', 'MONTA,KASELYN,-,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
 (1250, 6, '111762200012', 'BASILLA', 'ALLIAH', 'RETANAN', 'Female', '2014-11-08', 9, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'BASILLA, LEO ROSAL', 'RETANAN,AIZA,NUYDA,', '', '', '', 'Face to Face', '', 14, 10, 'enrolled'),
-(1308, 55, '111762090177', 'AGUILAR', 'NOAH', 'SEGUBIENSE', 'Male', '2015-03-08', 9, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'AGUILAR, NOEL CABILES', 'SEGUBIENSE,CHERRYLL,SEDA,', '', '', '', '', '', 13, 61, 'promoted');
+(1309, 29, '111762180005', 'BAS', 'JOHN PAUL', 'BARELA', 'Male', '2013-02-11', 10, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'BAS, GERARDO MANGAMPO', 'BARELA,SHIELA,NIEVA,', '', '', '', 'Face to Face', '', 13, 40, 'promoted'),
+(1310, 29, '111762220155', 'BUELLA', 'JESSIE', 'BOLANTE', 'Male', '2016-08-07', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'BUELLA, PIO SEGARRA', 'BOLANTE,JOAN,SALEM,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1311, 29, '111762220049', 'CAPISTRANO', 'MARK BRANE', 'FAJARDO', 'Male', '2015-10-27', 8, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'CAPISTRANO, DEXTER LAYDEROS', 'FAJARDO,MELANIE,BORJA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1312, 29, '111762220057', 'CAPISTRANO', 'MIGUEL IñIGO', 'FAJARDO', 'Male', '2017-06-24', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'CAPISTRANO, DEXTER LAYDEROS', 'FAJARDO,MELANIE,BORJA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1313, 29, '111762220087', 'DE LA TORRE', 'EARL CLYGEL', 'MAGLINAO', 'Male', '2017-07-24', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'DE LA TORRE, RENE VIBAR', 'MAGLINAO,JENILYN,FRANCIS,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1314, 29, '111802220014', 'DIESTA', 'JOHN', 'FLORANDA', 'Male', '2017-09-19', 6, 'Filipino', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'DIESTA, JODEL SESGUNDO', 'FLORANDA,JULIE,ROSAL,', '', '', '', 'Face to Face', 'T/I DATE:2024-01-10', 13, 40, 'transferred_in'),
+(1315, 29, '111762220090', 'LEYNES', 'SIAN KENJIE', 'INAO', 'Male', '2016-10-28', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'LEYNES, JONAH VELASQUEZ', 'INAO,NILO JANE,ETOM,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1316, 29, '136720220032', 'LINDIO', 'JAIZZEN KHIN', 'ESTADILLA', 'Male', '2016-09-17', 7, 'Filipino', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'LINDIO, MARK SAYSON', 'ESTADILLA,JOAN,CASAUL,', '', '', '', 'Face to Face', 'T/I DATE:2023-08-30', 13, 40, 'transferred_in'),
+(1317, 29, '111789220035', 'MANGUBAT', 'JOHN RIEL', 'RANARA', 'Male', '2015-12-03', 7, 'Bikol, Libon', '', 'Christianity', '', 'Bulusan', 'Libon', 'Albay', 'MANGUBAT, ARIEL DELA RAMA', 'RANARA,JENNA,LISABA,', '', '', '', 'Face to Face', 'T/I DATE:2023-08-30', 13, 40, 'transferred_in'),
+(1318, 29, '111762220066', 'REALINGO', 'JULIOUS CEASAR', 'OBEDECE', 'Male', '2017-04-02', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'REALINGO, CESAR ORILLA', 'OBEDECE,MARGIE,MARIÑAS,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1319, 29, '109629220231', 'SATUITO', 'WINNEER', 'CAPISTRANO', 'Male', '2017-01-07', 6, 'Tagalog', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'SATUITO, ANDRES SALDO', 'CAPISTRANO,MA CRISANTA,ALFANTE,', '', '', '', 'Face to Face', 'T/I DATE:2023-11-08', 13, 40, 'transferred_in'),
+(1320, 29, '432524210048', 'SE', 'MARK GREGORY', 'OLOS', 'Male', '2016-02-01', 7, 'Bikol', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SE, GREGORIO PANTUA', 'OLOS,MARY ANN,MANZANO,', '', '', '', 'Face to Face', 'T/I DATE:2023-08-30', 13, 40, 'transferred_in'),
+(1321, 29, '111762220117', 'SECRETO', 'MARK JULIAN', 'AMOR', 'Male', '2016-09-01', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SECRETO, ANTHONY REBLANDO', 'AMOR,JULIE,OSIANA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1322, 29, '111762220083', 'SEDA', 'JHIRO', 'FABILANE', 'Male', '2017-06-20', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SEDA, JERSON EMBUDO', 'FABILANE,JULIE ANN,ALBEZA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1323, 29, '111762220031', 'SIGUENZA', 'JHON KERS', 'AGUILAR', 'Male', '2016-10-18', 7, 'Bikol, Libon', '', 'Christianity', '', 'Centro Oriental (Poblacion)', 'Polangui', 'Albay', 'SIGUENZA, KIM EFREN REFALDA', 'AGUILAR,LUZ,MARTOS,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1324, 29, '114495210054', 'VASQUEZ', 'MELTON EARL', 'ESPINOSA', 'Male', '2016-05-25', 7, 'Tagalog', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'VASQUEZ, JOE MEL DELOS SANTOS', 'ESPINOSA,HEZEL,BRIONES,', '', '', '', 'Face to Face', 'T/I DATE:2023-09-05', 13, 40, 'transferred_in'),
+(1325, 29, '111762210018', 'ABILA', 'MA. OPHELIA ELEANOR', 'VASQUEZ', 'Female', '2016-03-14', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'ABILA, ERWIN BLANQUEZA', 'VASQUEZ,MARIA CECILIA,DUKA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1326, 29, '111762220156', 'AGUILAR', 'SYDNEY', 'REYES', 'Female', '2017-10-22', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'AGUILAR, ODELON MARTOS', 'REYES,RONA,CASTILLO,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1327, 29, '108950220041', 'ARDEDON', 'MAY ANNE', 'CORTEZ', 'Female', '2017-05-19', 6, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'ARDEDON, LORENZO PORLAGE', 'CORTEZ,FLORENTINA,TOLENTINO,', '', '', '', 'Face to Face', 'T/I DATE:2023-08-29', 13, 40, 'transferred_in'),
+(1328, 29, '111762220129', 'DECLARO', 'MA NICOLE', 'RONQUILLO', 'Female', '2016-11-19', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'DECLARO, CESAR I SECRETARIO', 'RONQUILLO,DONA MIE,SEDA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1329, 29, '136565220024', 'DYCOCO', 'PRITISHASWINE', 'OLICIA', 'Female', '2016-12-05', 6, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'DYCOCO, JOE RICARDO RAMOS', 'OLICIA,LUZVIMINDA,PELETINA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1330, 29, '111767220006', 'MATEO', 'ATHENA HEILEY DUEL', 'OZAETA', 'Female', '2016-12-04', 6, 'Bikol, Libon', '', 'Christianity', '', 'Marayag', 'Libon', 'Albay', 'MATEO, MARCO ARQUERO', 'OZAETA,ERLYN,ELIGOYO,', '', '', '', 'Face to Face', 'T/I DATE:2023-08-29', 13, 40, 'transferred_in'),
+(1331, 29, '111762220105', 'ORTINERO', 'AHLEEZHA KIM', 'RESUENA', 'Female', '2016-12-16', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'ORTINERO, RODOLFO BRIZUELA', 'RESUENA,MARIA LOIDA,ZAFRA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1332, 29, '111762220140', 'SEVA', 'VENICE AJ', 'NAZ', 'Female', '2016-12-08', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SEVA, WILLIAM OBAL', 'NAZ,JENIFFER GRACE,SALLAN,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1333, 29, '111762220141', 'SEVA', 'VIVIENE ATHENA', 'NAZ', 'Female', '2016-01-11', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SEVA, WILLIAM OBAL', 'NAZ,JENIFFER GRACE,SALLAN,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1334, 29, '111762220034', 'SISON', 'MIA ANGELA', 'BAVA', 'Female', '2017-09-05', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SISON, NONITO R II', 'BAVA,REGINA MAE,MORONDOZ,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1335, 29, '111762220143', 'VASQUEZ', 'ANGELA MAE', 'GARILAO', 'Female', '2017-10-27', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'VASQUEZ, EDWIN MIDAY', 'GARILAO,ARLINE,SAYSON,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1336, 29, '111762220144', 'VELASCO', 'SCARLET', 'COLAMBO', 'Female', '2017-09-05', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'VELASCO, HERMAN PUENSALIDA', 'COLAMBO,RECHILDA,ABILA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled');
 
 -- --------------------------------------------------------
 
@@ -2732,7 +2755,6 @@ INSERT INTO `sections` (`section_id`, `section_name`, `grade_level_id`, `teacher
 (57, 'Rizal', 2, 23, 29, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
 (59, 'Rizal', 2, 23, 28, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
 (60, 'Winners', 23, 23, 26, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
-(61, 'Dalton', 1, 55, 13, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
 (62, 'Fighters', 2, 23, 13, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -2942,7 +2964,7 @@ INSERT INTO `subjects` (`subject_id`, `subject_name`, `grade_level_id`, `sy_id`,
 (168, 'Araling Panlipunan', 3, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
 (169, 'Mother Tongue', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
 (170, 'Filipino', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
-(171, 'English', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
+(171, 'English', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-21 12:11:01', NULL, NULL),
 (172, 'Araling Panlipunan', 1, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
 (173, 'Araling Panlipunan', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
 (174, 'MAPEH', 2, 29, NULL, 'Q1', 0, '2025-11-19 20:17:11', '2025-11-19 20:17:11', NULL, NULL),
@@ -3107,37 +3129,35 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`teacher_id`, `first_name`, `middle_name`, `last_name`, `employee_no`, `email`, `password`, `gender`, `birthdate`, `age`, `contact_no`, `house_no_street`, `barangay`, `municipality`, `province`, `position`, `image`, `user_type`, `user_status`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES
-(3, 'Analyn', 'Tapia', 'Pernecita', '4136941', 'teacher1@gmail.com', '$2y$10$IZHC1qrVhJp6mvHhEOW9s.4xadOcNjoM.36vE98dTfn.Tfa.wnwx6', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5df87677.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(6, 'Ma. Sheryll', 'Reconday', 'Palacio', '4123656', 'teacher4@gmail.com', '$2y$10$f7pbBb9UWXD5WhA1s42b7Omvml28uOo1q2mfWElqeh.p4u0nMFFf.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5c38423e.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(18, 'Eduardo', 'Orilla', 'Realingo', '4512455', 'admin@gmail.com', '$2y$10$6h/.XaHT7JIQotPBzWXPQOsOpEgpPRtSHES7sFpj3tXlYhdkr3Cdu', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'Albay', 'Principal 1', '690a37a8c7abe.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(20, 'Aristea', 'Satuito', 'Baliton', '4130770', 'baliton@gmail.com', '$2y$10$LqG4GLOQMzuZJQHUJm6.ZuruhX9wHvhqy4ScPLzHO9yEoumMmJs12', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d5d2a8095.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(21, 'Elvira', 'Saribong', 'Se', '4512454', 'teacher3@gmail.com', '$2y$10$PJJv4vo06viUhlSEEEYeiOjlAimmFcSXqrsl4rEK7wp1lAb3K8JXm', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d6428c01a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(23, 'Mary Jane', 'Nidea', 'Bautista', '4536529', 'bautista@gmail.com', '$2y$10$5qB/zrQ1ELbiDQEhE7EjJ.2/T4srbpm3LV6BgSXG/XShz1boFWRRe', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'Zone V (Poblacion)', 'Libon', 'Albay', 'Teacher 3', '68d1d5b12d994.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(29, 'Emily', 'Zafra', 'Villagomez', '4521683', 'villagomez@gmail.com', '$2y$10$NmaIWZPszwjKX9d0Z.hCVuiw7/QWAldBlv763ig7myph7O3vQ3xUi', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(30, 'Ma. Luisa', 'Serrano', 'Buiza', '4266585', 'buiza@gmail.com', '$2y$10$3AfQvNVIYU8BybwXTRQcU.PIjg.1xyUW3hqMzaipkwMzHVoCmSDN2', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 2', '68d1e18432bcb.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(31, 'Cherry', 'Toledo', 'Kikim', '6430599', 'kikim@gmail.com', '$2y$10$K8tXhgPBdtR8hvgghWLhg.JqXsCXtLBDp6Tin27Nx50nleJwWdVIK', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Officer 2', '68d1f46d99202.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-19 13:06:17', NULL, 18),
+(3, 'Analyn', 'Tapia', 'Pernecita', '4136941', 'analyn.pernecita@gmail.com', '$2y$10$KuwyTrM29nH80VOe7KxJ8.C99dU4YY836XPD2YtXgV4i2D7Aw./Z6', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5df87677.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:35:37', NULL, 18),
+(6, 'Ma. Sheryll', 'Reconday', 'Palacio', '4123656', 'sheryll.palacio@gmail.com', '$2y$10$5npa4Nl0LSEbsItFCLEjz.kZTu16daoe.q.8PGmDJ6ckOzvhNPnPS', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68d1d5c38423e.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:27:45', NULL, 18),
+(18, 'Eduardo', 'Orilla', 'Realingo', '4512455', 'eduardo.realingo@gmail.com', '$2y$10$kdH8siezrix5MNRd7P08I.RXt41Y79LbrDwJbXOQluIP0Wuo8L9ye', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'Zone III (Poblacion)', 'Libon', 'Albay', 'Principal 1', '690a37a8c7abe.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-23 00:04:29', NULL, 18),
+(20, 'Aristea', 'Satuito', 'Baliton', '4130770', 'aristea.baliton@gmail.com', '$2y$10$h0dXyypwjyHosojR/IfW9.KV2M1A8lI3OMtXeIOKpN9.8HagXya1q', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d5d2a8095.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:34:52', NULL, 18),
+(21, 'Elvira', 'Saribong', 'Se', '4512454', 'elvira.se@gmail.com', '$2y$10$PGJ3nEdrZ3.fC1NE236hluwhXXUPi7FAf9PJEdhWmpsds2.cgKT4m', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68d1d6428c01a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:38:55', NULL, 18),
+(23, 'Mary Jane', 'Nidea', 'Bautista', '4536529', 'maryjane.bautista@gmail.com', '$2y$10$/fZf6IEOwCCHprJH7abw8.8lcWVOPtUQDFLgVU.zepEEUR9eCEmqm', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'Zone V (Poblacion)', 'Libon', 'Albay', 'Teacher 3', '68d1d5b12d994.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:56:16', NULL, 18),
+(29, 'Emily', 'Zafra', 'Villagomez', '4521683', 'emily.villagomez@gmail.com', '$2y$10$/VZd/zGAxVrk/JUTP3TF2eeN2DMvImh3jNif9xBcmjVycW6nvGO5K', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:55:41', NULL, 18),
+(30, 'Ma. Luisa', 'Serrano', 'Buiza', '4266585', 'luisa.buiza@gmail.com', '$2y$10$m7GZx1hoMU1gT/jtXsIEreRRqBsn9q/tbmVMJB2vniF2m4BtGV396', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 2', '68d1e18432bcb.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:37:58', NULL, 18),
+(31, 'Cherry', 'Toledo', 'Kikim', '6430599', 'cherry.kikim@gmail.com', '$2y$10$Un9Mhe3dApzKm63HoLQGEu2xrueYYX..k4UBkiIegWrHgdDO9/hAK', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Officer 2', '68d1f46d99202.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-21 15:58:38', NULL, 18),
 (32, 'Arnel', 'Reboja', 'Aguilar', '4519082', '', '', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Aide 1', '68d1f45bcdcfe.png', 'n', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(33, 'Emilio Jose', 'C.', 'Sionicio', '6433052', 'Sionicio@gmail.com', '$2y$10$Ikr002GEdTwMZrBpaxfIX.lLI8kHjVrvTsjgCJtoX2LluKbzETHxW', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Assistant 2', '68d1f4a4dcf3e.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
+(33, 'Emilio Jose', 'C.', 'Sionicio', '6433052', 'emiliojose.sionicio@gmail.com', '$2y$10$DfL97d7HbLE.OeQtDiqRGObuqH5lD.oyIO0KN0fTX5VzLEQTLJcZ2', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Assistant 2', '68d1f4a4dcf3e.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-21 15:59:16', NULL, 18),
 (38, 'Maricel', 'M', 'Bueno', 'N/A', '', '', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Utility', '68e721871982b.png', 'n', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(39, 'Maryjane', 'Reconday', 'Bacolod', '0433485', 'bacolodm@gmail.com', '$2y$10$GVr1NgTpDz3ZWrbMqeg6ReS/RHas/exuuiIRCjf/UaXS1vw62OxSW', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 2', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(40, 'Ma. Rosa', 'Serrano', 'Sara', '4177599', 'saram@gmail.com', '$2y$10$cgCz8LeLHVIKJlaf7jW2TOGkMNDInjDGD/CXaAntBWkqcOJQ/Wd3i', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(41, 'Shirley', 'Advincula', 'Realingo', '4178283', 'realingos@gmail.com', '$2y$10$bB6l74JOxjdzZo41mkWVNu6/s.Akrs2KAM2MkjTl2VRjpqdqdhStC', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 3', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(42, 'Maggielyn', 'Albia', 'Agaton', '4219232', 'agatonm@gmail.com', '$2y$10$9xsHmIXmnwt3srnCS0ZGF.obTY4OXTqBm/y.FI8dUkG4yHrhE4bRu', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 3', '68e8ef5d6550a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(43, 'Olympia', 'Satorre', 'Secreto', '4519945', 'secretoo@gmail.com', '$2y$10$hFE./B.03LjPsdhBCXCKo.7UHCn6JgPpjS5gEaJrA8WTq8wVOhv/2', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e8f0255f4ff.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(44, 'Edily', 'Borromeo', 'Catalbas', '4518576', 'catalbase@gmail.com', '$2y$10$gFxLnDcu2fDROHyveApaG.t.siEqCu5hWSYy5npyG40qS9padlFDy', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74d7ed9716.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(45, 'Ma. Eliza', 'Abila', 'Roselada', '4513345', 'roseladam@gmail.com', '$2y$10$u3J61os7T/LTazwczP8QZeyRmuxLvhL.Nyj91EcWnAHQfsKQJmM8O', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74ea586464.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(46, 'Salve', 'Nueva', 'Salas', '4512453', 'salass@gmail.com', '$2y$10$PD4MF7lOJpmk0dEFuVdFouwMu6GgwjM5GzFEqkD/iorwUYJPeMWA.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e8efafe66d5.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(47, 'Jerry', 'Lomibao', 'Mabini', '4521130', 'mabinij@gmail.com', '$2y$10$LLW2UGZYYQyhSpRbIpEyIu7HOihzdTlq0l7k4rslK/Uoi20MSPoMG', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74624263db.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(48, 'Nonette', 'Sigalat', 'Regondola', '4515415', 'regondolan@gmail.com', '$2y$10$1bIu8iToCuIlA7DfRPhIY.EUJ6sMs.pz7afHk6VEc0LMxJJzDT1W6', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68e746ad0ba18.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(49, 'Madel', 'Razal', 'Edroso', '4822407', 'edrosom@gmail.com', '$2y$10$UJFUtfj3GMx29tNVikyE..sV2zV2/vZ2DZuUR/e6nD0.pT6F4IvPG', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 2', '68e747667dc8b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(50, 'Manilyn', 'Seda', 'Alvarez', '4725188', 'alvarezm@gmail.com', '$2y$10$kzNXwTrKDp2BB.Mr291EResoPSpR2yKCcSnbKT2N3wpcyddNuZ7Ue', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e7481a0c66b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(51, 'Jovie', 'Linggas', 'Evangelista', '5914540', 'evangelistaj@gmail.com', '$2y$10$O7YTYo5Z9uOhDJ89uZtyu.X77yVmfFU35CKNuPN9H9GT0WrkbJsgG', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 1', '68e7499ff1199.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(52, 'Elsa', 'Pacamara', 'Mabini', '4365006', 'mabinie@gmail.com', '$2y$10$LbIoreDpQETP5ReInuf5GOCNZkqn85epqWUi3g3C7Navi7RqXyJnS', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74ac684d5a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(53, 'Syrelle France', 'Samson', 'Paterter', '6314954', 'paterters@gmail.com', '$2y$10$lDMFy34gQRkkmOXTMmCbs.yabqXlmzEw1XzG3T9V7cqtGda.U1Vlu', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74c3053a8b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(54, 'Mark Erick', 'Padua', 'Serrano', '120503', 'test1@gmail.com', '$2y$10$wWqTxLuJ4jutyWzrLb4ZTeHEhj9VhDMNMq5PLu0rhr3oQpMlFcpAe', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Principal 4', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(55, 'Mark Erick', 'Padua', 'Serrano', '1205037', 'testme@gmail.com', '$2y$10$Akb3mrEaIIk5ngge/n1ptuoOqwOTddIpd2y/X6YMjRouCzBWdVHJe', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 5', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(59, 'Ronel', 'Realingo', 'Marzan', 'N/A', '', NULL, 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Utility', '691b5f16654bf.png', 'n', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(60, 'Mark Erick', 'Padua', 'Serrano', '1234567', 'test1@gmail.com', '$2y$10$t.VnZzWlhxjL36IFdQj6/.fJ22GXlPImX1Txr97myRwzQdMx4qeli', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 5', 'teacher.png', 't', 'a', '2025-11-19 19:56:53', '2025-11-19 20:08:22', 18, 31);
+(39, 'Maryjane', 'Reconday', 'Bacolod', '0433485', 'maryjane.bacolod@gmail.com', '$2y$10$P9E/BSiSFyF.WSBrGz5vCOwL9.hAX3Dr7sU1xPyvRGt2bmwTl6IiK', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 2', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:32:34', NULL, 18),
+(40, 'Ma. Rosa', 'Serrano', 'Sara', '4177599', 'rosa.sara@gmail.com', '$2y$10$taTe9dATU4pASEh.eQ4qqu/.qoaExR5tAqLQd5PTY2.XSoD.Hxsye', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:36:02', NULL, 18),
+(41, 'Shirley', 'Advincula', 'Realingo', '4178283', 'shirley.realingo@gmail.com', '$2y$10$96njQkhvCVhIANCvMfiWoOB3oDjy2PVwj5O9axfQyqpgUgURxFHhS', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 3', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:36:45', NULL, 18),
+(42, 'Maggielyn', 'Albia', 'Agaton', '4219232', 'maggielyn.agaton@gmail.com', '$2y$10$GDVNo/GWX.t/bIYCTa1mruwAwrhSFbduUklB7obD4VuA6f0Y1F/pW', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 3', '68e8ef5d6550a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:37:31', NULL, 18),
+(43, 'Olympia', 'Satorre', 'Secreto', '4519945', 'olympia.secreto@gmail.com', '$2y$10$L60vkCSWMnyjuYoXwjCyaOb/WhuNauGqDjfOZYn0tPBl91xeBEwVm', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e8f0255f4ff.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:42:18', NULL, 18),
+(44, 'Edily', 'Borromeo', 'Catalbas', '4518576', 'edily.catalbas@gmail.com', '$2y$10$iN2Z4xpUUR8E2bolp22tSuuz9LzsL8JQZsW68X/GuXt3/OqTqwM7y', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74d7ed9716.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:40:58', NULL, 18),
+(45, 'Ma. Eliza', 'Abila', 'Roselada', '4513345', 'eliza.roselada@gmail.com', '$2y$10$X072.QVV7dhf4YswAPNgrOFkWJNTW6m.xovoaVZOBtmbM9M4Vc0iC', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74ea586464.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:39:31', NULL, 18),
+(46, 'Salve', 'Nueva', 'Salas', '4512453', 'salve.salas@gmail.com', '$2y$10$mbmS4ONV7XrioMxpZ2OaZOmxX0vb8zwl8VURb0tvgZoN0Mr1Z9NDG', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e8efafe66d5.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:38:38', NULL, 18),
+(47, 'Jerry', 'Lomibao', 'Mabini', '4521130', 'jerry.mabini@gmail.com', '$2y$10$xbD1UixaocOfAyaA9HvwiOXVbU1niw/ODPWMQBfdugLrKhlDes1SO', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74624263db.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:55:16', NULL, 18),
+(48, 'Nonette', 'Sigalat', 'Regondola', '4515415', 'nonnete.regondola@gmail.com', '$2y$10$fhC8UwT1CWB3IFU3LrcLe.3Gv3x7hF3LQsI4eW0JVaFoPNPdbFboC', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 1', '68e746ad0ba18.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:40:26', NULL, 18),
+(49, 'Madel', 'Razal', 'Edroso', '4822407', 'madel.edroso@gmail.com', '$2y$10$zoj7h7p8McTqtwbTczzkfOzeqYeQU75q.ENOrwPHigAVQjgcRAgc.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 2', '68e747667dc8b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:57:14', NULL, 18),
+(50, 'Manilyn', 'Seda', 'Alvarez', '4725188', 'manilyn.alvarez@gmail.com', '$2y$10$ge0/hKPQvrK69dRBxCVoLOT7j.rjYfD8GriDZdwD8uK2swzCBXx3q', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e7481a0c66b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:56:52', NULL, 18),
+(51, 'Jovie', 'Linggas', 'Evangelista', '5914540', 'jovie.evangelista@gmail.com', '$2y$10$Uura8vk9BQweAAt3ifPwu.HoXEJ9lEgN15NdBMc2Ebzq2goPLpfM.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 1', '68e7499ff1199.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:57:44', NULL, 18),
+(52, 'Elsa', 'Pacamara', 'Mabini', '4365006', 'elsa.mabini@gmail.com', '$2y$10$DevKsXmkJ1SDf/fhtW2usOg5m3tdSKmLoVO8I7scq/NJn4J91Rcli', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74ac684d5a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:38:19', NULL, 18),
+(53, 'Syrelle France', 'Samson', 'Paterter', '6314954', 'syrellefrance.paterter@gmail.com', '$2y$10$KL4H.qFigVkYzl1Lkr01COQhUfKFPv5yYSRNde8/ljXv9hBePelRC', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74c3053a8b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:58:16', NULL, 18),
+(61, 'Ron', 'Ordansa', 'Longasa', '4562628', 'ron.longasa@gmail.com', '$2y$10$DMMSRopTaNYD7UgQcYoote/AghN.GzKNVkt00NNqr053RDCLlhu1W', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', '0', 'Teacher 3', '69201e548f3aa.png', 'a', 'a', '2025-11-21 16:09:56', '2025-11-21 16:09:56', 18, 18),
+(63, 'Ronel', 'Realingo', 'Marzan', 'N/A', '', NULL, 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Utility', '69214939c0006.png', 'n', 'a', '2025-11-22 13:24:39', '2025-11-22 13:25:13', 61, 61);
 
 -- --------------------------------------------------------
 
@@ -3185,14 +3205,8 @@ INSERT INTO `teacher_positions` (`id`, `teacher_id`, `position_id`, `start_date`
 (39, 53, 3, '2018-06-01', NULL),
 (40, 31, 18, '2018-06-01', NULL),
 (41, 33, 23, '2018-06-01', NULL),
-(42, 54, 16, '2025-10-15', '2025-10-27'),
-(43, 55, 5, '2023-06-12', NULL),
-(49, 59, 31, '2014-05-22', NULL),
-(50, 60, 8, '2025-11-20', NULL),
-(51, 60, 9, '2025-11-20', NULL),
-(52, 60, 10, '2025-11-20', NULL),
-(53, 60, 11, '2025-11-20', NULL),
-(54, 60, 12, '2025-11-20', NULL);
+(55, 61, 3, '2015-01-01', NULL),
+(57, 63, 31, '2018-02-02', NULL);
 
 --
 -- Indexes for dumped tables
@@ -3293,19 +3307,19 @@ ALTER TABLE `teacher_positions`
 -- AUTO_INCREMENT for table `event_calendar`
 --
 ALTER TABLE `event_calendar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8778;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8852;
 
 --
 -- AUTO_INCREMENT for table `grade_levels`
 --
 ALTER TABLE `grade_levels`
-  MODIFY `grade_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `grade_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `ph_addresses`
@@ -3323,13 +3337,13 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `pupils`
 --
 ALTER TABLE `pupils`
-  MODIFY `pupil_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1309;
+  MODIFY `pupil_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1337;
 
 --
 -- AUTO_INCREMENT for table `school_years`
 --
 ALTER TABLE `school_years`
-  MODIFY `sy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `sy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `sections`
@@ -3347,19 +3361,19 @@ ALTER TABLE `section_name`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=302;
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `teacher_positions`
 --
 ALTER TABLE `teacher_positions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- Constraints for dumped tables

@@ -373,8 +373,12 @@ usort($pupils, function($a, $b) {
                         <th>NAME</th>
                         <?php foreach ($display_subjects as $name => $sub): ?>
                             <?php
-                            $words = explode(' ', $name);
-                            $display_name = (count($words) >= 2) ? strtoupper(implode('', array_map(fn($word) => $word[0], $words))) : htmlspecialchars($name);
+                            if ($name === "Edukasyong Pantahanan at Pangkabuhayan / TLE") {
+                                $display_name = "EPP/TLE";
+                            } else {
+                                $words = explode(' ', $name);
+                                $display_name = (count($words) >= 2) ? strtoupper(implode('', array_map(fn($word) => $word[0], $words))) : htmlspecialchars($name);
+                            }
                             ?>
                             <th><?= htmlspecialchars($display_name) ?></th>
                         <?php endforeach; ?>
@@ -573,7 +577,7 @@ usort($pupils, function($a, $b) {
                                             } elseif ($rounded_avg >= 90) {
                                                 $remark = "<span class='honors'>With Honors</span>";
                                             } else {
-                                                $remark = "";
+                                                $remark = "NONE";
                                             }
                                         }
                                     }

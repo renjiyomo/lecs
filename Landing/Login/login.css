@@ -321,7 +321,6 @@ form {
     height: auto;
     border-radius: 12px;
     margin: 20px;
-    padding: 10px;
   }
 
   .login-left {
@@ -331,13 +330,13 @@ form {
   .login-right {
     flex: none;
     width: 100%;
-    padding: 20px;
+    padding: 30px;
     border-radius: 0;
   }
 
   .theme-toggle {
-    top: 10px;
-    right: 10px;
+    top: 18px;
+    right: 18px;
     font-size: 18px;
   }
 
@@ -385,11 +384,10 @@ form {
     height: auto;
     border-radius: 12px;
     margin: 20px;
-    padding: 10px;
   }
 
   .login-right {
-    padding: 15px;
+    padding: 25px;
   }
 
   .logo {

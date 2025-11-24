@@ -49,11 +49,12 @@ body {
   text-align: center;
   z-index: 1;
   position: relative;
+  padding: 0 20px; /* Add side padding for smaller screens */
 }
 
 .hero h1 {
   font-size: 50px;
-  font-style:normal;
+  font-style: normal;
   margin-top: 5px;
   text-shadow: #000000 2px 4px 5px;
 }
@@ -69,7 +70,7 @@ body {
   background: linear-gradient(135deg, #4a90e2, #357ABD);
   color: white;
   padding: 12px 28px;
-  text-decoration:none;
+  text-decoration: none;
   font-weight: bold;
   border-radius: 6px;
   transition: 0.3s;
@@ -79,8 +80,8 @@ body {
 }
 
 .login-btn:hover {
-background: linear-gradient(135deg, #4a91e2c5, #3579bdbb);
-color: white;
+  background: linear-gradient(135deg, #4a91e2c5, #3579bdbb);
+  color: white;
 }
 
 #loading-screen {
@@ -108,4 +109,66 @@ color: white;
 @keyframes fadeInOut {
   0%, 100% { opacity: 0.3; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 1024px) {
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .login-btn {
+    padding: 10px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    margin-top: 30px;
+    padding: 0 15px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .login-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  .loading-logo {
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+
+  .hero h1 {
+    font-size: 22px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .login-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .loading-logo {
+    width: 80px;
+  }
 }

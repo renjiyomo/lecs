@@ -288,3 +288,137 @@ form {
   0%, 100% { opacity: 0.3; transform: scale(0.95); }
   50% { opacity: 1; transform: scale(1); }
 }
+
+/* Media query for tablets and smaller desktops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .login-container {
+    width: 90%;
+    height: auto;
+  }
+
+  .login-right {
+    padding: 30px;
+  }
+
+  .logo-left {
+    width: 100px;
+  }
+
+  .title-text h1 {
+    font-size: 28px;
+  }
+
+  .title-text p {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    border-radius: 12px;
+    margin: 20px;
+    padding: 10px;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .login-right {
+    flex: none;
+    width: 100%;
+    padding: 20px;
+    border-radius: 0;
+  }
+
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+  }
+
+  .logo {
+    width: 80px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .subtext {
+    font-size: 14px;
+  }
+
+  .input-box input {
+    padding: 12px;
+  }
+
+  .btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .forgot {
+    margin-top: 20px;
+    font-size: 12px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .loading-logo {
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+.login-container {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 20px;
+    padding: 10px;
+  }
+
+  .login-right {
+    padding: 15px;
+  }
+
+  .logo {
+    width: 70px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .subtext {
+    font-size: 12px;
+  }
+
+  .input-box input {
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .forgot {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+
+  .loading-logo {
+    width: 80px;
+  }
+}

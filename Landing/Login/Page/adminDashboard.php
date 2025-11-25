@@ -500,9 +500,8 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         transferChart.options.plugins.tooltip.bodyColor = textColor;
         transferChart.update();
     }
-    // Initial update
+    
     updateChartsTheme();
-    // Observe body class changes
     const observer = new MutationObserver(updateChartsTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     function getFilteredYears(fromId, toId) {

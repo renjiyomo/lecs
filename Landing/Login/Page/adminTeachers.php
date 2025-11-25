@@ -159,7 +159,13 @@ if (!empty($types)) {
 <body>
   <div class="container">
     <?php include 'sidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+      <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>List of Personnel</h2>
+      </div>
+
       <div class="header">
         <h1>List of Personnel</h1>
         <form method="GET" style="margin:0;">
@@ -171,7 +177,7 @@ if (!empty($types)) {
       <div class="header-buttons">
         <form method="GET" class="filters" style="display:inline-block;">
           <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-         <label>School Year: 
+         <label><b>School Year:</b> 
           <select name="sy" onchange="this.form.submit()">
             <option value="0" <?php if($sy_id==0) echo 'selected'; ?>>All Years</option>
             <?php
@@ -184,7 +190,7 @@ if (!empty($types)) {
           </select>
           </label>
 
-          <label>Status:
+          <label><b>Status:</b>
           <select name="status" onchange="this.form.submit()">
             <option value="all" <?php if($status_filter=='all') echo 'selected'; ?>>All</option>
             <option value="active" <?php if($status_filter=='active') echo 'selected'; ?>>Active</option>
@@ -208,7 +214,7 @@ if (!empty($types)) {
         <div class="error-message"><?php echo htmlspecialchars($_GET['error']); ?></div>
       <?php endif; ?>
 
-      <table>
+      <table class="table-wrapper">
         <thead>
           <tr>
             <th>Employee No.</th>
@@ -227,11 +233,11 @@ if (!empty($types)) {
                   $full_name = trim($row['first_name'] . ' ' . $middle_initial . ' ' . $row['last_name']);
                   ?>
                   <tr>
-                    <td><?php echo htmlspecialchars($row['employee_no']); ?></td>
-                    <td><?php echo htmlspecialchars($full_name); ?></td>
-                    <td><?php echo htmlspecialchars(format_position_short($row['position'])); ?></td>
-                    <td><?php echo htmlspecialchars($status); ?></td>
-                    <td class="action-cell">
+                    <td data-label="Employee No."><?= htmlspecialchars($row['employee_no']) ?></td>
+                    <td data-label="Name"><?= htmlspecialchars($full_name) ?></td>
+                    <td data-label="Position"><?= htmlspecialchars(format_position_short($row['position'])) ?></td>
+                    <td data-label="Status"><?= htmlspecialchars($status) ?></td>
+                    <td data-label="Action" class="action-cell">
                       <a href="edit_teacher.php?id=<?php echo $row['teacher_id']; ?>" class="btn edit-btn">Edit</a>
                       <form method="POST" style="display:inline;">
                         <input type="hidden" name="teacher_id" value="<?php echo $row['teacher_id']; ?>">
@@ -288,6 +294,15 @@ if (!empty($types)) {
     }
     function closeModal() {
       document.getElementById('deleteModal').style.display = 'none';
+    }
+     // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
     }
   </script>
 </body>

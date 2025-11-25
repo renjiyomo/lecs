@@ -256,8 +256,13 @@ $stmt->close();
 <body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Edit Personnel</h2>
+        </div>
+
         <div class="header">
             <h1><a href="adminTeachers.php" style="text-decoration:none;">← Edit Personnel</a></h1>
         </div>
@@ -600,6 +605,16 @@ window.addEventListener('DOMContentLoaded', function() {
         showError('<?= $error_message ?>');
     <?php } ?>
 });
+
+// Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

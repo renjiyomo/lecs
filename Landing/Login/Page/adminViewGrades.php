@@ -72,12 +72,17 @@ while ($g = $g_res->fetch_assoc()) {
     <link rel="stylesheet" href="css/editGrades.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <?php include 'theme-script.php'; ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+                <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+                <h2>Grades of Pupil</h2>
+        </div>
         <h1>
             <span class="back-arrow" onclick="window.location.href='adminGrades.php'">←</span>
             Grades of Pupil
@@ -217,9 +222,9 @@ while ($g = $g_res->fetch_assoc()) {
                     }
                 ?>
                     <tr>
-                        <td><?= htmlspecialchars($sub['subject_name']) ?></td>
+                        <td data-th="Subjects"><?= htmlspecialchars($sub['subject_name']) ?></td>
                         <?php foreach ($quarters as $q): ?>
-                            <td>
+                            <td data-th="<?= ord($q[1]) - ord('0') ?>st Quarter">
                                 <?php if (in_array($q, $subject_required_quarters)): ?>
                                     <?php if ($q_grades[$q] !== ''): ?>
                                         <span class="grade-box"><?= intval($q_grades[$q]) ?></span>
@@ -231,14 +236,14 @@ while ($g = $g_res->fetch_assoc()) {
                                 <?php endif; ?>
                             </td>
                         <?php endforeach; ?>
-                        <td>
+                        <td data-th="Final Grade">
                             <?php if ($final !== ''): ?>
                                 <span class="grade-box"><?= intval($final) ?></span>
                             <?php else: ?>
                                 <span class="grade-box empty"></span>
                             <?php endif; ?>
                         </td>
-                        <td>
+                        <td data-th="Remarks">
                             <?php if ($rem == "Passed"): ?>
                                 <span class="promoted">Passed</span>
                             <?php elseif ($rem == "Failed"): ?>
@@ -284,9 +289,9 @@ while ($g = $g_res->fetch_assoc()) {
                             }
                         ?>
                             <tr>
-                                <td style="padding-left: 20px;"><?= htmlspecialchars($comp['subject_name']) ?></td>
+                                <td data-th="Subjects" style="padding-left: 20px;"><?= htmlspecialchars($comp['subject_name']) ?></td>
                                 <?php foreach ($quarters as $q): ?>
-                                    <td>
+                                    <td data-th="<?= ord($q[1]) - ord('0') ?>st Quarter">
                                         <?php if (in_array($q, $comp_required_quarters)): ?>
                                             <?php if ($cq_grades[$q] !== ''): ?>
                                                 <span class="grade-box"><?= intval($cq_grades[$q]) ?></span>
@@ -298,14 +303,14 @@ while ($g = $g_res->fetch_assoc()) {
                                         <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
-                                <td>
+                                <td data-th="Final Grade">
                                     <?php if ($cfinal !== ''): ?>
                                         <span class="grade-box"><?= intval($cfinal) ?></span>
                                     <?php else: ?>
                                         <span class="grade-box empty"></span>
                                     <?php endif; ?>
                                 </td>
-                                <td>
+                                <td data-th="Remarks">
                                     <?php if ($crem == "Passed"): ?>
                                         <span class="promoted">Passed</span>
                                     <?php elseif ($crem == "Failed"): ?>
@@ -344,16 +349,16 @@ while ($g = $g_res->fetch_assoc()) {
                 }
                 ?>
                 <tr>
-                    <td>General Average</td>
-                    <td colspan="4"></td>
-                    <td>
+                    <td data-th="Subjects">General Average</td>
+                    <td data-th="1st Quarter" colspan="4"></td>
+                    <td data-th="Final Grade">
                         <?php if ($general_avg !== ''): ?>
                             <span class="grade-box"><?= intval($general_avg) ?></span>
                         <?php else: ?>
                             <span class="grade-box empty"></span>
                         <?php endif; ?>
                     </td>
-                    <td>
+                    <td data-th="Remarks">
                         <?php if (str_contains($overall_rem, "HONORS")): ?>
                             <span class="honors"><?= $overall_rem ?></span>
                         <?php elseif ($overall_rem == "PROMOTED"): ?>
@@ -385,6 +390,15 @@ document.getElementById('exportForm').addEventListener('submit', function() {
         exportBtn.innerHTML = 'Export SF10';
     }, 1000); 
 });
+// Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 </body>
 </html>

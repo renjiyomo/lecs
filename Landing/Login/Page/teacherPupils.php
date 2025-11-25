@@ -84,8 +84,13 @@ $statusLabels = [
 
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
 
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>List Pupils</h2>
+        </div>
         <?php if ($error_message): ?>
             <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
         <?php endif; ?>
@@ -103,7 +108,7 @@ $statusLabels = [
 
         <form method="GET" class="filters">
             <!-- School Year Filter -->
-            <label>School Year:
+            <label><b>School Year:</b>
                 <select id="sySelect" name="sy_id" onchange="this.form.submit()">
                     <option value="">All Years</option>
                     <?php
@@ -129,7 +134,7 @@ $statusLabels = [
             </label>
 
             <!-- Section Filter -->
-            <label>Class:
+            <label><b>Class:</b>
                 <select id="secSelect" name="section_id" onchange="this.form.submit()">
                     <option value="">All Classes</option>
                     <?php
@@ -155,7 +160,7 @@ $statusLabels = [
             </label>
 
             <!-- Enhanced Status Filter -->
-            <label>Status:
+            <label><b>Status:</b>
                 <select name="status" onchange="this.form.submit()">
                     <option value="">All</option>
                     <?php foreach ($statusLabels as $value => $label): ?>
@@ -230,13 +235,13 @@ $statusLabels = [
                         $statusClass = 'status-' . str_replace('_ | ', '-', $statusKey);
 
                         echo "<tr>
-                                <td>{$row['lrn']}</td>
-                                <td>{$fullname}</td>
-                                <td>{$row['age']}</td>
-                                <td>" . substr($row['sex'], 0, 1) . "</td>
-                                <td>Grade {$row['level_name']} - {$row['section_name']}</td>
-                                <td><span class='status-badge $statusClass'>$displayStatus</span></td>
-                                <td class='action-buttons'>
+                                <td data-label='LRN'>{$row['lrn']}</td>
+                                <td data-label='NAME'>{$fullname}</td>
+                                <td data-label='Age'>{$row['age']}</td>
+                                <td data-label='Sex'>" . substr($row['sex'], 0, 1) . "</td>
+                                <td data-label='Class'>Grade {$row['level_name']} - {$row['section_name']}</td>
+                                <td data-label='Status'><span class='status-badge $statusClass'>$displayStatus</span></td>
+                                <td data-label='Action' class='action-buttons'>
                                     <a href='pupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
                                     <a href='edit_pupil.php?id={$row['pupil_id']}' class='btn-action edit-btn'>Edit</a>
                                     <a href='delete_pupil.php?id={$row['pupil_id']}' class='btn-action delete-btn' 
@@ -340,6 +345,15 @@ $statusLabels = [
         document.body.appendChild(form);
         form.submit();
     });
+     // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

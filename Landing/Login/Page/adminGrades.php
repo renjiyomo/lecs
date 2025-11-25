@@ -275,6 +275,7 @@ usort($pupils, function($a, $b) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grades of Pupils | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/adminGrades.css">
@@ -284,8 +285,12 @@ usort($pupils, function($a, $b) {
 <body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+     <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+                <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+                <h2>Grades of Pupils</h2>
+        </div>
         <h1>Grades of Pupils</h1>
 
         <form method="GET" class="top-bar">
@@ -390,10 +395,16 @@ usort($pupils, function($a, $b) {
                     $all_grades_complete = true;
                     ?>
                     <tr>
-                        <td><?= $p['rank'] ?></td>
-                        <td><?= htmlspecialchars($fullname) ?></td>
+                        <td data-th="Rank"><?= $p['rank'] ?></td>
+                        <td data-th="NAME"><?= htmlspecialchars($fullname) ?></td>
                         <?php foreach ($display_subjects as $name => $sub): ?>
                             <?php
+                            if ($name === "Edukasyong Pantahanan at Pangkabuhayan / TLE") {
+                                $display_name = "EPP/TLE";
+                            } else {
+                                $words = explode(' ', $name);
+                                $display_name = (count($words) >= 2) ? strtoupper(implode('', array_map(fn($word) => $word[0], $words))) : htmlspecialchars($name);
+                            }
                             $isApplicable = isset($sub['grade_to_id'][$p['grade_level_id']]) && isset($pupil_subjects[$p['pupil_id']][$sub['grade_to_id'][$p['grade_level_id']]]);
                             $val = "";
                             if ($isApplicable) {
@@ -473,9 +484,9 @@ usort($pupils, function($a, $b) {
                             $boxClass = $val === "" ? "grade-box empty" : "grade-box";
                             if (!$isApplicable) $boxClass = "grade-box not-applicable";
                             ?>
-                            <td><div class="<?= htmlspecialchars($boxClass) ?>"><?= $val !== "" ? $val : "" ?></div></td>
+                            <td data-th="<?= htmlspecialchars($display_name) ?>"><div class="<?= htmlspecialchars($boxClass) ?>"><?= $val !== "" ? $val : "" ?></div></td>
                         <?php endforeach; ?>
-                        <td>
+                        <td data-th="Remarks">
                             <?php
                             $remark = "";
                             if ($current_quarter === 'all') {
@@ -582,7 +593,7 @@ usort($pupils, function($a, $b) {
                             echo $remark;
                             ?>
                         </td>
-                        <td>
+                        <td data-th="Action">
                             <a href="adminViewGrades.php?pupil_id=<?= htmlspecialchars($p['pupil_id']) ?>&sy_id=<?= htmlspecialchars($current_sy) ?>&quarter=<?= htmlspecialchars($current_quarter) ?>" class="edit-btn">View</a>
                         </td>
                     </tr>
@@ -592,5 +603,17 @@ usort($pupils, function($a, $b) {
         </div>
     </div>
 </div>
+
+<script>
+     // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
+</script>
 </body>
 </html>

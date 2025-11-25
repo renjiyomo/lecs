@@ -454,3 +454,90 @@ body {
 :root.dark .input-with-label input:focus {
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
+
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+:root.dark .mobile-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mobile-burger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+.mobile-header h2 {
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    .header {
+        display: none;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 20px 15px;
+        margin-top: 60px;
+    }
+    .form-section {
+        padding: 15px;
+    }
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+    .profile-upload {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .upload-buttons {
+        margin-top: 10px;
+    }
+    .account-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    #with-account-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .principal-term-inputs {
+        grid-template-columns: 1fr;
+    }
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .form-actions button {
+        width: 100%;
+    }
+    .header h1 {
+        font-size: 24px;
+    }
+    .form-section h2 {
+        font-size: 18px;
+    }
+    .input-group input,
+    .input-group select {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

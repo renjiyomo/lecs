@@ -55,6 +55,7 @@ $address = $hasValidAddress ? implode(", ", $addressParts) : "No address provide
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pupil Details | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/pupilsProfile.css">
@@ -64,8 +65,13 @@ $address = $hasValidAddress ? implode(", ", $addressParts) : "No address provide
 <body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
-
+     <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+         <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Pupils Details</h2>
+        </div>
+
         <div class="profile-header">
             <a href="teacherPupils.php" class="back-arrow">←</a>
             <h1>Pupil Details</h1>
@@ -156,6 +162,18 @@ $address = $hasValidAddress ? implode(", ", $addressParts) : "No address provide
             </div>
         </div>
     </div>
+
+    <script>
+        // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
+    </script>
 
 </div>
 </body>

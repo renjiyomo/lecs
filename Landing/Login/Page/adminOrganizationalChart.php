@@ -176,8 +176,13 @@ foreach ($schoolYears as $syRow) {
 <body>
 <div class="container">
     <?php include 'sidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
 
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Organizational Chart</h2>
+        </div>
         <h1>Organizational Chart</h1>
         <div class="chart-container org-chart">
             <div class="filter-container">
@@ -285,6 +290,17 @@ foreach ($schoolYears as $syRow) {
             link.click();
         });
     });
+</script>
+<script>
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 </body>
 </html>

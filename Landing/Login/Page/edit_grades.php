@@ -253,6 +253,7 @@ if (isset($_SESSION['imported_grades'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grades of Pupil | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/editGrades.css">
@@ -262,7 +263,12 @@ if (isset($_SESSION['imported_grades'])) {
 <body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Grades of Pupil</h2>
+        </div>
         <?php
             if (isset($_SESSION['import_message'])) {
                 echo '<div class="success-message">' . $_SESSION['import_message'] . '</div>';
@@ -401,9 +407,9 @@ if (isset($_SESSION['imported_grades'])) {
                     }
                 ?>
                     <tr>
-                        <td><?= htmlspecialchars($sub['subject_name']) ?></td>
+                        <td data-th="Subjects"><?= htmlspecialchars($sub['subject_name']) ?></td>
                         <?php foreach (['Q1','Q2','Q3','Q4'] as $q): ?>
-                            <td>
+                            <td data-th="<?= ord($q[1]) - ord('0') ?>st Quarter">
                                 <?php if (!in_array($q, $subject_required_quarters)): ?>
                                     <div class="grade-box not-applicable"><?= $q_grades[$q] ?: 'N/A' ?></div>
                                 <?php else: ?>
@@ -416,8 +422,8 @@ if (isset($_SESSION['imported_grades'])) {
                                 <?php endif; ?>
                             </td>
                         <?php endforeach; ?>
-                        <td><?= $final ? intval($final) : '' ?></td>
-                        <td><?= $rem ?></td>
+                        <td data-th="Final Grade"><?= $final ? intval($final) : '' ?></td>
+                        <td data-th="Remarks"><?= $rem ?></td>
                     </tr>
                     <?php if ($has_comp): ?>
                         <?php foreach ($components[$sid] as $comp):
@@ -435,9 +441,9 @@ if (isset($_SESSION['imported_grades'])) {
                             $crem = $cfinal !== '' ? ($cfinal >= 75 ? 'Passed' : 'Failed') : '';
                         ?>
                             <tr>
-                                <td style="padding-left: 20px;"><?= htmlspecialchars($comp['subject_name']) ?></td>
+                                <td data-th="Subjects" style="padding-left: 20px;"><?= htmlspecialchars($comp['subject_name']) ?></td>
                                 <?php foreach (['Q1','Q2','Q3','Q4'] as $q): ?>
-                                    <td>
+                                    <td data-th="<?= ord($q[1]) - ord('0') ?>st Quarter">
                                         <?php if (in_array($q, $comp_required_quarters)): ?>
                                             <input type="number" name="grades[<?= $cid ?>][<?= $q ?>]"
                                                    value="<?= $cq_grades[$q] ?>" min="60" max="100" step="1">
@@ -446,8 +452,8 @@ if (isset($_SESSION['imported_grades'])) {
                                         <?php endif; ?>
                                     </td>
                                 <?php endforeach; ?>
-                                <td><?= $cfinal ? intval($cfinal) : '' ?></td>
-                                <td><?= $crem ?></td>
+                                <td data-th="Final Grade"><?= $cfinal ? intval($cfinal) : '' ?></td>
+                                <td data-th="Remarks"><?= $crem ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -481,10 +487,10 @@ if (isset($_SESSION['imported_grades'])) {
                 }
                 ?>
                 <tr>
-                    <td>General Average</td>
-                    <td colspan="4"></td>
-                    <td><?= $general_avg ? intval($general_avg) : '' ?></td>
-                    <td><?= $overall_rem ?></td>
+                    <td data-th="Subjects">General Average</td>
+                    <td data-th="1st Quarter" colspan="4"></td>
+                    <td data-th="Final Grade"><?= $general_avg ? intval($general_avg) : '' ?></td>
+                    <td data-th="Remarks"><?= $overall_rem ?></td>
                 </tr>
                 </tbody>
             </table>
@@ -544,6 +550,15 @@ document.getElementById('exportForm').addEventListener('submit', function() {
         exportBtn.innerHTML = 'Export SF10';
     }, 1000); 
 });
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 </body>
 </html>

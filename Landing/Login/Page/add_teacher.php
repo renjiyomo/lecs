@@ -176,8 +176,12 @@ if (isset($_POST['submit'])) {
 <body class="light">
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+                <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+                <h2>Add Personnel</h2>
+        </div>
         <div class="header">
             <h1><a href="adminTeachers.php" style="text-decoration:none;">← Add Personnel</a></h1>
         </div>
@@ -495,6 +499,16 @@ window.onload = function() {
         document.getElementById('term-dates').style.display = 'block';
     <?php } ?>
 };
+
+  // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

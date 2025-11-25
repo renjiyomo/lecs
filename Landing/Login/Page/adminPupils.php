@@ -65,12 +65,16 @@ $search = $_GET['search'] ?? '';
 
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
-        <div class="header">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>List of Pupils</h2>
+        </div>
+       <div class="header">
             <h1>List of Pupils</h1>
-            <form method="GET" style="margin:0;">
-                <input type="text" name="search" placeholder="Search by name or LRN..." 
+            <form method="GET" class="search-form" style="margin:0;">
+                <input type="text" name="search" placeholder="Search by name or LRN..."
                        value="<?= htmlspecialchars($search) ?>" />
             </form>
         </div>
@@ -78,7 +82,7 @@ $search = $_GET['search'] ?? '';
         <form method="GET" class="filters">
 
             <!-- School Year Filter -->
-            <label>School Year:
+            <label><b>School Year:</b>
                 <select id="sySelect" name="sy_id" onchange="this.form.submit()">
                     <option value="">All Years</option>
                     <?php
@@ -97,7 +101,7 @@ $search = $_GET['search'] ?? '';
             </label>
 
             <!-- Section Filter -->
-            <label>Class:
+            <label><b>Class:</b>
                 <select id="secSelect" name="section_id" onchange="this.form.submit()">
                     <option value="">All Classes</option>
                     <?php
@@ -121,7 +125,7 @@ $search = $_GET['search'] ?? '';
                 </select>
             </label>
 
-            <label>Status:
+            <label><b>Status:</b>
                 <select name="status" onchange="this.form.submit()">
                     <option value="">All</option>
                     <option value="enrolled" <?= ($selected_status=="enrolled") ? "selected" : "" ?>>Enrolled</option>
@@ -143,82 +147,84 @@ $search = $_GET['search'] ?? '';
             </div>
         </form>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>LRN</th>
-                    <th>NAME</th>
-                    <th>Age</th>
-                    <th>Sex</th>
-                    <th>Class</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Build conditions
-                $conditions = [];
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>LRN</th>
+                        <th>NAME</th>
+                        <th>Age</th>
+                        <th>Sex</th>
+                        <th>Class</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Build conditions
+                    $conditions = [];
 
-                if ($selected_section) {
-                    $conditions[] = "p.section_id = $selected_section";
-                }
-                if ($selected_sy) {
-                    $conditions[] = "p.sy_id = $selected_sy";
-                }
-                if (!empty($selected_status)) {
-                    $statusEsc = $conn->real_escape_string($selected_status);
-                    $conditions[] = "p.status = '$statusEsc'";
-                }
-                if (!empty($search)) {
-                    $searchEsc = $conn->real_escape_string($search);
-                    $conditions[] = "(p.lrn LIKE '%$searchEsc%' OR p.last_name LIKE '%$searchEsc%' OR p.first_name LIKE '%$searchEsc%')";
-                }
-
-                $where = empty($conditions) ? "" : "WHERE " . implode(" AND ", $conditions);
-
-                $sql = "SELECT p.pupil_id, p.lrn, p.last_name, p.first_name, p.middle_name, p.age, p.sex,
-                               s.section_name, g.level_name, sy.school_year, p.status
-                        FROM pupils p
-                        JOIN sections s ON p.section_id = s.section_id
-                        JOIN grade_levels g ON s.grade_level_id = g.grade_level_id
-                        JOIN school_years sy ON p.sy_id = sy.sy_id
-                        $where
-                        ORDER BY p.last_name ASC";
-
-                $result = $conn->query($sql);
-
-                if ($result && $result->num_rows > 0) {
-                    $status_display = [
-                        'enrolled' => 'Enrolled',
-                        'dropped' => 'Dropped',
-                        'promoted' => 'Promoted',
-                        'retained' => 'Retained',
-                        'transferred_in' => 'Transferred In',
-                        'transferred_out' => 'Transferred Out',
-                    ];
-                    while ($row = $result->fetch_assoc()) {
-                        $fullname = strtoupper($row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name']);
-                        $escaped_fullname = htmlspecialchars($fullname, ENT_QUOTES, 'UTF-8');
-                        $display_status = $status_display[$row['status']] ?? ucfirst($row['status']);
-                        echo "<tr>
-                                <td>{$row['lrn']}</td>
-                                <td>{$fullname}</td>
-                                <td>{$row['age']}</td>
-                                <td>" . substr($row['sex'],0,1) . "</td>
-                                <td>Grade {$row['level_name']} - {$row['section_name']}</td>
-                                <td>{$display_status}</td>
-                                <td class='action-buttons'>
-                                    <a href='adminPupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
-                                </td>
-                              </tr>";
+                    if ($selected_section) {
+                        $conditions[] = "p.section_id = $selected_section";
                     }
-                } else {
-                    echo "<tr><td colspan='7'>No pupils found</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    if ($selected_sy) {
+                        $conditions[] = "p.sy_id = $selected_sy";
+                    }
+                    if (!empty($selected_status)) {
+                        $statusEsc = $conn->real_escape_string($selected_status);
+                        $conditions[] = "p.status = '$statusEsc'";
+                    }
+                    if (!empty($search)) {
+                        $searchEsc = $conn->real_escape_string($search);
+                        $conditions[] = "(p.lrn LIKE '%$searchEsc%' OR p.last_name LIKE '%$searchEsc%' OR p.first_name LIKE '%$searchEsc%')";
+                    }
+
+                    $where = empty($conditions) ? "" : "WHERE " . implode(" AND ", $conditions);
+
+                    $sql = "SELECT p.pupil_id, p.lrn, p.last_name, p.first_name, p.middle_name, p.age, p.sex,
+                                   s.section_name, g.level_name, sy.school_year, p.status
+                            FROM pupils p
+                            JOIN sections s ON p.section_id = s.section_id
+                            JOIN grade_levels g ON s.grade_level_id = g.grade_level_id
+                            JOIN school_years sy ON p.sy_id = sy.sy_id
+                            $where
+                            ORDER BY p.last_name ASC";
+
+                    $result = $conn->query($sql);
+
+                    if ($result && $result->num_rows > 0) {
+                        $status_display = [
+                            'enrolled' => 'Enrolled',
+                            'dropped' => 'Dropped',
+                            'promoted' => 'Promoted',
+                            'retained' => 'Retained',
+                            'transferred_in' => 'Transferred In',
+                            'transferred_out' => 'Transferred Out',
+                        ];
+                        while ($row = $result->fetch_assoc()) {
+                            $fullname = strtoupper($row['last_name'] . ", " . $row['first_name'] . " " . $row['middle_name']);
+                            $escaped_fullname = htmlspecialchars($fullname, ENT_QUOTES, 'UTF-8');
+                            $display_status = $status_display[$row['status']] ?? ucfirst($row['status']);
+                            echo "<tr>
+                                    <td data-label='LRN'>{$row['lrn']}</td>
+                                    <td data-label='NAME'>{$fullname}</td>
+                                    <td data-label='Age'>{$row['age']}</td>
+                                    <td data-label='Sex'>" . substr($row['sex'],0,1) . "</td>
+                                    <td data-label='Class'>Grade {$row['level_name']} - {$row['section_name']}</td>
+                                    <td data-label='Status'>{$display_status}</td>
+                                    <td data-label='Action' class='action-buttons'>
+                                        <a href='adminPupilsProfile.php?pupil_id={$row['pupil_id']}' class='btn-action view-btn'>Profile</a>
+                                    </td>
+                                  </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>No pupils found</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
         <div class="total-count">
             <?php
@@ -332,6 +338,15 @@ $search = $_GET['search'] ?? '';
         document.body.appendChild(form);
         form.submit();
     });
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

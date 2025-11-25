@@ -14,6 +14,7 @@ $teacher_id = intval($_SESSION['teacher_id']);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Calendar | LECS Online Student Grading System</title>
   <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
   <link rel="stylesheet" href="css/sidebar.css">
@@ -23,8 +24,13 @@ $teacher_id = intval($_SESSION['teacher_id']);
 <body>
   <div class="container">
     <?php include 'sidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
 
     <div class="main-content">
+      <div class="mobile-header">
+        <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+        <h2>Event Calendar</h2>
+      </div>
       <div class="header">
         <h1>Event Calendar</h1>
         <div class="controls">
@@ -64,5 +70,16 @@ $teacher_id = intval($_SESSION['teacher_id']);
 
   <script src="js/index.global.min.js"></script>
   <script src="js/eventCalendar.js"></script>
+  <script>
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
+  </script>
 </body>
 </html>

@@ -1,20 +1,33 @@
 /* General Layout */
 
 :root {
+    --primary-color: #2563eb;
     --background-light: #f4f4f5;
     --background-dark: #1e293b;
     --text-light: #1f2937;
     --text-dark: #f1f5f9;
+    --card-light: #ffffff;
+    --card-dark: #334155;
+    --border-light: #d1d5db;
+    --border-dark: #475569;
+    --hover-light: #f3f4f6;
+    --hover-dark: #475569;
 }
 
 :root.light {
     --background-color: var(--background-light);
     --text-color: var(--text-light);
+    --card-color: var(--card-light);
+    --border-color: var(--border-light);
+    --hover-color: var(--hover-light);
 }
 
 :root.dark {
     --background-color: var(--background-dark);
     --text-color: var(--text-dark);
+    --card-color: var(--card-dark);
+    --border-color: var(--border-dark);
+    --hover-color: var(--hover-dark);
 }
 
 body {
@@ -35,17 +48,8 @@ body {
   padding: 40px;
   margin-left: 290px;
   transition: background 0.3s ease, color 0.3s ease;
-}
-
-/* Theme Colors */
-:root.light .main-content {
-  background: #f4f4f5;
-  color: #111827;
-}
-
-:root.dark .main-content {
-  background: #1E293B;
-  color: #F9FAFB;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 /* Header */
@@ -62,6 +66,11 @@ body {
   margin: 0;
 }
 
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
 .controls input,
 .controls button {
   padding: 8px 14px;
@@ -69,51 +78,38 @@ body {
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-color);
+  color: var(--text-color);
 }
 
-.controls input {
-  border: 1px solid #d1d5db;
-  background: white;
-  color: #111827;
-}
-
-:root.dark .controls input {
-  background: #334155;
-  border: 1px solid #475569;
-  color: #F9FAFB;
-}
-
-.controls input:focus {
+.controls input:focus,
+.controls button:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
 }
 
 .controls button {
-  background: #2563eb;
-  color: white;
+  background-color: var(--primary-color);
+  color: #ffffff;
   border: none;
   cursor: pointer;
 }
 
 .controls button:hover {
-  background: #1d4ed8;
+  background-color: #1d4ed8;
 }
 
 /* Calendar */
 #calendar {
   max-width: 1200px;
   margin: auto;
-  background: white;
+  background: var(--card-color);
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: background 0.3s ease, color 0.3s ease;
-}
-
-:root.dark #calendar {
-  background: #334155;
-  color: #F9FAFB;
 }
 
 /* Modal */
@@ -131,7 +127,7 @@ body {
 .modal.hidden { display: none; }
 
 .modal-content {
-  background: white;
+  background: var(--card-color);
   padding: 28px 24px;
   border-radius: 14px;
   width: 450px;
@@ -139,11 +135,7 @@ body {
   box-shadow: 0 6px 20px rgba(0,0,0,0.15);
   text-align: left;
   animation: fadeIn 0.25s ease;
-}
-
-:root.dark .modal-content {
-  background: #1E293B;
-  color: #F9FAFB;
+  color: var(--text-color);
 }
 
 .modal-content h2 {
@@ -160,22 +152,17 @@ body {
   padding: 10px 12px;
   width: 95%;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-color);
   font-size: 14px;
   transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-:root.dark .modal-content input,
-:root.dark .modal-content textarea {
-  background: #334155;
-  border: 1px solid #475569;
-  color: #F9FAFB;
+  background-color: var(--card-color);
+  color: var(--text-color);
 }
 
 .modal-content input:focus,
 .modal-content textarea:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(37,99,235,0.25);
 }
 
@@ -202,13 +189,13 @@ textarea {
   transition: background 0.2s ease;
 }
 
-#saveBtn { background: #2563eb; color: white; }
+#saveBtn { background: var(--primary-color); color: #ffffff; }
 #saveBtn:hover { background: #1d4ed8; }
 
-#deleteBtn { background: #ef4444; color: white; }
+#deleteBtn { background: #ef4444; color: #ffffff; }
 #deleteBtn:hover { background: #dc2626; }
 
-#cancelBtn { background: #9ca3af; color: white; }
+#cancelBtn { background: #9ca3af; color: #ffffff; }
 #cancelBtn:hover { background: #6b7280; }
 
 label {
@@ -274,4 +261,85 @@ label {
 
 .fc-event:hover .tooltip {
   display: block;
+}
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+:root.dark .mobile-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mobile-burger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+.mobile-header h2 {
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 70px 15px 20px;
+    }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .header h1 {
+        display: none;
+    }
+    .controls {
+        width: 100%;
+        flex-direction: row;
+        gap: 10px;
+    }
+    .controls input,
+    .controls button {
+        flex: 1;
+    }
+    #calendar {
+        padding: 15px;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 20px 15px;
+    }
+    .modal-content input,
+    .modal-content textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .modal-content .buttons {
+        flex-direction: row;
+        gap: 8px;
+    }
+    .modal-content button {
+        flex: 1;
+        padding: 12px;
+    }
+}
+@media (max-width: 480px) {
+    #calendar {
+        padding: 10px;
+    }
 }

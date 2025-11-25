@@ -94,6 +94,7 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/profile.css">
@@ -103,8 +104,13 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
 <body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
-    
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Profile</h2>
+        </div>
+        
         <div class="profile-header">
             <a href="teacherDashboard.php" class="back-arrow">←</a>
             <h1>Profile</h1>
@@ -202,6 +208,16 @@ if (!file_exists(__DIR__ . "/" . $imagePath)) {
             }
         });
     });
+
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

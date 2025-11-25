@@ -91,6 +91,7 @@ $has_more = $total_pupils > ($page * 10);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LECS Online Student Grading System</title>
     <link rel="icon" href="images/lecs-logo no bg.png" type="image/x-icon">
     <link rel="stylesheet" href="css/teacherDashboard.css">
@@ -101,8 +102,13 @@ $has_more = $total_pupils > ($page * 10);
 
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
 
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Teacher Dashboard</h2>
+        </div>
         <h1>Teacher Dashboard</h1>
         <p>Welcome back, <?php echo htmlspecialchars($teacherName); ?>!</p>
 
@@ -154,13 +160,13 @@ $has_more = $total_pupils > ($page * 10);
                                 $class = "Grade " . htmlspecialchars($pupil['grade_level_id']) . " - " . htmlspecialchars($pupil['section_name']);
                             ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($pupil['lrn']); ?></td>
-                                    <td><?= htmlspecialchars($fullname); ?></td>
-                                    <td><?= htmlspecialchars($pupil['age']); ?></td>
-                                    <td><?= htmlspecialchars($pupil['sex']); ?></td>
-                                    <td><?= $class; ?></td>
-                                    <td><?= htmlspecialchars($pupil['status']); ?></td>
-                                    <td>
+                                    <td data-th="LRN"><?= htmlspecialchars($pupil['lrn']); ?></td>
+                                    <td data-th="Name"><?= htmlspecialchars($fullname); ?></td>
+                                    <td data-th="Age"><?= htmlspecialchars($pupil['age']); ?></td>
+                                    <td data-th="Sex"><?= htmlspecialchars($pupil['sex']); ?></td>
+                                    <td data-th="Class"><?= $class; ?></td>
+                                    <td data-th="Status"><?= htmlspecialchars($pupil['status']); ?></td>
+                                    <td data-th="Action">
                                         <a href="edit_grades.php?pupil_id=<?= $pupil['pupil_id'] ?>&sy_id=<?= $pupil['sy_id'] ?>" class="view-btn">View Grades</a>
                                     </td>
                                 </tr>
@@ -193,6 +199,15 @@ $has_more = $total_pupils > ($page * 10);
     document.getElementById('schoolYear').addEventListener('change', function() {
         window.location.href = '?sy_id=' + this.value + '&page=1';
     });
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 
 </body>

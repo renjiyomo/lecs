@@ -1,25 +1,20 @@
-<?php 
+<?php
 include 'lecs_db.php';
 session_start();
-
 if (!isset($_SESSION['teacher_id']) || $_SESSION['user_type'] !== 'a') {
     header("Location: /lecs/Landing/Login/login.php");
     exit;
 }
-
 $teacher_id = intval($_SESSION['teacher_id']);
-
 $stmt = $conn->prepare("SELECT first_name, middle_name, last_name FROM teachers WHERE teacher_id = ?");
 $stmt->bind_param("i", $teacher_id);
 $stmt->execute();
 $teacher = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 $teacherName = implode(' ', array_filter([$teacher['first_name'], $teacher['middle_name'], $teacher['last_name']]));
-
 $studentCount = (int)$conn->query("SELECT COUNT(*) AS total FROM pupils")->fetch_assoc()['total'];
 $teacherCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type = 't'")->fetch_assoc()['total'];
 $nonTeachingCount = (int)$conn->query("SELECT COUNT(*) AS total FROM teachers WHERE user_type IN ('a', 'n')")->fetch_assoc()['total'];
-
 $allYearsQuery = $conn->query("
     SELECT school_year, start_date, end_date
     FROM school_years
@@ -34,7 +29,6 @@ while ($row = $allYearsQuery->fetch_assoc()) {
         'end_date' => $row['end_date']
     ];
 }
-
 $enrollmentData = $conn->query("
     SELECT sy.school_year, COUNT(p.pupil_id) AS total
     FROM pupils p
@@ -43,7 +37,6 @@ $enrollmentData = $conn->query("
     GROUP BY sy.school_year
     ORDER BY sy.start_date
 ");
-
 $droppedData = $conn->query("
     SELECT sy.school_year, COUNT(p.pupil_id) AS total
     FROM pupils p
@@ -52,7 +45,6 @@ $droppedData = $conn->query("
     GROUP BY sy.school_year
     ORDER BY sy.start_date
 ");
-
 $genderPerYearQuery = $conn->query("
     SELECT sy.school_year, p.sex, COUNT(*) AS total
     FROM pupils p
@@ -64,7 +56,6 @@ $genderPerYear = [];
 while ($row = $genderPerYearQuery->fetch_assoc()) {
     $year = $row['school_year'];
     $sexRaw = strtolower(trim($row['sex'] ?? ''));
-
     if (strpos($sexRaw, 'm') === 0) {
         $sex = 'male';
     } elseif (strpos($sexRaw, 'f') === 0) {
@@ -77,7 +68,6 @@ while ($row = $genderPerYearQuery->fetch_assoc()) {
     }
     $genderPerYear[$year][$sex] = (int)$row['total'];
 }
-
 $genderData = $conn->query("
     SELECT sex, COUNT(*) AS total
     FROM pupils
@@ -93,7 +83,6 @@ while ($row = $genderData->fetch_assoc()) {
         $femaleCount = (int)$row['total'];
     }
 }
-
 $studentsByYear = array_fill(0, count($allYears), 0);
 $enrollmentMap = [];
 while ($row = $enrollmentData->fetch_assoc()) {
@@ -102,7 +91,6 @@ while ($row = $enrollmentData->fetch_assoc()) {
 foreach ($allYears as $i => $year) {
     $studentsByYear[$i] = $enrollmentMap[$year] ?? 0;
 }
-
 $droppedByYear = array_fill(0, count($allYears), 0);
 $droppedMap = [];
 while ($row = $droppedData->fetch_assoc()) {
@@ -111,7 +99,6 @@ while ($row = $droppedData->fetch_assoc()) {
 foreach ($allYears as $i => $year) {
     $droppedByYear[$i] = $droppedMap[$year] ?? 0;
 }
-
 $dropoutRatesByYear = array_fill(0, count($allYears), 0);
 $dropoutRatesMap = [];
 foreach ($allYears as $i => $year) {
@@ -122,11 +109,9 @@ foreach ($allYears as $i => $year) {
     $dropoutRatesByYear[$i] = $rate;
     $dropoutRatesMap[$year] = $rate;
 }
-
 $transferQuery = $conn->query("SELECT remarks FROM pupils WHERE remarks <> ''");
 $transferInMap = array_fill_keys($allYears, 0);
 $transferOutMap = array_fill_keys($allYears, 0);
-
 while ($row = $transferQuery->fetch_assoc()) {
     $remarks = $row['remarks'];
     preg_match_all("/(T\/[IO])\s*DATE:(\d{4}[\/-]\d{2}[\/-]\d{2})/i", $remarks, $matches);
@@ -149,7 +134,6 @@ while ($row = $transferQuery->fetch_assoc()) {
         }
     }
 }
-
 $transferInByYear = [];
 $transferOutByYear = [];
 $transferPerYear = [];
@@ -158,7 +142,6 @@ foreach ($allYears as $year) {
     $transferOutByYear[] = $transferOutMap[$year];
     $transferPerYear[$year] = ['in' => $transferInMap[$year], 'out' => $transferOutMap[$year]];
 }
-
 $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
 ?>
 <!DOCTYPE html>
@@ -175,14 +158,16 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
     <?php include 'theme-script.php'; ?>
 </head>
 <body>
-
 <div class="container">
     <?php include 'sidebar.php'; ?>
-
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Admin Dashboard</h2>
+        </div>
         <h1>Admin Dashboard</h1>
         <p>Welcome back, <?php echo htmlspecialchars($teacherName); ?>!</p>
-
         <div class="stats">
             <div class="card orange">
                 <h3><?php echo $studentCount; ?></h3>
@@ -197,7 +182,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 <p>Non-teaching Personnel</p>
             </div>
         </div>
-
         <div class="charts">
             <div class="chart-container enrolled-chart">
                 <h3>Enrolled Pupils Per Year</h3>
@@ -258,7 +242,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 </div>
             </div>
         </div>
-
         <div class="charts" style="margin-top:18px;">
             <div class="chart-container transferred-chart">
                 <h3>Transferred Pupils Per Year</h3>
@@ -286,7 +269,7 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 </div>
                 <canvas id="transferChart"></canvas>
             </div>
-            
+           
             <div class="chart-container dropped-chart">
                 <h3>Dropout Rate Per Year</h3>
                 <div class="filter-container">
@@ -316,7 +299,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         </div>
     </div>
 </div>
-
 <script>
     // enrollment chart
     const ctx1 = document.getElementById('enrollmentChart').getContext('2d');
@@ -354,18 +336,13 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             }
         }
     });
-
     // gender chart
     const ctx2 = document.getElementById('genderChart').getContext('2d');
-
     const allGenders = { male: <?php echo (int)$maleCount; ?>, female: <?php echo (int)$femaleCount; ?> };
-
     const genderPerYear = <?php echo json_encode($genderPerYear, JSON_NUMERIC_CHECK); ?>;
-
     const genderChart = new Chart(ctx2, {
         type: 'doughnut',
         data: {
-
             labels: ['Male', 'Female'],
             datasets: [{
                 data: [allGenders.male, allGenders.female],
@@ -377,13 +354,12 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             maintainAspectRatio: false,
             cutout: '70%',
             plugins: {
-                legend: { display: false }, 
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
                             const label = context.label || '';
                             const value = Number(context.raw) || 0;
-
                             const dataset = context.chart.data.datasets[0].data.map(Number);
                             const total = dataset.reduce((acc, v) => acc + v, 0);
                             const percentage = total ? ((value / total) * 100).toFixed(0) : 0;
@@ -394,7 +370,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             }
         }
     });
-
     // dropped chart
     const ctx3 = document.getElementById('droppedChart').getContext('2d');
     const dropoutRatesPerYear = <?php echo $dropoutRatesPerYearJson; ?>;
@@ -420,10 +395,10 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
                 y: {
                     title: { display: true, text: 'Rate (%)' },
                     beginAtZero: true,
-                    ticks: { 
+                    ticks: {
                         precision: 2,
-                        callback: function(value) { 
-                            return value.toFixed(2) + '%'; 
+                        callback: function(value) {
+                            return value.toFixed(2) + '%';
                         }
                     },
                     max: 100
@@ -438,7 +413,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             }
         }
     });
-
     // transfer chart
     const ctx4 = document.getElementById('transferChart').getContext('2d');
     const transferPerYear = <?php echo json_encode($transferPerYear, JSON_NUMERIC_CHECK); ?>;
@@ -481,13 +455,11 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             }
         }
     });
-
     function updateChartsTheme() {
         const isDark = document.documentElement.classList.contains('dark');
         const textColor = isDark ? '#f1f5f9' : '#1f2937'; // Match --text-dark and --text-light
         const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
         const tooltipBg = isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)';
-
         // Enrollment Chart
         enrollmentChart.options.scales.x.ticks.color = textColor;
         enrollmentChart.options.scales.x.title.color = textColor;
@@ -499,13 +471,11 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         enrollmentChart.options.plugins.tooltip.titleColor = textColor;
         enrollmentChart.options.plugins.tooltip.bodyColor = textColor;
         enrollmentChart.update();
-
         // Gender Chart
         genderChart.options.plugins.tooltip.backgroundColor = tooltipBg;
         genderChart.options.plugins.tooltip.titleColor = textColor;
         genderChart.options.plugins.tooltip.bodyColor = textColor;
         genderChart.update();
-
         // Dropped Chart
         droppedChart.options.scales.x.ticks.color = textColor;
         droppedChart.options.scales.x.title.color = textColor;
@@ -517,7 +487,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         droppedChart.options.plugins.tooltip.titleColor = textColor;
         droppedChart.options.plugins.tooltip.bodyColor = textColor;
         droppedChart.update();
-
         // Transfer Chart
         transferChart.options.scales.x.ticks.color = textColor;
         transferChart.options.scales.x.title.color = textColor;
@@ -531,14 +500,11 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         transferChart.options.plugins.tooltip.bodyColor = textColor;
         transferChart.update();
     }
-
     // Initial update
     updateChartsTheme();
-
     // Observe body class changes
     const observer = new MutationObserver(updateChartsTheme);
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
     function getFilteredYears(fromId, toId) {
         const fromYear = document.getElementById(fromId).value;
         const toYear = document.getElementById(toId).value;
@@ -562,7 +528,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         }
         return filteredYears;
     }
-
     function updateEnrollmentChart() {
         const filteredYears = getFilteredYears('enrollmentFromYearFilter', 'enrollmentToYearFilter');
         const allYearsArray = <?php echo json_encode($allYears); ?>;
@@ -576,7 +541,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         enrollmentChart.data.datasets[0].data = filteredData;
         enrollmentChart.update();
     }
-
     function updateGenderChart() {
         const filteredYears = getFilteredYears('genderFromYearFilter', 'genderToYearFilter');
         let male = 0, female = 0;
@@ -590,7 +554,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         document.querySelector('.female-text').textContent = `Female: ${female}`;
         document.querySelector('.male-text').textContent = `Male: ${male}`;
     }
-
     function updateTransferChart() {
         const filteredYears = getFilteredYears('transferFromYearFilter', 'transferToYearFilter');
         const allYearsArray = <?php echo json_encode($allYears); ?>;
@@ -608,7 +571,6 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         transferChart.data.datasets[1].data = filteredOut;
         transferChart.update();
     }
-
     function updateDroppedChart() {
         const filteredYears = getFilteredYears('droppedFromYearFilter', 'droppedToYearFilter');
         const allYearsArray = <?php echo json_encode($allYears); ?>;
@@ -622,29 +584,23 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
         droppedChart.data.datasets[0].data = filteredData;
         droppedChart.update();
     }
-
     // Enrollment listeners
     document.getElementById('enrollmentFromYearFilter').addEventListener('change', updateEnrollmentChart);
     document.getElementById('enrollmentToYearFilter').addEventListener('change', updateEnrollmentChart);
-
     // Gender listeners
     document.getElementById('genderFromYearFilter').addEventListener('change', updateGenderChart);
     document.getElementById('genderToYearFilter').addEventListener('change', updateGenderChart);
-
     // Transfer listeners
     document.getElementById('transferFromYearFilter').addEventListener('change', updateTransferChart);
     document.getElementById('transferToYearFilter').addEventListener('change', updateTransferChart);
-
     // Dropped listeners
     document.getElementById('droppedFromYearFilter').addEventListener('change', updateDroppedChart);
     document.getElementById('droppedToYearFilter').addEventListener('change', updateDroppedChart);
-
     // Initial updates
     updateEnrollmentChart();
     updateGenderChart();
     updateTransferChart();
     updateDroppedChart();
-
     // Download functionality
     document.querySelectorAll('.download-select').forEach(select => {
         select.addEventListener('change', () => {
@@ -681,7 +637,15 @@ $dropoutRatesPerYearJson = json_encode($dropoutRatesMap, JSON_NUMERIC_CHECK);
             });
         });
     });
+    // Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
-
 </body>
 </html>

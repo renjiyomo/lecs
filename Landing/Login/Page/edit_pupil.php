@@ -187,11 +187,18 @@ if (isset($_POST['update'])) {
 <body>
 <div class="container">
     <?php include 'teacherSidebar.php'; ?>
+    <div class="overlay" onclick="closeSidebar()"></div>
     <div class="main-content">
-        <h1>
+        <div class="mobile-header">
+            <button class="mobile-burger" onclick="openSidebar()">&#9776;</button>
+            <h2>Edit Pupil</h2>
+        </div>
+        <div class="header">
+           <h1>
             <span class="back-arrow" onclick="window.location.href='teacherPupils.php'">←</span>
             Edit Pupil
-        </h1>
+        </h1> 
+        </div>
 
         <?php if(isset($success)): ?>
             <div class="modal show" id="successModal">
@@ -490,6 +497,15 @@ function toggleStatusDate() {
 }
 
 document.getElementById('status').addEventListener('change', toggleStatusDate);
+// Mobile sidebar functions
+    function openSidebar() {
+        document.querySelector('.sidebar').classList.add('open');
+        document.querySelector('.overlay').classList.add('show');
+    }
+    function closeSidebar() {
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.overlay').classList.remove('show');
+    }
 </script>
 </body>
 </html>

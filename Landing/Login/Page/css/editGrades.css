@@ -8,8 +8,7 @@
     --card-light: #ffffff;
     --hover-light: #f3f4f6;
     --hover-dark: #475569;
-    --border-light: #d1d5db;
-    --border-dark: #475569;
+    --border-color: #d1d5db;
     --not-applicable-light: #e0d7f9; /* Light pastel purple */
     --not-applicable-dark: #a996ca;  /* Darker purple for dark mode */
     --not-applicable-border: #8b5cf6; /* Vibrant purple border */
@@ -456,4 +455,147 @@ button.loading {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+:root.dark .mobile-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mobile-burger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+.mobile-header h2 {
+    margin: 0 auto;
+    font-size: 18px;
+}
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 70px 20px 20px;
+    }
+    h1 {
+        display: none;
+    }
+    .top-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .import-btn{
+        text-align: center;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+    .sy-selection {
+        width: 100%;
+    }
+    
+    .button-group {
+        display: block;
+    }
+
+    .button-group button{
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    table {
+        background-color: var(--background-color);       
+    }
+    thead {
+        display: none;
+    }
+    tbody tr {
+        width: 100%;
+        display: block;
+        margin-bottom: 16px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 16px 12px;
+        background-color: var(--sidebar-light);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: right;
+    }
+    :root.light td {
+    background-color: #ffffff;
+    }
+    :root.dark td {
+        background-color: var(--background-dark);
+    }
+    :root.light tr:nth-child(even) td {
+        background-color: #ffffff;
+    }
+    :root.dark tr:nth-child(even) td {
+        background-color: var(--background-dark);
+    }
+    td:before {
+        content: attr(data-th) ": ";
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 10px;
+        flex: 1;
+        text-align: left;
+    }
+    td:last-child {
+        border-bottom: none;
+    }
+    .grade-box {
+        min-width: auto;
+        padding: 0 8px;
+    }
+    :root.dark tbody tr {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    :root.dark table tbody tr {
+        background-color: var(--background-dark);
+        border-color: #334155;
+    }
+
+    :root.dark table{
+        background-color: var(--background-dark);
+    }
+    th, td {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 70px 10px 10px;
+    }
+    .import-btn{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
 }

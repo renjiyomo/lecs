@@ -10,6 +10,7 @@
     --hover-dark: #475569;
     --border-light: #d1d5db;
     --border-dark: #475569;
+    --border-color: #d1d5db;
     --not-applicable-light: #e0d7f9; /* Light pastel purple */
     --not-applicable-dark: #a996ca;  /* Darker purple for dark mode */
     --not-applicable-border: #8b5cf6; /* Vibrant purple border */
@@ -523,5 +524,167 @@ display: block;
     }
     to {
         opacity: 0;
+    }
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+:root.dark .mobile-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mobile-burger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+.mobile-header h2 {
+    margin: 0 auto;
+    font-size: 18px;
+}
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 70px 20px 20px;
+    }
+    h1 {
+        display: none;
+    }
+    .sf9-btn {
+        text-align: center;
+}
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+    .top-bar label {
+        display: none;
+    }
+    .top-bar select {
+        width: 100%;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: normal; 
+        background-color: var(--border-color);       
+    }
+    
+    table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 12px;
+        border-bottom: 1px solid var(--border);
+        word-break: break-word;
+    }
+
+    :root.light td {
+    background-color: var(--sidebar-light);
+    }
+    :root.dark td, :root.dark th {
+        background-color: var(--background-dark);
+    }
+    
+    table tbody tr {
+        width: 100%;
+        display: block;
+        margin-bottom: 16px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 14px 12px;
+        background-color: var(--sidebar-light);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+
+    :root.dark table tbody tr {
+        background-color: var(--background-dark);
+        border-color: #334155;
+    }
+
+    :root.dark table{
+        background-color: var(--background-dark);
+    }
+
+    table thead {
+        display: none; 
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+    td:before {
+        content: attr(data-th) ": ";
+        font-weight: bold;
+        text-transform: uppercase;
+        color: var(--text-color);
+    }
+    td:last-child {
+        border-bottom: none;
+    }
+    th, td {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 70px 10px 10px;
+    }
+    .filters select {
+        padding: 10px;
+        font-size: 14px;
+    }
+    .header-buttons button {
+        padding: 10px;
+        font-size: 14px;
+    }
+    .sf9-btn {
+        text-align: center;
+}
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .modal-content {
+        width: 100%;
+        padding: 15px;
+    }
+    .modal-content h2 {
+        font-size: 1.1em;
+    }
+    .modal-content button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-content {
+        padding: 20px 30px;
     }
 }

@@ -324,7 +324,9 @@ form {
   }
 
   .login-left {
-    display: none;
+    display: flex;
+    margin: 10px;
+    border-radius: 12px;
   }
 
   .login-right {
@@ -390,6 +392,10 @@ form {
     padding: 25px;
   }
 
+  .login-left {
+    display: none;
+  }
+  
   .logo {
     width: 70px;
   }

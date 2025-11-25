@@ -47,10 +47,14 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .header h1 {
     font-size: 24px;
+    margin: 0;
+    white-space: nowrap;
 }
 
 .header input[type="text"] {
@@ -58,13 +62,13 @@ body {
     border-radius: 20px;
     border: 1px solid var(--border-color);
     outline: none;
-    width: 250px;
-    transition: border 0.3s, box-shadow 0.3s;
+    width: 250px;                /* increased from 250px for better usability */
+    transition: all 0.3s;
 }
 
 .header input[type="text"]:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 8px rgba(37, 255, 235, 0.5);
 }
 
 .filters {
@@ -298,4 +302,202 @@ th {
 :root.dark .given-date{
     background-color: var(--border-dark);
     color: white;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.mobile-header {
+    display: none;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+:root.dark .mobile-header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mobile-burger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+.mobile-header h2 {
+    margin: 0 auto;
+    font-size: 18px;
+}
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 70px 20px 20px;
+    }
+    .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .header h1 {
+        display: none;
+    }
+    
+    .header form.search-form {
+        width: 100%
+    }
+    
+    .header input[type="text"] {
+        width: 94%; 
+        border-radius: 12px;  
+        padding: 14px 16px;
+        font-size: 16px;
+    }
+    .filters {
+        flex-direction: column;
+        gap: 15px;
+    }
+    b{
+        display: none;
+    }
+    .filters select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+    .header-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .header-buttons button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+     .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: normal; 
+        background-color: var(--background-color);       
+    }
+    
+    table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 12px;
+        border-bottom: 1px solid var(--border-color);
+        word-break: break-word;  
+    }
+    
+    table tbody tr {
+        width: 100%;
+        display: block;
+        margin-bottom: 16px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 16px 12px;
+        background-color: var(--sidebar-light);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+
+    :root.dark table tbody tr {
+        background-color: var(--background-dark);
+        border-color: #334155;
+    }
+
+    :root.dark table{
+        background-color: var(--background-dark);
+    }
+
+    table thead {
+        display: none; /* hide header for stacked layout */
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Label before each data */
+    table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--text-color);
+    }
+    
+    .btn-action {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+@media (max-width: 480px) {
+    .main-content {
+        padding: 70px 10px 10px;
+    }
+    .header input[type="text"] {
+        padding: 12px 12px;
+    }
+    .filters select {
+        padding: 10px;
+        font-size: 14px;
+    }
+    .header-buttons button {
+        padding: 10px;
+        font-size: 14px;
+    }
+    .btn-action {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .modal-content {
+        width: 100%;
+        padding: 15px;
+    }
+    .modal-content h2 {
+        font-size: 1.1em;
+    }
+    .modal-content button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    .given-date {
+        padding: 8px;
+    }
+    .generate-certi {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-content {
+        padding: 20px 30px;
+    }
+    .filters {
+        gap: 15px;
+    }
+    .header form.search-form {
+        flex: 0 1 250px;     /* can grow to ~380px on wide screens, never exceeds */
+    }
+    .header input[type="text"] {
+        width: 100%;
+    }
 }

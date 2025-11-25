@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2025 at 10:16 AM
+-- Generation Time: Nov 25, 2025 at 01:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -2619,35 +2619,6 @@ INSERT INTO `pupils` (`pupil_id`, `teacher_id`, `lrn`, `last_name`, `first_name`
 (1209, 23, '111762200015', 'SEVA', 'ZOEY ZAIRA', 'PADUA', 'Female', '2014-10-24', 8, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'SEVA, VLADIMIR SEGUI', 'PADUA,AIRA MAE,LACRO,', '', '', '', 'Face to Face', '', 28, 59, 'enrolled'),
 (1210, 23, '136741200525', 'SUMALPONG', 'CHELSSY ALIYAH', 'MANSANIDO', 'Female', '2015-04-15', 7, 'Tagalog', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SUMALPONG, REY PITOS', 'MANSANIDO,FRITZIE,RESUENA,', '', '', '', 'Face to Face', 'T/I DATE:2022-08-22', 28, 59, 'enrolled'),
 (1211, 23, '111677200060', 'ZAFRA', 'MARIANNE VENICE', 'RABELAS', 'Female', '2014-12-23', 7, 'Bikol', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'ZAFRA, VERT MCBAIN ARAGON', 'RABELAS,DAWN VIVIENE,MAYOR,', '', '', '', 'Face to Face', '', 28, 59, 'enrolled'),
-(1212, 23, '111762190146', 'ASANZA', 'JUAN MARCO', 'ARMILLO', 'Male', '2013-11-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ASANZA, MARK DOVHEL GUMBAN', 'ARMILLO,ANIKKA KRISTEL,BALMACEDA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1213, 23, '111762180007', 'BERAQUET', 'ADRIAN', 'AÑONUEVO', 'Male', '2012-10-02', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'BERAQUET, SALVADOR MARAÑO', 'AÑONUEVO,EMILY,BELO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1214, 23, '111762180011', 'BERAQUET', 'JAYSON', 'ROBLO', 'Male', '2013-04-13', 12, 'Bikol, Libon', '', 'Christianity', '', 'East Carisac', 'Libon', 'Albay', 'BERAQUET, JAYSON AÑONUEVO', 'ROBLO,JULIE ANN,MARANAN,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1215, 23, '111762190003', 'BOLANTE', 'JOHN KYLE', 'NANO', 'Male', '2013-07-29', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'BOLANTE, JOB OLAZO', 'NANO,MELANIE,DE MESA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1216, 23, '111762190032', 'DE LEON', 'ENRIQUE DOMINIC', 'SENTILLAS', 'Male', '2013-12-21', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'DE LEON, ERWIN CRUZ', 'SENTILLAS,DOMINGA,OLMEDA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1217, 23, '403581190011', 'LOMIBAO', 'MATEO ANDREW', 'TIMADO', 'Male', '2014-04-27', 11, 'Bikol, Libon', '', 'Christianity', '', 'San Isidro', 'Libon', 'Albay', '', 'TIMADO,CLEA,MORATALIA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1218, 23, '111762190153', 'LOPERA', 'JOHN RAY', 'SECRETO', 'Male', '2013-09-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'San Isidro', 'Libon', 'Albay', 'LOPERA, RANDY PACARDO', 'SECRETO,CARILENE,DAZO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1219, 23, '111762190129', 'MELAÑEZ', 'THOMAS HONESTO', 'REYES', 'Male', '2014-04-23', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'MELAÑEZ, ROLDAN OGMAR', 'REYES,GELLIE,EPANAG,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1220, 23, '111762190148', 'OSILA', 'KHALIL YBRAHIM', 'CANONCE', 'Male', '2013-11-25', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'OSILA, AMADO REPUBLICA', 'CANONCE,JENET,SEGUBIENSE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1221, 23, '109342190423', 'REGONDOLA', 'MARK JEFFER', 'CABILES', 'Male', '2013-09-23', 11, 'Tagalog', '', 'Christianity', '', 'Tatalon', 'Quezon City', 'Ncr   Second District', 'REGONDOLA, JEFFREY PACHECO', 'CABILES,MYRA,YANZON,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1222, 23, '111762190176', 'RELLOROSA', 'KHIAN', 'ABENAL', 'Male', '2014-03-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'RELLOROSA, MICHAEL BOSEO', 'ABENAL,MAY,FRANCISCO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1223, 23, '104913180117', 'ROBERTO', 'JOHN CEDRICK', 'VASQUEZ', 'Male', '2011-11-26', 13, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'ROBERTO, VENANCIO DELA CRUZ', 'VASQUEZ,MARIFE,SAGUE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1224, 23, '111762190020', 'ROSAL', 'NHAITE GABRIELLE', 'ENAJE', 'Male', '2014-08-21', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ROSAL, ARGIE RIVERA', 'ENAJE,MADIELENE,SEVILLA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1225, 23, '111762180138', 'ROSALES', 'DANMER', 'VASQUEZ', 'Male', '2013-06-06', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'ROSALES, DANILO MARANO', 'VASQUEZ,MARIA EMERLINE,REALUBIT,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1226, 23, '111762190022', 'SARIOLA', 'LUKE ANDREI', 'SEDA', 'Male', '2014-08-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SARIOLA, NIÑO MATOCIÑOS', 'SEDA,ANALIZA,SE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1227, 23, '111762190158', 'SAYRITAN', 'CRIS RAEL', 'ORILLA', 'Male', '2014-07-03', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'SAYRITAN, ISRAEL MARAÑO', 'ORILLA,CRISTINE,SEVA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1228, 23, '111762190041', 'SE', 'SEAN NATHANIEL', 'FERRERAS', 'Male', '2013-11-29', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'SE, JENMAR', 'FERRERAS,PAMELA,SOTELA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1229, 23, '111762190044', 'SIANOYA', 'MATEO', 'MORADILLO', 'Male', '2014-04-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VI (Poblacion)', 'Libon', 'Albay', 'SIANOYA, EDDIE CORPORAL', 'MORADILLO,MERRYLYN,NOCEDAL,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1230, 23, '111762190159', 'ABILA', 'LOUISE CIELO LAYNE', 'CASTRO', 'Female', '2014-02-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ABILA, JEYSON SECRETO', 'CASTRO,SALLY,SASUTONA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1231, 23, '111762190056', 'CONCEPCION', 'ROTCHE', 'LLANDERAL', 'Female', '2014-03-17', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'CONCEPCION, RONEL MANGAMPO', 'LLANDERAL,CHERRY,OGUIS,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1232, 23, '111762190057', 'CUADRO', 'NICOLE', 'SEVA', 'Female', '2013-11-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'CUADRO, BONIFACIO MUSA', 'SEVA,VALENTINA,SIARON,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1233, 23, '136787190358', 'HARESCO', 'FRANCES DENICE', 'ABILA', 'Female', '2013-08-01', 12, 'Tagalog', '', 'Christianity', '', 'Marayag', 'Libon', 'Albay', 'HARESCO, JAY FRANCIS XAVIER LEE', 'ABILA,SARAH JANE,BONITA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1234, 23, '111762190060', 'LAGONG', 'EUNNISE', 'SEDA', 'Female', '2014-06-03', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'LAGONG, EULOGIO PABE JR', 'SEDA,ANNABEL,CORPORAL,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1235, 23, '114477190077', 'LALATA', 'RHEALYN', 'BOLAÑOS', 'Female', '2012-09-26', 12, 'Bikol', '', 'Christianity', '', 'Bgy. 58 - Buragwis', 'Legazpi City  (capital)', 'Albay', 'LALATA, ERDINSY MARISTELA', 'BOLAÑOS,ARLENE,CARGANTA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1236, 23, '111793190021', 'SECRETARIO', 'STEPHANIE', 'REYES', 'Female', '2014-05-29', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SECRETARIO, CARLO DACO', 'REYES,ROBIE,MORICO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1237, 23, '111762190118', 'SEDA', 'BRENNA', 'SON', 'Female', '2014-05-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SEDA, LUIS CORPORAL', 'SON,MA APPLE,BERINA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1238, 23, '111762190071', 'SEDA', 'JANELLA', 'REYNANCIA', 'Female', '2013-10-08', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SEDA, JESUS CORPORAL', 'REYNANCIA,REGINA,MATA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1239, 23, '111762190095', 'SEVILLA', 'KYLIE', 'ROARING', 'Female', '2014-01-15', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SEVILLA, REY MAPE', 'ROARING,EDEN,RIPARIP,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
-(1240, 23, '111762190096', 'SIENES', 'MIRA JANE', 'MONTA', 'Female', '2014-04-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SIENES, ROCKY RINGO ALTAJARA', 'MONTA,KASELYN,-,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
 (1250, 6, '111762200012', 'BASILLA', 'ALLIAH', 'RETANAN', 'Female', '2014-11-08', 9, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'BASILLA, LEO ROSAL', 'RETANAN,AIZA,NUYDA,', '', '', '', 'Face to Face', '', 14, 10, 'enrolled'),
 (1309, 29, '111762180005', 'BAS', 'JOHN PAUL', 'BARELA', 'Male', '2013-02-11', 10, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'BAS, GERARDO MANGAMPO', 'BARELA,SHIELA,NIEVA,', '', '', '', 'Face to Face', '', 13, 40, 'promoted'),
 (1310, 29, '111762220155', 'BUELLA', 'JESSIE', 'BOLANTE', 'Male', '2016-08-07', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'BUELLA, PIO SEGARRA', 'BOLANTE,JOAN,SALEM,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
@@ -2676,7 +2647,36 @@ INSERT INTO `pupils` (`pupil_id`, `teacher_id`, `lrn`, `last_name`, `first_name`
 (1333, 29, '111762220141', 'SEVA', 'VIVIENE ATHENA', 'NAZ', 'Female', '2016-01-11', 7, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SEVA, WILLIAM OBAL', 'NAZ,JENIFFER GRACE,SALLAN,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
 (1334, 29, '111762220034', 'SISON', 'MIA ANGELA', 'BAVA', 'Female', '2017-09-05', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'SISON, NONITO R II', 'BAVA,REGINA MAE,MORONDOZ,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
 (1335, 29, '111762220143', 'VASQUEZ', 'ANGELA MAE', 'GARILAO', 'Female', '2017-10-27', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'VASQUEZ, EDWIN MIDAY', 'GARILAO,ARLINE,SAYSON,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
-(1336, 29, '111762220144', 'VELASCO', 'SCARLET', 'COLAMBO', 'Female', '2017-09-05', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'VELASCO, HERMAN PUENSALIDA', 'COLAMBO,RECHILDA,ABILA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled');
+(1336, 29, '111762220144', 'VELASCO', 'SCARLET', 'COLAMBO', 'Female', '2017-09-05', 6, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'VELASCO, HERMAN PUENSALIDA', 'COLAMBO,RECHILDA,ABILA,', '', '', '', 'Face to Face', '', 13, 40, 'enrolled'),
+(1371, 23, '111762190146', 'ASANZA', 'JUAN MARCO', 'ARMILLO', 'Male', '2013-11-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ASANZA, MARK DOVHEL GUMBAN', 'ARMILLO,ANIKKA KRISTEL,BALMACEDA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1372, 23, '111762180007', 'BERAQUET', 'ADRIAN', 'AÑONUEVO', 'Male', '2012-10-02', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'BERAQUET, SALVADOR MARAÑO', 'AÑONUEVO,EMILY,BELO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1373, 23, '111762180011', 'BERAQUET', 'JAYSON', 'ROBLO', 'Male', '2013-04-13', 12, 'Bikol, Libon', '', 'Christianity', '', 'East Carisac', 'Libon', 'Albay', 'BERAQUET, JAYSON AÑONUEVO', 'ROBLO,JULIE ANN,MARANAN,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1374, 23, '111762190003', 'BOLANTE', 'JOHN KYLE', 'NANO', 'Male', '2013-07-29', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'BOLANTE, JOB OLAZO', 'NANO,MELANIE,DE MESA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1375, 23, '111762190032', 'DE LEON', 'ENRIQUE DOMINIC', 'SENTILLAS', 'Male', '2013-12-21', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'DE LEON, ERWIN CRUZ', 'SENTILLAS,DOMINGA,OLMEDA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1376, 23, '403581190011', 'LOMIBAO', 'MATEO ANDREW', 'TIMADO', 'Male', '2014-04-27', 11, 'Bikol, Libon', '', 'Christianity', '', 'San Isidro', 'Libon', 'Albay', '', 'TIMADO,CLEA,MORATALIA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1377, 23, '111762190153', 'LOPERA', 'JOHN RAY', 'SECRETO', 'Male', '2013-09-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'San Isidro', 'Libon', 'Albay', 'LOPERA, RANDY PACARDO', 'SECRETO,CARILENE,DAZO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1378, 23, '111762190129', 'MELAÑEZ', 'THOMAS HONESTO', 'REYES', 'Male', '2014-04-23', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'MELAÑEZ, ROLDAN OGMAR', 'REYES,GELLIE,EPANAG,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1379, 23, '111762190148', 'OSILA', 'KHALIL YBRAHIM', 'CANONCE', 'Male', '2013-11-25', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'OSILA, AMADO REPUBLICA', 'CANONCE,JENET,SEGUBIENSE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1380, 23, '109342190423', 'REGONDOLA', 'MARK JEFFER', 'CABILES', 'Male', '2013-09-23', 11, 'Tagalog', '', 'Christianity', '', 'Tatalon', 'Quezon City', 'Ncr   Second District', 'REGONDOLA, JEFFREY PACHECO', 'CABILES,MYRA,YANZON,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1381, 23, '111762190176', 'RELLOROSA', 'KHIAN', 'ABENAL', 'Male', '2014-03-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'RELLOROSA, MICHAEL BOSEO', 'ABENAL,MAY,FRANCISCO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1382, 23, '104913180117', 'ROBERTO', 'JOHN CEDRICK', 'VASQUEZ', 'Male', '2011-11-26', 13, 'Tagalog', '', 'Christianity', '', 'Zone I (Poblacion)', 'Libon', 'Albay', 'ROBERTO, VENANCIO DELA CRUZ', 'VASQUEZ,MARIFE,SAGUE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1383, 23, '111762190020', 'ROSAL', 'NHAITE GABRIELLE', 'ENAJE', 'Male', '2014-08-21', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ROSAL, ARGIE RIVERA', 'ENAJE,MADIELENE,SEVILLA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1384, 23, '111762180138', 'ROSALES', 'DANMER', 'VASQUEZ', 'Male', '2013-06-06', 12, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'ROSALES, DANILO MARANO', 'VASQUEZ,MARIA EMERLINE,REALUBIT,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1385, 23, '111762190022', 'SARIOLA', 'LUKE ANDREI', 'SEDA', 'Male', '2014-08-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SARIOLA, NIÑO MATOCIÑOS', 'SEDA,ANALIZA,SE,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1386, 23, '111762190158', 'SAYRITAN', 'CRIS RAEL', 'ORILLA', 'Male', '2014-07-03', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'SAYRITAN, ISRAEL MARAÑO', 'ORILLA,CRISTINE,SEVA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1387, 23, '111762190041', 'SE', 'SEAN NATHANIEL', 'FERRERAS', 'Male', '2013-11-29', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone III (Poblacion)', 'Libon', 'Albay', 'SE, JENMAR', 'FERRERAS,PAMELA,SOTELA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1388, 23, '111762190044', 'SIANOYA', 'MATEO', 'MORADILLO', 'Male', '2014-04-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VI (Poblacion)', 'Libon', 'Albay', 'SIANOYA, EDDIE CORPORAL', 'MORADILLO,MERRYLYN,NOCEDAL,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1389, 23, '111762190159', 'ABILA', 'LOUISE CIELO LAYNE', 'CASTRO', 'Female', '2014-02-26', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'ABILA, JEYSON SECRETO', 'CASTRO,SALLY,SASUTONA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1390, 23, '111762190056', 'CONCEPCION', 'ROTCHE', 'LLANDERAL', 'Female', '2014-03-17', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone II (Poblacion)', 'Libon', 'Albay', 'CONCEPCION, RONEL MANGAMPO', 'LLANDERAL,CHERRY,OGUIS,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1391, 23, '111762190057', 'CUADRO', 'NICOLE', 'SEVA', 'Female', '2013-11-06', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone V (Poblacion)', 'Libon', 'Albay', 'CUADRO, BONIFACIO MUSA', 'SEVA,VALENTINA,SIARON,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1392, 23, '136787190358', 'HARESCO', 'FRANCES DENICE', 'ABILA', 'Female', '2013-08-01', 12, 'Tagalog', '', 'Christianity', '', 'Marayag', 'Libon', 'Albay', 'HARESCO, JAY FRANCIS XAVIER LEE', 'ABILA,SARAH JANE,BONITA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1393, 23, '111762190060', 'LAGONG', 'EUNNISE', 'SEDA', 'Female', '2014-06-03', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'LAGONG, EULOGIO PABE JR', 'SEDA,ANNABEL,CORPORAL,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1394, 23, '114477190077', 'LALATA', 'RHEALYN', 'BOLAÑOS', 'Female', '2012-09-26', 12, 'Bikol', '', 'Christianity', '', 'Bgy. 58 - Buragwis', 'Legazpi City  (capital)', 'Albay', 'LALATA, ERDINSY MARISTELA', 'BOLAÑOS,ARLENE,CARGANTA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1395, 23, '111793190021', 'SECRETARIO', 'STEPHANIE', 'REYES', 'Female', '2014-05-29', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SECRETARIO, CARLO DACO', 'REYES,ROBIE,MORICO,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1396, 23, '111762190118', 'SEDA', 'BRENNA', 'SON', 'Female', '2014-05-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SEDA, LUIS CORPORAL', 'SON,MA APPLE,BERINA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1397, 23, '111762190071', 'SEDA', 'JANELLA', 'REYNANCIA', 'Female', '2013-10-08', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone VII (Poblacion)', 'Libon', 'Albay', 'SEDA, JESUS CORPORAL', 'REYNANCIA,REGINA,MATA,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1398, 23, '111762190095', 'SEVILLA', 'KYLIE', 'ROARING', 'Female', '2014-01-15', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SEVILLA, REY MAPE', 'ROARING,EDEN,RIPARIP,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled'),
+(1399, 23, '111762190096', 'SIENES', 'MIRA JANE', 'MONTA', 'Female', '2014-04-20', 11, 'Bikol, Libon', '', 'Christianity', '', 'Zone IV (Poblacion)', 'Libon', 'Albay', 'SIENES, ROCKY RINGO ALTAJARA', 'MONTA,KASELYN,-,', '', '', '', 'Face to Face', '', 26, 60, 'enrolled');
 
 -- --------------------------------------------------------
 
@@ -2754,8 +2754,7 @@ INSERT INTO `sections` (`section_id`, `section_name`, `grade_level_id`, `teacher
 (56, 'Winners', 23, 20, 13, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
 (57, 'Rizal', 2, 23, 29, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
 (59, 'Rizal', 2, 23, 28, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
-(60, 'Winners', 23, 23, 26, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL),
-(62, 'Fighters', 2, 23, 13, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL);
+(60, 'Winners', 23, 23, 26, '2025-11-19 20:16:57', '2025-11-19 20:16:57', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3139,7 +3138,7 @@ INSERT INTO `teachers` (`teacher_id`, `first_name`, `middle_name`, `last_name`, 
 (30, 'Ma. Luisa', 'Serrano', 'Buiza', '4266585', 'luisa.buiza@gmail.com', '$2y$10$m7GZx1hoMU1gT/jtXsIEreRRqBsn9q/tbmVMJB2vniF2m4BtGV396', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 2', '68d1e18432bcb.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:37:58', NULL, 18),
 (31, 'Cherry', 'Toledo', 'Kikim', '6430599', 'cherry.kikim@gmail.com', '$2y$10$Un9Mhe3dApzKm63HoLQGEu2xrueYYX..k4UBkiIegWrHgdDO9/hAK', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Officer 2', '68d1f46d99202.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-21 15:58:38', NULL, 18),
 (32, 'Arnel', 'Reboja', 'Aguilar', '4519082', '', '', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Aide 1', '68d1f45bcdcfe.png', 'n', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
-(33, 'Emilio Jose', 'C.', 'Sionicio', '6433052', 'emiliojose.sionicio@gmail.com', '$2y$10$DfL97d7HbLE.OeQtDiqRGObuqH5lD.oyIO0KN0fTX5VzLEQTLJcZ2', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Assistant 2', '68d1f4a4dcf3e.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-21 15:59:16', NULL, 18),
+(33, 'Emilio Jose', 'C.', 'Sionicio', '6433052', 'emiliojose.sionicio@gmail.com', '$2y$10$DfL97d7HbLE.OeQtDiqRGObuqH5lD.oyIO0KN0fTX5VzLEQTLJcZ2', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Administrative Assistant 2', '68d1f4a4dcf3e.png', 'a', 'a', '2025-11-19 19:47:17', '2025-11-24 14:29:58', NULL, 18),
 (38, 'Maricel', 'M', 'Bueno', 'N/A', '', '', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Utility', '68e721871982b.png', 'n', 'a', '2025-11-19 19:47:17', '2025-11-19 19:47:17', NULL, NULL),
 (39, 'Maryjane', 'Reconday', 'Bacolod', '0433485', 'maryjane.bacolod@gmail.com', '$2y$10$P9E/BSiSFyF.WSBrGz5vCOwL9.hAX3Dr7sU1xPyvRGt2bmwTl6IiK', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Master Teacher 2', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:32:34', NULL, 18),
 (40, 'Ma. Rosa', 'Serrano', 'Sara', '4177599', 'rosa.sara@gmail.com', '$2y$10$taTe9dATU4pASEh.eQ4qqu/.qoaExR5tAqLQd5PTY2.XSoD.Hxsye', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', 'teacher.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:36:02', NULL, 18),
@@ -3156,7 +3155,7 @@ INSERT INTO `teachers` (`teacher_id`, `first_name`, `middle_name`, `last_name`, 
 (51, 'Jovie', 'Linggas', 'Evangelista', '5914540', 'jovie.evangelista@gmail.com', '$2y$10$Uura8vk9BQweAAt3ifPwu.HoXEJ9lEgN15NdBMc2Ebzq2goPLpfM.', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 1', '68e7499ff1199.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:57:44', NULL, 18),
 (52, 'Elsa', 'Pacamara', 'Mabini', '4365006', 'elsa.mabini@gmail.com', '$2y$10$DevKsXmkJ1SDf/fhtW2usOg5m3tdSKmLoVO8I7scq/NJn4J91Rcli', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74ac684d5a.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-20 11:38:19', NULL, 18),
 (53, 'Syrelle France', 'Samson', 'Paterter', '6314954', 'syrellefrance.paterter@gmail.com', '$2y$10$KL4H.qFigVkYzl1Lkr01COQhUfKFPv5yYSRNde8/ljXv9hBePelRC', 'Female', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Teacher 3', '68e74c3053a8b.png', 't', 'a', '2025-11-19 19:47:17', '2025-11-21 15:58:16', NULL, 18),
-(61, 'Ron', 'Ordansa', 'Longasa', '4562628', 'ron.longasa@gmail.com', '$2y$10$DMMSRopTaNYD7UgQcYoote/AghN.GzKNVkt00NNqr053RDCLlhu1W', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', '0', 'Teacher 3', '69201e548f3aa.png', 'a', 'a', '2025-11-21 16:09:56', '2025-11-21 16:09:56', 18, 18),
+(61, 'Ron', 'Ordansa', 'Longasa', '4562628', 'ron.longasa@gmail.com', '$2y$10$DMMSRopTaNYD7UgQcYoote/AghN.GzKNVkt00NNqr053RDCLlhu1W', 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', '0', 'Teacher 3', '69201e548f3aa.png', 'a', 'a', '2025-11-21 16:09:56', '2025-11-25 14:00:45', 18, 18),
 (63, 'Ronel', 'Realingo', 'Marzan', 'N/A', '', NULL, 'Male', '0000-00-00', 0, 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'Utility', '69214939c0006.png', 'n', 'a', '2025-11-22 13:24:39', '2025-11-22 13:25:13', 61, 61);
 
 -- --------------------------------------------------------
@@ -3178,7 +3177,7 @@ CREATE TABLE `teacher_positions` (
 --
 
 INSERT INTO `teacher_positions` (`id`, `teacher_id`, `position_id`, `start_date`, `end_date`) VALUES
-(3, 18, 13, '2018-09-26', '2025-10-14'),
+(3, 18, 13, '2018-09-26', '2025-12-09'),
 (15, 32, 25, '2016-06-13', NULL),
 (17, 38, 31, '2021-06-07', NULL),
 (18, 39, 9, '2022-02-01', NULL),
@@ -3307,13 +3306,13 @@ ALTER TABLE `teacher_positions`
 -- AUTO_INCREMENT for table `event_calendar`
 --
 ALTER TABLE `event_calendar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8852;
+  MODIFY `grade_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9013;
 
 --
 -- AUTO_INCREMENT for table `grade_levels`
@@ -3337,7 +3336,7 @@ ALTER TABLE `positions`
 -- AUTO_INCREMENT for table `pupils`
 --
 ALTER TABLE `pupils`
-  MODIFY `pupil_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1337;
+  MODIFY `pupil_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1400;
 
 --
 -- AUTO_INCREMENT for table `school_years`
@@ -3361,19 +3360,19 @@ ALTER TABLE `section_name`
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
+  MODIFY `subject_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=374;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `teacher_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `teacher_positions`
 --
 ALTER TABLE `teacher_positions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- Constraints for dumped tables
